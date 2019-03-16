@@ -1,0 +1,11 @@
+{
+  "name": "draftr",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:mikaelrss/draftr.git",
+  "author": "Mikael Solstad <mikaelrinosolstad@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^1.16.4"
+  }
+}

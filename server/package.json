@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "ts-node": "^8.0.3",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "http": "^0.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon",
+    "start": "node dist/index.js"
+  }
+}
