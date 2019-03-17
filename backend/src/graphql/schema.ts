@@ -17,5 +17,6 @@ export const typeDefs = gql`
     weight: String
     dateOfBirth: String
     college: String
+    jersey: String
   }
 `;
