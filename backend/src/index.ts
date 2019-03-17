@@ -10,5 +10,6 @@ const server = new ApolloServer({
 });
 
 server.listen({ port: PORT }).then(res => {
+  // tslint:disable-next-line
   console.log(`Now listening on port ${PORT}`);
 });

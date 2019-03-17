@@ -15,6 +15,8 @@
     "object-literal-sort-keys": false,
     "trailing-comma": true,
     "arrow-parens": [true, "ban-single-arg-parens"],
+    "arrow-return-shorthand": true,
+    "member-access": false,
     "no-console": {
       "severity": "warning",
       "options": ["debug", "info", "log", "time", "timeEnd", "trace"]
