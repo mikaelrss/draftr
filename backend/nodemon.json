@@ -1,6 +1,9 @@
 {
   "watch": ["src"],
-  "ext": "ts",
+  "ext": "ts,graphql",
   "ignore": ["src/**/*.spec.ts"],
-  "exec": "ts-node ./src/index.ts"
+  "exec": "ts-node ./src/index.ts",
+  "events": {
+    "start": "yarn safe-update"
+  }
 }

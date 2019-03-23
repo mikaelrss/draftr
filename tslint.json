@@ -11,7 +11,6 @@
     "no-conditional-assignment": true,
     "no-consecutive-blank-lines": false,
     "quotemark": false,
-    "no-unused-variable": true,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "trailing-comma": true,
