@@ -1,21 +1,32 @@
-import React, { useState } from 'react';
-import { withStyles, createStyles } from '@material-ui/core/styles';
+import React from 'react';
+import {
+  withStyles,
+  createMuiTheme,
+  MuiThemeProvider,
+} from '@material-ui/core/styles';
+import { blue } from '@material-ui/core/colors';
 
-import Players from '../players/Players';
 import AppHeader from '../appheader/AppHeader';
-import AppDrawer from '../appdrawer/AppDrawer';
 import Container from '../shared/container/container';
 import Rankings from '../rankings/Rankings';
 
-const styles = () =>
-  createStyles({
-    root: {
-      display: 'flex',
-    },
-    content: {
-      display: 'flex',
-    },
-  });
+const theme = createMuiTheme({
+  palette: {
+    primary: blue,
+  },
+  typography: {
+    useNextVariants: true,
+  },
+});
+
+const styles = () => ({
+  root: {
+    display: 'flex',
+  },
+  content: {
+    display: 'flex',
+  },
+});
 
 interface IProps {
   classes: {
@@ -25,16 +36,15 @@ interface IProps {
 }
 
 const Root = ({ classes }: IProps) => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const toggleOpen = () => setDrawerOpen(!drawerOpen);
   return (
-    <div className={classes.root}>
-      <AppHeader drawerOpen={drawerOpen} />
-      <AppDrawer open={drawerOpen} toggleOpen={toggleOpen} />
-      <Container>
-        <Rankings />
-      </Container>
-    </div>
+    <MuiThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <AppHeader />
+        <Container>
+          <Rankings />
+        </Container>
+      </div>
+    </MuiThemeProvider>
   );
 };
 

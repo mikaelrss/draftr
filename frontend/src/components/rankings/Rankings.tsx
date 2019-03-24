@@ -21,21 +21,19 @@ const Rankings = () => {
   return (
     <Grid container spacing={24} justify="center">
       <Grid item>
-        <Typography>RB</Typography>
+        <Typography variant="h3">RB</Typography>
         <PositionContainer position="RB" players={positional.RB} />
       </Grid>
       <Grid item>
-        <Typography>WR</Typography>
+        <Typography variant="h3">WR</Typography>
         <PositionContainer position="WR" players={positional.WR} />
       </Grid>
       <Grid item>
-        <Typography>QB</Typography>
-
+        <Typography variant="h3">QB</Typography>
         <PositionContainer position="QB" players={positional.QB} />
       </Grid>
       <Grid item>
-        <Typography>TE</Typography>
-
+        <Typography variant="h3">TE</Typography>
         <PositionContainer position="TE" players={positional.TE} />
       </Grid>
     </Grid>

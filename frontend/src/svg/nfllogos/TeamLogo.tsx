@@ -68,80 +68,85 @@ export type INFLTeam =
 
 interface IProps {
   team: INFLTeam;
+  className?: string;
 }
 
 const LOGO_SIZE = 30;
 
-const TeamLogo = ({ team }: IProps) => {
+const TeamLogo = ({ team, className }: IProps) => {
   const style = {
     height: `${LOGO_SIZE}px`,
     width: `${LOGO_SIZE}px`,
   };
+  const props = {
+    className,
+    style,
+  };
   switch (team) {
     case 'ARI':
-      return <ARI style={style} />;
+      return <ARI {...props} />;
     case 'ATL':
-      return <ATL style={style} />;
+      return <ATL {...props} />;
     case 'BAL':
-      return <BAL style={style} />;
+      return <BAL {...props} />;
     case 'BUF':
-      return <BUF style={style} />;
+      return <BUF {...props} />;
     case 'CAR':
-      return <CAR style={style} />;
+      return <CAR {...props} />;
     case 'CHI':
-      return <CHI style={style} />;
+      return <CHI {...props} />;
     case 'CIN':
-      return <CIN style={style} />;
+      return <CIN {...props} />;
     case 'CLE':
-      return <CLE style={style} />;
+      return <CLE {...props} />;
     case 'DAL':
-      return <DAL style={style} />;
+      return <DAL {...props} />;
     case 'DEN':
-      return <DEN style={style} />;
+      return <DEN {...props} />;
     case 'DET':
-      return <DET style={style} />;
+      return <DET {...props} />;
     case 'GB':
-      return <GB style={style} />;
+      return <GB {...props} />;
     case 'HOU':
-      return <HOU style={style} />;
+      return <HOU {...props} />;
     case 'IND':
-      return <IND style={style} />;
+      return <IND {...props} />;
     case 'JAC':
-      return <JAC style={style} />;
+      return <JAC {...props} />;
     case 'KC':
-      return <KC style={style} />;
+      return <KC {...props} />;
     case 'LAC':
-      return <LAC style={style} />;
+      return <LAC {...props} />;
     case 'LAR':
-      return <LAR style={style} />;
+      return <LAR {...props} />;
     case 'MIA':
-      return <MIA style={style} />;
+      return <MIA {...props} />;
     case 'MIN':
-      return <MIN style={style} />;
+      return <MIN {...props} />;
     case 'NE':
-      return <NE style={style} />;
+      return <NE {...props} />;
     case 'NO':
-      return <NO style={style} />;
+      return <NO {...props} />;
     case 'NYG':
-      return <NYG style={style} />;
+      return <NYG {...props} />;
     case 'NYJ':
-      return <NYJ style={style} />;
+      return <NYJ {...props} />;
     case 'OAK':
-      return <OAK style={style} />;
+      return <OAK {...props} />;
     case 'PHI':
-      return <PHI style={style} />;
+      return <PHI {...props} />;
     case 'PIT':
-      return <PIT style={style} />;
+      return <PIT {...props} />;
     case 'SEA':
-      return <SEA style={style} />;
+      return <SEA {...props} />;
     case 'SF':
-      return <SF style={style} />;
+      return <SF {...props} />;
     case 'TB':
-      return <TB style={style} />;
+      return <TB {...props} />;
     case 'TEN':
-      return <TEN style={style} />;
+      return <TEN {...props} />;
     case 'WAS':
-      return <WAS style={style} />;
+      return <WAS {...props} />;
     default:
       console.log(team);
       return <div>No team</div>;

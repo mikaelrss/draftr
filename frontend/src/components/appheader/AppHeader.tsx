@@ -16,7 +16,7 @@ const styles = (theme: Theme) => ({
   },
   appBar: {
     marginLeft: DRAWER_CLOSED_WIDTH,
-    width: `calc(100% - ${DRAWER_CLOSED_WIDTH}px)`,
+    width: `100%`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -33,7 +33,6 @@ const styles = (theme: Theme) => ({
 });
 
 interface IProps {
-  drawerOpen: boolean;
   classes: {
     grow: string;
     menuButton: string;
@@ -42,14 +41,9 @@ interface IProps {
   };
 }
 
-const AppHeader = ({ classes, drawerOpen }: IProps) => {
+const AppHeader = ({ classes }: IProps) => {
   return (
-    <AppBar
-      position="fixed"
-      className={classNames(classes.appBar, {
-        [classes.appBarShift]: drawerOpen,
-      })}
-    >
+    <AppBar position="fixed" className={classNames(classes.appBar)}>
       <Toolbar>
         <Typography variant="h6" color="inherit" className={classes.grow}>
           Draftr
