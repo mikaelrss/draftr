@@ -5,6 +5,7 @@ import Players from '../players/Players';
 import AppHeader from '../appheader/AppHeader';
 import AppDrawer from '../appdrawer/AppDrawer';
 import Container from '../shared/container/container';
+import Rankings from '../rankings/Rankings';
 
 const styles = () =>
   createStyles({
@@ -30,8 +31,8 @@ const Root = ({ classes }: IProps) => {
     <div className={classes.root}>
       <AppHeader drawerOpen={drawerOpen} />
       <AppDrawer open={drawerOpen} toggleOpen={toggleOpen} />
-      <Container drawerOpen={drawerOpen}>
-        <Players />
+      <Container>
+        <Rankings />
       </Container>
     </div>
   );

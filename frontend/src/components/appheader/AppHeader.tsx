@@ -4,6 +4,8 @@ import { AppBar, Button, Theme, Toolbar, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { DRAWER_WIDTH } from '../appdrawer/AppDrawer';
 
+const DRAWER_CLOSED_WIDTH = 70;
+
 const styles = (theme: Theme) => ({
   grow: {
     flexGrow: 1,
@@ -13,6 +15,8 @@ const styles = (theme: Theme) => ({
     marginRight: 20,
   },
   appBar: {
+    marginLeft: DRAWER_CLOSED_WIDTH,
+    width: `calc(100% - ${DRAWER_CLOSED_WIDTH}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,

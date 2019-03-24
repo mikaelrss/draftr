@@ -1,6 +1,6 @@
 type Query {
   players: [Player!]!
-    HotReload: String
+  fantasyFootballNerdRankings: [Player!]!
 }
 
 type Player {

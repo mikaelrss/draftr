@@ -7,17 +7,7 @@ import {
   List,
   Theme,
   ListItem,
-  ListItemIcon,
 } from '@material-ui/core';
-import {
-  ChevronLeft,
-  ChevronRight,
-  Dashboard,
-  ShoppingCart,
-  People,
-  BarChart,
-  Layers,
-} from '@material-ui/icons';
 import { withStyles, createStyles } from '@material-ui/core/styles';
 import ListItemText from '@material-ui/core/ListItemText';
 
@@ -68,42 +58,21 @@ const AppDrawer = ({ classes, open, toggleOpen }: IProps) => {
       }}
       open={open}
     >
-      <div>
-        <IconButton onClick={toggleOpen}>
-          {open ? <ChevronLeft /> : <ChevronRight />}
-        </IconButton>
-      </div>
-      <Divider />
       <List>
         <ListItem button>
-          <ListItemIcon>
-            <Dashboard />
-          </ListItemIcon>
-          <ListItemText primary="Dashboard" />
+          <ListItemText primary="RB" />
         </ListItem>
         <ListItem button>
-          <ListItemIcon>
-            <ShoppingCart />
-          </ListItemIcon>
-          <ListItemText primary="Orders" />
+          <ListItemText primary="WR" />
         </ListItem>
         <ListItem button>
-          <ListItemIcon>
-            <People />
-          </ListItemIcon>
-          <ListItemText primary="Customers" />
+          <ListItemText primary="QB" />
         </ListItem>
         <ListItem button>
-          <ListItemIcon>
-            <BarChart />
-          </ListItemIcon>
-          <ListItemText primary="Reports" />
+          <ListItemText primary="TE" />
         </ListItem>
         <ListItem button>
-          <ListItemIcon>
-            <Layers />
-          </ListItemIcon>
-          <ListItemText primary="Integrations" />
+          <ListItemText primary="K" />
         </ListItem>
       </List>
     </Drawer>

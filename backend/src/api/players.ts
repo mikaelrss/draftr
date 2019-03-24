@@ -36,3 +36,4 @@ export interface IPlayerDTO {
 
 export const getQBs = async (): Promise<IPlayer[]> =>
   (await axios.get(`${URL}/QB`)).data.Players;
+
