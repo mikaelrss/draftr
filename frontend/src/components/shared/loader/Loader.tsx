@@ -1,6 +1,5 @@
 import React from 'react';
-import { CircularProgress } from '@material-ui/core/';
 
-const Loader = () => <CircularProgress variant="indeterminate" />;
+const Loader = () => <div>Loading...</div>;
 
 export default Loader;

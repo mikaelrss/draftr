@@ -1,28 +1,21 @@
 import React, { ReactNode } from 'react';
-import classNames from 'classnames';
-import { Theme } from '@material-ui/core';
-import { createStyles, withStyles } from '@material-ui/core/styles';
+import { StyleSheet, css } from 'aphrodite';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing.unit * 3,
-      height: 'calc(100vh - 64px)',
-      overflow: 'auto',
-      marginTop: 64,
-    },
-  });
+const style = StyleSheet.create({
+  content: {
+    flexGrow: 1,
+    height: 'calc(100vh - 64px)',
+    overflow: 'auto',
+    marginTop: 64,
+  },
+});
 
 interface IProps {
   children: ReactNode;
-  classes: {
-    content: string;
-  };
 }
 
-const Container = ({ children, classes }: IProps) => {
-  return <main className={classNames(classes.content)}>{children}</main>;
+const Container = ({ children }: IProps) => {
+  return <main className={css(style.content)}>{children}</main>;
 };
 
-export default withStyles(styles)(Container);
+export default Container;
