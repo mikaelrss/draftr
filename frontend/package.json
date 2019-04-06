@@ -11,6 +11,8 @@
     "@types/node": "11.13.0",
     "@types/react": "16.8.12",
     "@types/react-dom": "16.8.3",
+    "@types/react-redux": "^7.0.6",
+    "aphrodite": "^2.3.1",
     "apollo-boost": "^0.3.1",
     "classnames": "^2.2.6",
     "graphql": "14.2.1",

@@ -65,6 +65,13 @@ interface IProps {
 
 const PositionContainer = ({ position, players }: IProps) => {
   return (
+    <>
+      {players.map(player => (
+        <div>{player.displayName}</div>
+      ))}
+    </>
+  );
+  return (
     <Paper>
       <Table>
         <TableHead>
