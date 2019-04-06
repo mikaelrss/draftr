@@ -1,1 +1,1 @@
-export const DEFAULT_PADDING = '24px';
+export const DEFAULT_PADDING = 24;

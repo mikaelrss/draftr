@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 
 import AppHeader from '../appheader/AppHeader';
-import Container from '../shared/container/container';
+import Container from '../shared/Container';
 import Rankings from '../rankings/Rankings';
 
 const style = StyleSheet.create({

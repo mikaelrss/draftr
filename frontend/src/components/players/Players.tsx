@@ -3,7 +3,7 @@ import { useQuery } from 'react-apollo-hooks';
 
 import { GET_PLAYERS } from './graphql';
 import PositionContainer from '../positioncontainer/PositionContainer';
-import Loader from '../shared/loader/Loader';
+import Loader from '../shared/Loader';
 
 const Players = () => {
   const { data, loading } = useQuery(GET_PLAYERS);
