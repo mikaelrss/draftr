@@ -1,10 +1,8 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet, css } from 'aphrodite';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
 const style = StyleSheet.create({
   content: {
-    flexGrow: 1,
-    overflow: 'auto',
     marginTop: 64,
   },
 });

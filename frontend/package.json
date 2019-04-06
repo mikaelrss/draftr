@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/classnames": "^2.2.7",
     "@types/jest": "24.0.11",
     "@types/lodash.groupby": "^4.6.6",
     "@types/node": "11.13.0",
@@ -11,6 +12,7 @@
     "@types/react-redux": "^7.0.6",
     "aphrodite": "^2.3.1",
     "apollo-boost": "^0.3.1",
+    "classnames": "^2.2.6",
     "graphql": "14.2.1",
     "graphql-tag": "^2.10.1",
     "lodash.groupby": "^4.6.0",

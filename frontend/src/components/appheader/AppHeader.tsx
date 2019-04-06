@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, css } from 'aphrodite';
+import { StyleSheet, css } from 'aphrodite/no-important';
 import { PRIMARY, PRIMARY_TEXT } from '../../styles/colors';
 import { DEFAULT_PADDING } from '../../styles/paddings';
 

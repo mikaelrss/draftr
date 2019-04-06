@@ -148,7 +148,7 @@ const TeamLogo = ({ team, className }: IProps) => {
     case 'WAS':
       return <WAS {...props} />;
     default:
-      console.log(team);
+      console.error('No logo found for team', team);
       return <div>No team</div>;
   }
 };

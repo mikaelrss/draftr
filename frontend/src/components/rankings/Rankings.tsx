@@ -1,10 +1,21 @@
 import React from 'react';
 import { useQuery } from 'react-apollo-hooks';
 import groupBy from 'lodash.groupby';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
 import { GET_FANTASY_FOOTBALL_RANKINGS, IPlayerRankingDTO } from './graphql';
 import Loader from '../shared/Loader';
 import PositionContainer from '../positioncontainer/PositionContainer';
+import { DEFAULT_PADDING } from '../../styles/paddings';
+
+const styles = StyleSheet.create({
+  box: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, 320px)',
+    gridGap: `${DEFAULT_PADDING}px`,
+    justifyContent: 'center',
+  },
+});
 
 interface IData {
   fantasyFootballNerdRankings: IPlayerRankingDTO[];
@@ -16,23 +27,11 @@ const Rankings = () => {
 
   const positional = groupBy(data.fantasyFootballNerdRankings, 'position');
   return (
-    <div>
-      <div>
-        RB
-        <PositionContainer position="RB" players={positional.RB} />
-      </div>
-      <div>
-        RB
-        <PositionContainer position="WR" players={positional.WR} />
-      </div>
-      <div>
-        RB
-        <PositionContainer position="QB" players={positional.QB} />
-      </div>
-      <div>
-        RB
-        <PositionContainer position="TE" players={positional.TE} />
-      </div>
+    <div className={css(styles.box)}>
+      <PositionContainer position="RB" players={positional.RB} />
+      <PositionContainer position="WR" players={positional.WR} />
+      <PositionContainer position="QB" players={positional.QB} />
+      <PositionContainer position="TE" players={positional.TE} />
     </div>
   );
 };
