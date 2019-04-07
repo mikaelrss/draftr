@@ -12,4 +12,8 @@ export const resolvers = {
     firstName: async ({ fname }: IPlayer) => fname,
     dateOfBirth: async ({ dob }: IPlayer) => dob,
   },
+  RankedPlayer: {
+    lastName: async ({ lname }: IPlayer) => lname,
+    firstName: async ({ fname }: IPlayer) => fname,
+  },
 };

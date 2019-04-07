@@ -56,3 +56,14 @@ export const IconButton = ({
     {getIcon(icon)}
   </button>
 );
+
+interface IDivProps {
+  onClick: () => any;
+  children: React.ReactNode;
+}
+
+export const ClickableSurface = ({ onClick, children }: IDivProps) => (
+  <div onClick={onClick} style={{ width: '100%', height: '100%' }}>
+    {children}
+  </div>
+);

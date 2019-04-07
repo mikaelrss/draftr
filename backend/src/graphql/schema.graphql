@@ -1,6 +1,20 @@
 type Query {
   players: [Player!]!
-  fantasyFootballNerdRankings: [Player!]!
+  fantasyFootballNerdRankings: [RankedPlayer!]!
+}
+
+type RankedPlayer {
+  playerId: String
+  position: String
+  displayName: String
+  firstName: String
+  lastName: String
+  team: String
+  byeWeek: Float
+  standDev: Float
+  nerdRank: Float
+  positionRank: Float
+  overallRank: Float
 }
 
 type Player {

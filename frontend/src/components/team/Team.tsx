@@ -8,6 +8,8 @@ import { IState } from '../../redux/store';
 import { IPlayerRankingDTO } from '../rankings/graphql';
 import PlayerInfo from '../players/PlayerInfo';
 import { getBackground } from '../rankings/Rankings';
+import { removePlayer } from './TeamActions';
+import { ClickableSurface } from '../shared/Button';
 
 const styles = StyleSheet.create({
   team: {
@@ -21,6 +23,9 @@ const styles = StyleSheet.create({
     padding: `${DEFAULT_PADDING / 4}px`,
     maxWidth: '250px',
     fontSize: '0.5em',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   container: {
     display: 'grid',
@@ -33,22 +38,37 @@ interface IStateProps {
   selectedPlayers: IPlayerRankingDTO[];
 }
 
-type IProps = IStateProps;
+interface IDispatchProps {
+  remove: (id: string) => void;
+}
 
-const Team = ({ selectedPlayers }: IProps) => (
+type IProps = IStateProps & IDispatchProps;
+
+const Team = ({ selectedPlayers, remove }: IProps) => (
   <Paper className={css(styles.team)} noShadow>
     <div className={css(styles.container)}>
       {selectedPlayers.map(player => (
-        <Paper className={css(getBackground(player.position), styles.paper)}>
-          <PlayerInfo player={player} key={player.playerId} />
-        </Paper>
+        <ClickableSurface
+          onClick={() => remove(player.playerId)}
+          key={player.playerId}
+        >
+          <Paper className={css(getBackground(player.position), styles.paper)}>
+            <PlayerInfo player={player} />
+            <div>{player.overallRank}</div>
+          </Paper>
+        </ClickableSurface>
       ))}
     </div>
   </Paper>
 );
 
-const withRedux = connect((state: IState) => ({
-  selectedPlayers: state.team.selected,
-}));
+const withRedux = connect(
+  (state: IState) => ({
+    selectedPlayers: state.team.selected,
+  }),
+  {
+    remove: removePlayer,
+  },
+);
 
 export default withRedux(Team);

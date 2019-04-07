@@ -44,21 +44,14 @@ interface IDispatchProps {
 
 type IPlayerProps = {
   player: IPlayerRankingDTO;
-  positionRank: number;
   disabled?: boolean;
 } & IDispatchProps;
 
-const Player = ({
-  player,
-  positionRank,
-  select,
-  take,
-  disabled,
-}: IPlayerProps) => {
+const Player = ({ player, select, take, disabled }: IPlayerProps) => {
   return (
     <div className={css(styles.player, disabled && styles.disabled)}>
       <PlayerName player={player} />
-      <div>{positionRank}</div>
+      <div>{player.positionRank}</div>
       <div>
         <IconButton
           icon="done"

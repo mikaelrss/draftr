@@ -22,16 +22,14 @@ const PositionContainer = ({
   passed,
   className,
 }: IProps) => {
-  console.log('passed', passed);
   const isDisabled = (id: string) => passed.includes(id);
   return (
     <div>
       {position}
       <Paper className={className}>
-        {players.map((player, index) => (
+        {players.map(player => (
           <Player
             player={player}
-            positionRank={index + 1}
             key={player.playerId}
             disabled={isDisabled(player.playerId)}
           />

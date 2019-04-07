@@ -8,6 +8,8 @@ export interface IPlayerRankingDTO {
   displayName: string;
   position: IPosition;
   team: INFLTeam;
+  overallRank: number;
+  positionRank: number;
 }
 
 export const GET_FANTASY_FOOTBALL_RANKINGS = gql`
@@ -17,6 +19,8 @@ export const GET_FANTASY_FOOTBALL_RANKINGS = gql`
       position
       playerId
       team
+      overallRank
+      positionRank
     }
   }
 `;
