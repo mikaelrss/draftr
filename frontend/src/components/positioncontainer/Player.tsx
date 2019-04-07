@@ -1,13 +1,14 @@
 import React from 'react';
-import { StyleSheet, css } from 'aphrodite';
+import { css, StyleSheet } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
+import { useSpring, animated } from 'react-spring';
 
-import TeamLogo from '../../svg/nfllogos/TeamLogo';
 import { IconButton } from '../shared/Button';
 import { playerTaken, selectPlayer } from '../team/TeamActions';
 import { IPlayerRankingDTO } from '../rankings/graphql';
 import { SECONDARY } from '../../styles/colors';
 import { DEFAULT_PADDING } from '../../styles/paddings';
+import PlayerName from './PlayerName';
 
 const styles = StyleSheet.create({
   disabled: {
@@ -20,14 +21,6 @@ const styles = StyleSheet.create({
     gridTemplateColumns: 'auto 30px 70px',
     height: '50px',
     alignItems: 'center',
-  },
-  name: {
-    display: 'flex',
-    alignItems: 'center',
-    fontWeight: 'bold',
-  },
-  logo: {
-    marginRight: '12px',
   },
   clear: {
     marginLeft: '6px',
@@ -54,13 +47,6 @@ type IPlayerProps = {
   positionRank: number;
   disabled?: boolean;
 } & IDispatchProps;
-
-export const PlayerName = ({ player }: { player: IPlayerRankingDTO }) => (
-  <div className={css(styles.name)}>
-    <TeamLogo team={player.team} className={css(styles.logo)} />
-    {player.displayName}
-  </div>
-);
 
 const Player = ({
   player,
@@ -94,7 +80,6 @@ const Player = ({
 const withRedux = connect<{}, IDispatchProps>(
   null,
   {
-    // @ts-ignore
     select: selectPlayer,
     take: playerTaken,
   },

@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { IState } from '../../redux/store';
 
 const getTeam = (state: any) => state.team;
 

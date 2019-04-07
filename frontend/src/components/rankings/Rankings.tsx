@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from 'react-apollo-hooks';
 import groupBy from 'lodash.groupby';
-import { StyleSheet, css } from 'aphrodite/no-important';
+import { StyleSheet, css } from 'aphrodite';
 
 import {
   GET_FANTASY_FOOTBALL_RANKINGS,
@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
     gridGap: `${DEFAULT_PADDING}px`,
     justifyContent: 'center',
   },
-  rb: { backgroundColor: `${RB_COLOR}44`, paddingTop: 0 },
-  wr: { backgroundColor: `${WR_COLOR}44`, paddingTop: 0 },
-  te: { backgroundColor: `${TE_COLOR}44`, paddingTop: 0 },
-  qb: { backgroundColor: `${QB_COLOR}44`, paddingTop: 0 },
+  rb: { backgroundColor: `${RB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
+  wr: { backgroundColor: `${WR_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
+  te: { backgroundColor: `${TE_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
+  qb: { backgroundColor: `${QB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
 });
 
 export const getBackground = (position: IPosition) => {

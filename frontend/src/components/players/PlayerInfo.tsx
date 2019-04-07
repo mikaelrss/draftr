@@ -5,7 +5,7 @@ import { GET_PLAYERS } from './graphql';
 import PositionContainer from '../positioncontainer/PositionContainer';
 import Loader from '../shared/Loader';
 import { IPlayerRankingDTO } from '../rankings/graphql';
-import { PlayerName } from '../positioncontainer/Player';
+import PlayerName from '../positioncontainer/PlayerName';
 
 interface IProps {
   player: IPlayerRankingDTO;
