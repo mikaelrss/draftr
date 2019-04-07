@@ -1,7 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ApolloProvider } from 'react-apollo-hooks';
-import 'typeface-roboto';
 
 import './app.scss';
 import { client } from '../../apollo/client';

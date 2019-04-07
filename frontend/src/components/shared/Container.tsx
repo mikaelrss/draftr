@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
 import { StyleSheet, css } from 'aphrodite/no-important';
+import { DEFAULT_PADDING } from '../../styles/paddings';
 
 const style = StyleSheet.create({
   content: {
-    marginTop: 64,
+    marginTop: `${DEFAULT_PADDING}px`,
   },
 });
 

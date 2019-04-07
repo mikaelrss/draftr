@@ -25,7 +25,10 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
-    "redux-starter-kit": "^0.4.3"
+    "redux-devtools-extension": "^2.13.8",
+    "redux-starter-kit": "^0.4.3",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

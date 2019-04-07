@@ -1,15 +1,23 @@
-import { configureStore } from 'redux-starter-kit';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
 
-const initialState = { test: 'val' };
-const testReducer = (state = initialState, action: any) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
-};
+import team, { ITeamState } from './team';
 
-const store = configureStore({
-  reducer: testReducer,
+export interface IState {
+  team: ITeamState;
+}
+
+const rootReducer = combineReducers<IState>({
+  team,
 });
+
+const store = createStore(
+  rootReducer,
+  compose(
+    applyMiddleware(thunk),
+    composeWithDevTools(),
+  ),
+);
 
 export default store;

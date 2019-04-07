@@ -39,11 +39,18 @@ interface IconProps {
   icon: Icon;
   onClick: () => void;
   className?: string;
+  disabled?: boolean;
 }
 
-export const IconButton = ({ icon, onClick, className }: IconProps) => (
+export const IconButton = ({
+  icon,
+  onClick,
+  className,
+  disabled,
+}: IconProps) => (
   <button
     onClick={onClick}
+    disabled={disabled}
     className={classNames(css(styles.iconButton), className)}
   >
     {getIcon(icon)}
