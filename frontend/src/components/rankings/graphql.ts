@@ -1,10 +1,12 @@
 import gql from 'graphql-tag';
 import { INFLTeam } from '../../svg/nfllogos/TeamLogo';
 
+export type IPosition = 'RB' | 'WR' | 'QB' | 'TE';
+
 export interface IPlayerRankingDTO {
   playerId: string;
   displayName: string;
-  position: string;
+  position: IPosition;
   team: INFLTeam;
 }
 

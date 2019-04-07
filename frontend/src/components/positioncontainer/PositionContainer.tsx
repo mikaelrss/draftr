@@ -13,15 +13,21 @@ interface IStateProps {
 type IProps = {
   position: string;
   players: IPlayerRankingDTO[];
+  className?: string;
 } & IStateProps;
 
-const PositionContainer = ({ position, players, passed }: IProps) => {
+const PositionContainer = ({
+  position,
+  players,
+  passed,
+  className,
+}: IProps) => {
   console.log('passed', passed);
   const isDisabled = (id: string) => passed.includes(id);
   return (
     <div>
       {position}
-      <Paper>
+      <Paper className={className}>
         {players.map((player, index) => (
           <Player
             player={player}

@@ -5,6 +5,7 @@ import { GET_PLAYERS } from './graphql';
 import PositionContainer from '../positioncontainer/PositionContainer';
 import Loader from '../shared/Loader';
 import { IPlayerRankingDTO } from '../rankings/graphql';
+import { PlayerName } from '../positioncontainer/Player';
 
 interface IProps {
   player: IPlayerRankingDTO;
@@ -16,8 +17,7 @@ const PlayerInfo = ({ player }: IProps) => {
 
   return (
     <div>
-      <h4>{player.displayName}</h4>
-      {/*<PositionContainer position="QB" players={data.players} />*/}
+      <PlayerName player={player} />
     </div>
   );
 };

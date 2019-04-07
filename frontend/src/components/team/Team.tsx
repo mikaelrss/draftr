@@ -6,12 +6,19 @@ import Paper from '../shared/Paper';
 import { DEFAULT_PADDING } from '../../styles/paddings';
 import { IState } from '../../redux/store';
 import { IPlayerRankingDTO } from '../rankings/graphql';
+import Player from '../positioncontainer/Player';
 import PlayerInfo from '../players/PlayerInfo';
+import { getBackground } from '../rankings/Rankings';
 
 const styles = StyleSheet.create({
   team: {
     height: '300px',
     margin: `0 60px ${DEFAULT_PADDING}px 60px`,
+  },
+  paper: {
+    padding: `${DEFAULT_PADDING / 4}px`,
+    maxWidth: '250px',
+    fontSize: '0.5em',
   },
 });
 
@@ -26,7 +33,9 @@ const Team = ({ selectedPlayers }: IProps) => (
     <div>Team</div>
     <div>
       {selectedPlayers.map(player => (
-        <PlayerInfo player={player} key={player.playerId} />
+        <Paper className={css(getBackground(player.position), styles.paper)}>
+          <PlayerInfo player={player} key={player.playerId} />
+        </Paper>
       ))}
     </div>
   </Paper>

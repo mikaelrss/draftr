@@ -7,13 +7,15 @@ import { IconButton } from '../shared/Button';
 import { playerTaken, selectPlayer } from '../team/TeamActions';
 import { IPlayerRankingDTO } from '../rankings/graphql';
 import { SECONDARY } from '../../styles/colors';
+import { DEFAULT_PADDING } from '../../styles/paddings';
 
 const styles = StyleSheet.create({
   disabled: {
     opacity: 0.35,
   },
   player: {
-    fontSize: '0.70em',
+    position: 'relative',
+    fontSize: '0.5em',
     display: 'grid',
     gridTemplateColumns: 'auto 30px 70px',
     height: '50px',
@@ -22,6 +24,7 @@ const styles = StyleSheet.create({
   name: {
     display: 'flex',
     alignItems: 'center',
+    fontWeight: 'bold',
   },
   logo: {
     marginRight: '12px',
@@ -29,6 +32,15 @@ const styles = StyleSheet.create({
   clear: {
     marginLeft: '6px',
     backgroundColor: `${SECONDARY} !important`,
+  },
+  shade: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    opacity: 0.6,
+    width: `calc(100% + ${DEFAULT_PADDING}px)`,
+    top: 0,
+    height: '50px',
+    left: `-${DEFAULT_PADDING / 2}px`,
   },
 });
 
@@ -43,7 +55,14 @@ type IPlayerProps = {
   disabled?: boolean;
 } & IDispatchProps;
 
-export const Player = ({
+export const PlayerName = ({ player }: { player: IPlayerRankingDTO }) => (
+  <div className={css(styles.name)}>
+    <TeamLogo team={player.team} className={css(styles.logo)} />
+    {player.displayName}
+  </div>
+);
+
+const Player = ({
   player,
   positionRank,
   select,
@@ -52,10 +71,7 @@ export const Player = ({
 }: IPlayerProps) => {
   return (
     <div className={css(styles.player, disabled && styles.disabled)}>
-      <div className={css(styles.name)}>
-        <TeamLogo team={player.team} className={css(styles.logo)} />
-        {player.displayName}
-      </div>
+      <PlayerName player={player} />
       <div>{positionRank}</div>
       <div>
         <IconButton
@@ -70,6 +86,7 @@ export const Player = ({
           disabled={disabled}
         />
       </div>
+      {disabled && <div className={css(styles.shade)} />}
     </div>
   );
 };
