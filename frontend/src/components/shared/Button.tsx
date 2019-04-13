@@ -68,10 +68,18 @@ export const IconButton = ({
 interface IDivProps {
   onClick: () => any;
   children: React.ReactNode;
+  className?: string;
 }
 
-export const ClickableSurface = ({ onClick, children }: IDivProps) => (
-  <div onClick={onClick} className={css(styles.clickSurface)}>
+export const ClickableSurface = ({
+  onClick,
+  children,
+  className,
+}: IDivProps) => (
+  <div
+    onClick={onClick}
+    className={classNames(css(styles.clickSurface), className)}
+  >
     {children}
   </div>
 );

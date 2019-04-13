@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import { StyleSheet, css } from 'aphrodite';
 
@@ -8,8 +8,8 @@ import { ClickableSurface } from '../shared/Button';
 import { PRIMARY, PRIMARY_TEXT, SECONDARY } from '../../styles/colors';
 import { DEFAULT_PADDING } from '../../styles/paddings';
 import { ADD_TIER_MUTATION } from './graphql';
-import { addTier, addTier_createTier } from './__generated__/addTier';
 import { GET_FANTASY_FOOTBALL_RANKINGS } from '../rankings/graphql';
+import Spinner from '../shared/Spinner';
 
 const styles = StyleSheet.create({
   paper: {
@@ -20,6 +20,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     border: `3px dotted ${SECONDARY}`,
+  },
+  container: {
     transition: 'opacity 150ms ease-in-out',
     opacity: 0.3,
     ':hover': {
@@ -45,6 +47,7 @@ const styles = StyleSheet.create({
 });
 
 const AddTier = () => {
+  const [loading, setLoading] = useState(false);
   const createTier = useMutation(ADD_TIER_MUTATION, {
     update: (proxy, mutationResult) => {
       const data = proxy.readQuery({ query: GET_FANTASY_FOOTBALL_RANKINGS });
@@ -57,11 +60,24 @@ const AddTier = () => {
     },
   });
   return (
-    <ClickableSurface onClick={createTier}>
+    <ClickableSurface
+      className={css(styles.container)}
+      onClick={() => {
+        setLoading(true);
+        createTier()
+          .then(() => setLoading(false))
+          .catch(() => setLoading(false));
+      }}
+    >
       New Tier
       <Paper className={css(styles.paper)}>
-        <div>Add a tier</div>
-        <Add className={css(styles.icon)} />
+        {loading && <Spinner />}
+        {!loading && (
+          <>
+            <div>Add a tier</div>
+            <Add className={css(styles.icon)} />
+          </>
+        )}
       </Paper>
     </ClickableSurface>
   );

@@ -3,13 +3,13 @@ import { useQuery } from 'react-apollo-hooks';
 import { StyleSheet, css } from 'aphrodite';
 
 import { GET_FANTASY_FOOTBALL_RANKINGS } from './graphql';
-import Loader from '../shared/Loader';
 import TierContainer from '../tiercontainer/TierContainer';
 import { DEFAULT_PADDING } from '../../styles/paddings';
 import { QB_COLOR, RB_COLOR, TE_COLOR, WR_COLOR } from '../../styles/colors';
 import { rankings } from './__generated__/rankings';
 import { PlayerPosition } from '../../types/graphqltypes';
 import AddTier from '../addtier/AddTier';
+import Spinner from '../shared/Spinner';
 
 const styles = StyleSheet.create({
   box: {
@@ -22,6 +22,11 @@ const styles = StyleSheet.create({
   wr: { backgroundColor: `${WR_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
   te: { backgroundColor: `${TE_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
   qb: { backgroundColor: `${QB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
+  centered: {
+    width: '60px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
 });
 
 export const getBackground = (position: PlayerPosition) => {
@@ -40,7 +45,12 @@ export const getBackground = (position: PlayerPosition) => {
 
 const Rankings = () => {
   const { data, loading } = useQuery<rankings>(GET_FANTASY_FOOTBALL_RANKINGS);
-  if (loading || !data) return <Loader />;
+  if (loading || !data)
+    return (
+      <div className={css(styles.centered)}>
+        <Spinner />
+      </div>
+    );
 
   return (
     <div className={css(styles.box)}>

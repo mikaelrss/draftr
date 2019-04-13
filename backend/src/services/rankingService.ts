@@ -32,7 +32,6 @@ export const createDefaultRankings = async () => {
 
 export const createNewTier = async (userId: string) => {
   const rankings = await getPersonalRankings(userId);
-  console.log(rankings);
   const newRankings = new PlayerRankings({
     ...rankings,
     tiers: [
@@ -44,8 +43,6 @@ export const createNewTier = async (userId: string) => {
       },
     ],
   });
-
-  console.log('NEW', newRankings, rankings._id);
 
   await PlayerRankings.updateOne({ _id: rankings._id }, newRankings);
 };
