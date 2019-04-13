@@ -64,43 +64,41 @@ const TierContainer = ({
 
   return (
     <div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={`droppable-${tierId}`}>
-          {provided => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
-              Tier {tierId}
-              <Paper
-                className={classNames(css(styles.paper), className)}
-                noPadding
-              >
-                {players.map((player, index) => (
-                  <Draggable
-                    draggableId={player.playerId}
-                    index={index}
-                    key={player.playerId}
-                  >
-                    {(draggableProvided, { isDragging }) => (
-                      <div
-                        ref={draggableProvided.innerRef}
-                        {...draggableProvided.draggableProps}
-                        {...draggableProvided.dragHandleProps}
-                      >
-                        <Player
-                          player={player}
-                          key={player.playerId}
-                          disabled={isDisabled(player.playerId)}
-                          className={css(isDragging && styles.playerDragging)}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-              </Paper>
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <Droppable droppableId={`tier#${tierId}`}>
+        {provided => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            Tier {tierId}
+            <Paper
+              className={classNames(css(styles.paper), className)}
+              noPadding
+            >
+              {players.map((player, index) => (
+                <Draggable
+                  draggableId={player.playerId}
+                  index={index}
+                  key={player.playerId}
+                >
+                  {(draggableProvided, { isDragging }) => (
+                    <div
+                      ref={draggableProvided.innerRef}
+                      {...draggableProvided.draggableProps}
+                      {...draggableProvided.dragHandleProps}
+                    >
+                      <Player
+                        player={player}
+                        key={player.playerId}
+                        disabled={isDisabled(player.playerId)}
+                        className={css(isDragging && styles.playerDragging)}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+            </Paper>
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 };

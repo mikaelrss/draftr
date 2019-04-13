@@ -11,6 +11,12 @@ type Mutation {
     positionRank: Float!
     fromPositionRank: Float!
   ): [RankedPlayer!]!
+  changeRank(
+    playerId: String!
+    originTier: Int!
+    destinationTier: Int!
+    destinationRank: Int!
+  ): [Tier!]!
   createTier: [Tier!]!
 }
 

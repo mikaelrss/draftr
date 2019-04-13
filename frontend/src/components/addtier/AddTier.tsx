@@ -71,7 +71,7 @@ const AddTier = () => {
     >
       New Tier
       <Paper className={css(styles.paper)}>
-        {loading && <Spinner />}
+        <Spinner loading={loading} />
         {!loading && (
           <>
             <div>Add a tier</div>

@@ -1,8 +1,9 @@
 import React from 'react';
-import { useQuery } from 'react-apollo-hooks';
+import { useQuery, useMutation } from 'react-apollo-hooks';
 import { StyleSheet, css } from 'aphrodite';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
-import { GET_FANTASY_FOOTBALL_RANKINGS } from './graphql';
+import { CHANGE_RANK, GET_FANTASY_FOOTBALL_RANKINGS } from './graphql';
 import TierContainer from '../tiercontainer/TierContainer';
 import { DEFAULT_PADDING } from '../../styles/paddings';
 import { QB_COLOR, RB_COLOR, TE_COLOR, WR_COLOR } from '../../styles/colors';
@@ -10,6 +11,7 @@ import { rankings } from './__generated__/rankings';
 import { PlayerPosition } from '../../types/graphqltypes';
 import AddTier from '../addtier/AddTier';
 import Spinner from '../shared/Spinner';
+import { changeRank, changeRankVariables } from './__generated__/changeRank';
 
 const styles = StyleSheet.create({
   box: {
@@ -45,6 +47,9 @@ export const getBackground = (position: PlayerPosition) => {
 
 const Rankings = () => {
   const { data, loading } = useQuery<rankings>(GET_FANTASY_FOOTBALL_RANKINGS);
+  const changeRankMutation = useMutation<changeRank, changeRankVariables>(
+    CHANGE_RANK,
+  );
   if (loading || !data)
     return (
       <div className={css(styles.centered)}>
@@ -52,19 +57,40 @@ const Rankings = () => {
       </div>
     );
 
+  const onDragEnd = (result: DropResult) => {
+    console.log('END', result);
+    if (!result.destination) {
+      console.log('NO destination');
+      return;
+    }
+    changeRankMutation({
+      variables: {
+        playerId: result.draggableId,
+        origTier: +result.source.droppableId.replace('tier#', ''),
+        destTier: +result.destination.droppableId.replace('tier#', ''),
+        destRank: +result.destination.index + 1,
+      },
+    })
+      .then(() => {
+        console.log('SUCC');
+      })
+      .catch(() => {
+        console.log('ERR');
+      });
+  };
+
   return (
     <div className={css(styles.box)}>
-      {data.personalRankings.map(tier => (
-        <TierContainer
-          tierId={tier.tierId}
-          players={tier.players}
-          key={`TIER_${tier.tierId}`}
-        />
-      ))}
+      <DragDropContext onDragEnd={onDragEnd}>
+        {data.personalRankings.map(tier => (
+          <TierContainer
+            tierId={tier.tierId}
+            players={tier.players}
+            key={`TIER_${tier.tierId}`}
+          />
+        ))}
+      </DragDropContext>
       <AddTier />
-      {/*<PositionContainer position="RB" players={positional.RB} className={css(getBackground('RB'))}/>*/}
-      {/*<PositionContainer position="WR" players={positional.WR} className={css(getBackground('WR'))}/>*/}
-      {/*<PositionContainer position="QB" players={positional.QB} className={css(getBackground('QB'))}/>*/}
     </div>
   );
 };

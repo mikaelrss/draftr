@@ -1,13 +1,14 @@
 import { getQBs, IPlayer, IRankedPlayer } from '../api/players';
 import { getFantasyFootballNerdRankings } from '../api/rankings';
 import {
+  changePlayerRank,
   createDefaultRankings,
   createNewTier,
   getDefaultRankings,
   getPersonalRankings,
 } from '../services/rankingService';
 import { getAllPlayers } from '../services/playerService';
-import { ISetPlayerPositionArgs, ITier } from './types';
+import { IChangeRankArgs, ISetPlayerPositionArgs, ITier } from './types';
 
 const moveDownList = (
   players: IRankedPlayer[],
@@ -54,6 +55,15 @@ export const resolvers = {
       if (movePlayerDown)
         return moveDownList(rankings, playerIndex, args.positionRank);
       return rankings;
+    },
+    changeRank: async (root: any, args: IChangeRankArgs) => {
+      return await changePlayerRank(
+        args.playerId,
+        args.originTier,
+        args.destinationTier,
+        args.destinationRank,
+        'mikaelrss',
+      );
     },
     createTier: async () => {
       await createNewTier(CURRENT_USER);

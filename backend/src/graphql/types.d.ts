@@ -5,8 +5,9 @@ export interface ISetPlayerPositionArgs {
 }
 
 interface IRank {
-  overallRanking: number;
-  positionRanking: number;
+  playerId: string;
+  overallRank: number;
+  positionRank: number;
 }
 
 export interface IRankMap {
@@ -17,4 +18,11 @@ export interface ITier {
   uuid: string;
   tierId: number;
   rankMap: IRankMap;
+}
+
+export interface IChangeRankArgs {
+  playerId: string;
+  originTier: number;
+  destinationTier: number;
+  destinationRank: number;
 }

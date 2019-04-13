@@ -3,15 +3,22 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: addTier
+// GraphQL mutation operation: changeRank
 // ====================================================
 
-export interface addTier_createTier {
+export interface changeRank_changeRank {
   __typename: "Tier";
   uuid: string;
   tierId: number;
 }
 
-export interface addTier {
-  createTier: addTier_createTier[];
+export interface changeRank {
+  changeRank: changeRank_changeRank[];
+}
+
+export interface changeRankVariables {
+  playerId: string;
+  destTier: number;
+  destRank: number;
+  origTier: number;
 }

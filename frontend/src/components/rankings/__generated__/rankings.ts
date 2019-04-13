@@ -20,6 +20,7 @@ export interface rankings_personalRankings_players {
 
 export interface rankings_personalRankings {
   __typename: "Tier";
+  uuid: string;
   tierId: number;
   players: rankings_personalRankings_players[];
 }

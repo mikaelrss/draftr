@@ -16,3 +16,30 @@ export const GET_FANTASY_FOOTBALL_RANKINGS = gql`
     }
   }
 `;
+
+export const CHANGE_RANK = gql`
+  mutation changeRank(
+    $playerId: String!
+    $destTier: Int!
+    $destRank: Int!
+    $origTier: Int!
+  ) {
+    changeRank(
+      playerId: $playerId
+      destinationRank: $destRank
+      destinationTier: $destTier
+      originTier: $origTier
+    ) {
+      uuid
+      tierId
+      players {
+        playerId
+        displayName
+        position
+        overallRank
+        positionRank
+        team
+      }
+    }
+  }
+`;
