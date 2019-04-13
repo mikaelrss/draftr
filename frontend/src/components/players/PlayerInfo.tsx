@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PlayerName from '../positioncontainer/PlayerName';
+import PlayerName from '../tiercontainer/PlayerName';
 import { rankings_personalRankings_players } from '../rankings/__generated__/rankings';
 
 interface IProps {

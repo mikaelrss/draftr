@@ -2,6 +2,7 @@ import { getQBs, IPlayer, IRankedPlayer } from '../api/players';
 import { getFantasyFootballNerdRankings } from '../api/rankings';
 import {
   createDefaultRankings,
+  createNewTier,
   getDefaultRankings,
   getPersonalRankings,
 } from '../services/rankingService';
@@ -31,6 +32,7 @@ const moveDownList = (
   ];
 };
 
+const CURRENT_USER = 'mikaelrss';
 export const resolvers = {
   Query: {
     players: async () => await getQBs(),
@@ -40,7 +42,8 @@ export const resolvers = {
       await createDefaultRankings();
       return 'Created default rankings';
     },
-    personalRankings: async () => await getPersonalRankings(),
+    personalRankings: async () =>
+      (await getPersonalRankings(CURRENT_USER)).tiers,
   },
   Mutation: {
     setPlayerPositionRank: async (root: any, args: ISetPlayerPositionArgs) => {
@@ -52,10 +55,15 @@ export const resolvers = {
         return moveDownList(rankings, playerIndex, args.positionRank);
       return rankings;
     },
+    createTier: async () => {
+      await createNewTier(CURRENT_USER);
+      return (await getPersonalRankings(CURRENT_USER)).tiers;
+    },
   },
   Tier: {
     players: async (tier: ITier) => {
       const all = await getAllPlayers();
+      if (!tier.rankMap) return [];
       const tierPlayerIds = Object.keys(tier.rankMap);
       return all
         .filter(player => tierPlayerIds.includes(player.playerId))

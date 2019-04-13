@@ -1,13 +1,22 @@
+import uuid from 'uuid/v4';
+
 import { getFantasyFootballNerdRankings } from '../api/rankings';
 import { PlayerRankings } from '../data/mongoconnector';
+import { ITier } from '../graphql/types';
 
 const DEFAULT_RANKINGS = 'defaultRankings';
 
+interface IRankings {
+  _id?: string;
+  userId: string;
+  tiers: ITier[];
+}
+
 export const createDefaultRankings = async () => {
   const rankMap: any = {};
-  const testObject = {
+  const testObject: IRankings = {
     userId: DEFAULT_RANKINGS,
-    tiers: [{ tierId: 1, rankMap }],
+    tiers: [{ tierId: 1, rankMap, uuid: uuid() }],
   };
   const fantasyRankings = await getFantasyFootballNerdRankings();
   fantasyRankings.forEach((player: any) => {
@@ -21,9 +30,32 @@ export const createDefaultRankings = async () => {
   test.save();
 };
 
-export const getPersonalRankings = async () => {
-  const ranks = (await getDefaultRankings()).toObject();
-  return ranks.tiers;
+export const createNewTier = async (userId: string) => {
+  const rankings = await getPersonalRankings(userId);
+  console.log(rankings);
+  const newRankings = new PlayerRankings({
+    ...rankings,
+    tiers: [
+      ...rankings.tiers,
+      {
+        uuid: uuid(),
+        tierId: rankings.tiers.length + 1,
+        rankMap: {},
+      },
+    ],
+  });
+
+  console.log('NEW', newRankings, rankings._id);
+
+  await PlayerRankings.updateOne({ _id: rankings._id }, newRankings);
+};
+
+export const getPersonalRankings = async (
+  userId: string,
+): Promise<IRankings> => {
+  return (await PlayerRankings.findOne({
+    userId,
+  })).toObject();
 };
 
 export const getDefaultRankings = async () =>

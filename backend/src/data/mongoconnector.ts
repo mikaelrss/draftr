@@ -20,6 +20,7 @@ const PlayerRankingsSchema = new Schema(
     userId: Schema.Types.String,
     tiers: [
       new Schema({
+        uuid: Schema.Types.String,
         tierId: Schema.Types.Number,
         rankMap: Schema.Types.Mixed,
       }),

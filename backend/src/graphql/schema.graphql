@@ -11,6 +11,7 @@ type Mutation {
     positionRank: Float!
     fromPositionRank: Float!
   ): [RankedPlayer!]!
+  createTier: [Tier!]!
 }
 
 enum PlayerPosition {
@@ -58,6 +59,7 @@ enum NFLTeam {
 }
 
 type Tier {
+  uuid: String!
   tierId: Int!
   players: [RankedPlayer!]!
 }

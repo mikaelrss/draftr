@@ -4,7 +4,7 @@ import { StyleSheet, css } from 'aphrodite';
 
 import { GET_FANTASY_FOOTBALL_RANKINGS } from './graphql';
 import Loader from '../shared/Loader';
-import TierContainer from '../positioncontainer/PositionContainer';
+import TierContainer from '../tiercontainer/TierContainer';
 import { DEFAULT_PADDING } from '../../styles/paddings';
 import { QB_COLOR, RB_COLOR, TE_COLOR, WR_COLOR } from '../../styles/colors';
 import { rankings } from './__generated__/rankings';

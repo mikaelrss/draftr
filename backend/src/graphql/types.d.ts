@@ -14,6 +14,7 @@ export interface IRankMap {
 }
 
 export interface ITier {
+  uuid: string;
   tierId: number;
   rankMap: IRankMap;
 }

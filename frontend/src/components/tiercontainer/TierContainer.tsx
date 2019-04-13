@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { ChildMutateProps, graphql } from 'react-apollo';
+import classNames from 'classnames';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import Paper from '../shared/Paper';
@@ -18,6 +19,9 @@ import { rankings_personalRankings_players } from '../rankings/__generated__/ran
 const styles = StyleSheet.create({
   playerDragging: {
     backgroundColor: 'lightgreen',
+  },
+  paper: {
+    minHeight: '300px',
   },
 });
 
@@ -39,7 +43,7 @@ type ChildProps = ChildMutateProps<
 
 type Props = IOwnProps & IStateProps & ChildProps;
 
-const PositionContainer = ({
+const TierContainer = ({
   tierId,
   players,
   passed,
@@ -65,7 +69,10 @@ const PositionContainer = ({
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               Tier {tierId}
-              <Paper className={className} noPadding>
+              <Paper
+                className={classNames(css(styles.paper), className)}
+                noPadding
+              >
                 {players.map((player, index) => (
                   <Draggable
                     draggableId={player.playerId}
@@ -110,4 +117,4 @@ const withApollo = graphql<
 export default compose<React.ComponentType<IOwnProps>>(
   withRedux,
   withApollo,
-)(PositionContainer);
+)(TierContainer);
