@@ -4,6 +4,20 @@ import { API_KEY, BASE_URL, FORMAT } from '../config';
 
 const URL = `${BASE_URL}/players/${FORMAT}/${API_KEY}`;
 
+export interface IRankedPlayer {
+  playerId: string;
+  position: string;
+  displayName: string;
+  fname: string;
+  lname: string;
+  team: string;
+  byeWeek: number;
+  standDev: number;
+  nerdRank: number;
+  positionRank: number;
+  overallRank: number;
+}
+
 export interface IPlayer {
   playerId: string;
   active: boolean;
@@ -36,4 +50,3 @@ export interface IPlayerDTO {
 
 export const getQBs = async (): Promise<IPlayer[]> =>
   (await axios.get(`${URL}/QB`)).data.Players;
-

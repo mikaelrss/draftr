@@ -1,7 +1,7 @@
 import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
-import { useSpring, animated } from 'react-spring';
+import classNames from 'classnames';
 
 import { IconButton } from '../shared/Button';
 import { playerTaken, selectPlayer } from '../team/TeamActions';
@@ -45,11 +45,23 @@ interface IDispatchProps {
 type IPlayerProps = {
   player: IPlayerRankingDTO;
   disabled?: boolean;
+  className?: string;
 } & IDispatchProps;
 
-const Player = ({ player, select, take, disabled }: IPlayerProps) => {
+const Player = ({
+  player,
+  select,
+  take,
+  disabled,
+  className,
+}: IPlayerProps) => {
   return (
-    <div className={css(styles.player, disabled && styles.disabled)}>
+    <div
+      className={classNames(
+        css(styles.player, disabled && styles.disabled),
+        className,
+      )}
+    >
       <PlayerName player={player} />
       <div>{player.positionRank}</div>
       <div>

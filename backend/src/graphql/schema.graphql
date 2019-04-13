@@ -3,6 +3,14 @@ type Query {
   fantasyFootballNerdRankings: [RankedPlayer!]!
 }
 
+type Mutation {
+  setPlayerPositionRank(
+    playerId: String!
+    positionRank: Float!
+    fromPositionRank: Float!
+  ): [RankedPlayer!]!
+}
+
 type RankedPlayer {
   playerId: String
   position: String
