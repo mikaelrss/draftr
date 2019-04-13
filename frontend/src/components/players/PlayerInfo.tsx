@@ -1,14 +1,10 @@
 import React from 'react';
-import { useQuery } from 'react-apollo-hooks';
 
-import { GET_PLAYERS } from './graphql';
-import PositionContainer from '../positioncontainer/PositionContainer';
-import Loader from '../shared/Loader';
-import { IPlayerRankingDTO } from '../rankings/graphql';
 import PlayerName from '../positioncontainer/PlayerName';
+import { rankings_personalRankings_players } from '../rankings/__generated__/rankings';
 
 interface IProps {
-  player: IPlayerRankingDTO;
+  player: rankings_personalRankings_players;
 }
 
 const PlayerInfo = ({ player }: IProps) => {

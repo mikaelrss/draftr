@@ -1,73 +1,75 @@
 import React from 'react';
-import { ReactComponent as ARI } from './ARI.svg';
-import { ReactComponent as ATL } from './ATL.svg';
-import { ReactComponent as BAL } from './BAL.svg';
-import { ReactComponent as BUF } from './BUF.svg';
-import { ReactComponent as CAR } from './CAR.svg';
-import { ReactComponent as CHI } from './CHI.svg';
-import { ReactComponent as CIN } from './CIN.svg';
-import { ReactComponent as CLE } from './CLE.svg';
-import { ReactComponent as DAL } from './DAL.svg';
-import { ReactComponent as DEN } from './DEN.svg';
-import { ReactComponent as DET } from './DET.svg';
-import { ReactComponent as GB } from './GB.svg';
-import { ReactComponent as HOU } from './HOU.svg';
-import { ReactComponent as IND } from './IND.svg';
-import { ReactComponent as JAC } from './JAC.svg';
-import { ReactComponent as KC } from './KC.svg';
-import { ReactComponent as LAC } from './LAC.svg';
-import { ReactComponent as LAR } from './LAR.svg';
-import { ReactComponent as MIA } from './MIA.svg';
-import { ReactComponent as MIN } from './MIN.svg';
-import { ReactComponent as NE } from './NE.svg';
-import { ReactComponent as NO } from './NO.svg';
-import { ReactComponent as NYG } from './NYG.svg';
-import { ReactComponent as NYJ } from './NYJ.svg';
-import { ReactComponent as OAK } from './OAK.svg';
-import { ReactComponent as PHI } from './PHI.svg';
-import { ReactComponent as PIT } from './PIT.svg';
-import { ReactComponent as SEA } from './SEA.svg';
-import { ReactComponent as SF } from './SF.svg';
-import { ReactComponent as TB } from './TB.svg';
-import { ReactComponent as TEN } from './TEN.svg';
-import { ReactComponent as WAS } from './WAS.svg';
+import { ReactComponent as ARIComp } from './ARI.svg';
+import { ReactComponent as ATLComp } from './ATL.svg';
+import { ReactComponent as BALComp } from './BAL.svg';
+import { ReactComponent as BUFComp } from './BUF.svg';
+import { ReactComponent as CARComp } from './CAR.svg';
+import { ReactComponent as CHIComp } from './CHI.svg';
+import { ReactComponent as CINComp } from './CIN.svg';
+import { ReactComponent as CLEComp } from './CLE.svg';
+import { ReactComponent as DALComp } from './DAL.svg';
+import { ReactComponent as DENComp } from './DEN.svg';
+import { ReactComponent as DETComp } from './DET.svg';
+import { ReactComponent as GBComp } from './GB.svg';
+import { ReactComponent as HOUComp } from './HOU.svg';
+import { ReactComponent as INDComp } from './IND.svg';
+import { ReactComponent as JACComp } from './JAC.svg';
+import { ReactComponent as KCComp } from './KC.svg';
+import { ReactComponent as LACComp } from './LAC.svg';
+import { ReactComponent as LARComp } from './LAR.svg';
+import { ReactComponent as MIAComp } from './MIA.svg';
+import { ReactComponent as MINComp } from './MIN.svg';
+import { ReactComponent as NEComp } from './NE.svg';
+import { ReactComponent as NOComp } from './NO.svg';
+import { ReactComponent as NYGComp } from './NYG.svg';
+import { ReactComponent as NYJComp } from './NYJ.svg';
+import { ReactComponent as OAKComp } from './OAK.svg';
+import { ReactComponent as PHIComp } from './PHI.svg';
+import { ReactComponent as PITComp } from './PIT.svg';
+import { ReactComponent as SEAComp } from './SEA.svg';
+import { ReactComponent as SFComp } from './SF.svg';
+import { ReactComponent as TBComp } from './TB.svg';
+import { ReactComponent as TENComp } from './TEN.svg';
+import { ReactComponent as WASComp } from './WAS.svg';
+import { NFLTeam } from '../../types/graphqltypes';
 
-export type INFLTeam =
-  | 'ARI'
-  | 'ATL'
-  | 'BAL'
-  | 'BUF'
-  | 'CAR'
-  | 'CHI'
-  | 'CIN'
-  | 'CLE'
-  | 'DAL'
-  | 'DEN'
-  | 'DET'
-  | 'GB'
-  | 'HOU'
-  | 'IND'
-  | 'JAC'
-  | 'KC'
-  | 'LAC'
-  | 'LAR'
-  | 'MIA'
-  | 'MIN'
-  | 'NE'
-  | 'NO'
-  | 'NYG'
-  | 'NYJ'
-  | 'OAK'
-  | 'PHI'
-  | 'PIT'
-  | 'SEA'
-  | 'SF'
-  | 'TB'
-  | 'TEN'
-  | 'WAS';
+const {
+  ARI,
+  ATL,
+  BAL,
+  BUF,
+  CAR,
+  CHI,
+  CIN,
+  CLE,
+  DAL,
+  DEN,
+  DET,
+  GB,
+  HOU,
+  IND,
+  JAC,
+  KC,
+  LAC,
+  LAR,
+  MIA,
+  MIN,
+  NE,
+  NO,
+  NYG,
+  NYJ,
+  OAK,
+  PHI,
+  PIT,
+  SEA,
+  SF,
+  TB,
+  TEN,
+  WAS,
+} = NFLTeam;
 
 interface IProps {
-  team: INFLTeam;
+  team: NFLTeam;
   className?: string;
 }
 
@@ -83,70 +85,70 @@ const TeamLogo = ({ team, className }: IProps) => {
     style,
   };
   switch (team) {
-    case 'ARI':
-      return <ARI {...props} />;
-    case 'ATL':
-      return <ATL {...props} />;
-    case 'BAL':
-      return <BAL {...props} />;
-    case 'BUF':
-      return <BUF {...props} />;
-    case 'CAR':
-      return <CAR {...props} />;
-    case 'CHI':
-      return <CHI {...props} />;
-    case 'CIN':
-      return <CIN {...props} />;
-    case 'CLE':
-      return <CLE {...props} />;
-    case 'DAL':
-      return <DAL {...props} />;
-    case 'DEN':
-      return <DEN {...props} />;
-    case 'DET':
-      return <DET {...props} />;
-    case 'GB':
-      return <GB {...props} />;
-    case 'HOU':
-      return <HOU {...props} />;
-    case 'IND':
-      return <IND {...props} />;
-    case 'JAC':
-      return <JAC {...props} />;
-    case 'KC':
-      return <KC {...props} />;
-    case 'LAC':
-      return <LAC {...props} />;
-    case 'LAR':
-      return <LAR {...props} />;
-    case 'MIA':
-      return <MIA {...props} />;
-    case 'MIN':
-      return <MIN {...props} />;
-    case 'NE':
-      return <NE {...props} />;
-    case 'NO':
-      return <NO {...props} />;
-    case 'NYG':
-      return <NYG {...props} />;
-    case 'NYJ':
-      return <NYJ {...props} />;
-    case 'OAK':
-      return <OAK {...props} />;
-    case 'PHI':
-      return <PHI {...props} />;
-    case 'PIT':
-      return <PIT {...props} />;
-    case 'SEA':
-      return <SEA {...props} />;
-    case 'SF':
-      return <SF {...props} />;
-    case 'TB':
-      return <TB {...props} />;
-    case 'TEN':
-      return <TEN {...props} />;
-    case 'WAS':
-      return <WAS {...props} />;
+    case ARI:
+      return <ARIComp {...props} />;
+    case ATL:
+      return <ATLComp {...props} />;
+    case BAL:
+      return <BALComp {...props} />;
+    case BUF:
+      return <BUFComp {...props} />;
+    case CAR:
+      return <CARComp {...props} />;
+    case CHI:
+      return <CHIComp {...props} />;
+    case CIN:
+      return <CINComp {...props} />;
+    case CLE:
+      return <CLEComp {...props} />;
+    case DAL:
+      return <DALComp {...props} />;
+    case DEN:
+      return <DENComp {...props} />;
+    case DET:
+      return <DETComp {...props} />;
+    case GB:
+      return <GBComp {...props} />;
+    case HOU:
+      return <HOUComp {...props} />;
+    case IND:
+      return <INDComp {...props} />;
+    case JAC:
+      return <JACComp {...props} />;
+    case KC:
+      return <KCComp {...props} />;
+    case LAC:
+      return <LACComp {...props} />;
+    case LAR:
+      return <LARComp {...props} />;
+    case MIA:
+      return <MIAComp {...props} />;
+    case MIN:
+      return <MINComp {...props} />;
+    case NE:
+      return <NEComp {...props} />;
+    case NO:
+      return <NOComp {...props} />;
+    case NYG:
+      return <NYGComp {...props} />;
+    case NYJ:
+      return <NYJComp {...props} />;
+    case OAK:
+      return <OAKComp {...props} />;
+    case PHI:
+      return <PHIComp {...props} />;
+    case PIT:
+      return <PITComp {...props} />;
+    case SEA:
+      return <SEAComp {...props} />;
+    case SF:
+      return <SFComp {...props} />;
+    case TB:
+      return <TBComp {...props} />;
+    case TEN:
+      return <TENComp {...props} />;
+    case WAS:
+      return <WASComp {...props} />;
     default:
       console.error('No logo found for team', team);
       return <div>No team</div>;

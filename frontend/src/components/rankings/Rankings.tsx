@@ -1,17 +1,15 @@
 import React from 'react';
 import { useQuery } from 'react-apollo-hooks';
-import groupBy from 'lodash.groupby';
 import { StyleSheet, css } from 'aphrodite';
 
-import {
-  GET_FANTASY_FOOTBALL_RANKINGS,
-  IPlayerRankingDTO,
-  IPosition,
-} from './graphql';
+import { GET_FANTASY_FOOTBALL_RANKINGS } from './graphql';
 import Loader from '../shared/Loader';
-import PositionContainer from '../positioncontainer/PositionContainer';
+import TierContainer from '../positioncontainer/PositionContainer';
 import { DEFAULT_PADDING } from '../../styles/paddings';
 import { QB_COLOR, RB_COLOR, TE_COLOR, WR_COLOR } from '../../styles/colors';
+import { rankings } from './__generated__/rankings';
+import { PlayerPosition } from '../../types/graphqltypes';
+import AddTier from '../addtier/AddTier';
 
 const styles = StyleSheet.create({
   box: {
@@ -26,37 +24,37 @@ const styles = StyleSheet.create({
   qb: { backgroundColor: `${QB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
 });
 
-export const getBackground = (position: IPosition) => {
+export const getBackground = (position: PlayerPosition) => {
+  const { QB, RB, TE, WR } = PlayerPosition;
   switch (position) {
-    case 'QB':
+    case QB:
       return styles.qb;
-    case 'RB':
+    case RB:
       return styles.rb;
-    case 'TE':
+    case TE:
       return styles.te;
-    case 'WR':
+    case WR:
       return styles.wr;
   }
 };
 
-interface IData {
-  fantasyFootballNerdRankings: IPlayerRankingDTO[];
-}
-
 const Rankings = () => {
-  const { data, loading } = useQuery<IData>(GET_FANTASY_FOOTBALL_RANKINGS);
+  const { data, loading } = useQuery<rankings>(GET_FANTASY_FOOTBALL_RANKINGS);
   if (loading || !data) return <Loader />;
 
-  // const positional = groupBy(data.fantasyFootballNerdRankings, 'position');
   return (
     <div className={css(styles.box)}>
+      {data.personalRankings.map(tier => (
+        <TierContainer
+          tierId={tier.tierId}
+          players={tier.players}
+          key={`TIER_${tier.tierId}`}
+        />
+      ))}
+      <AddTier />
       {/*<PositionContainer position="RB" players={positional.RB} className={css(getBackground('RB'))}/>*/}
       {/*<PositionContainer position="WR" players={positional.WR} className={css(getBackground('WR'))}/>*/}
       {/*<PositionContainer position="QB" players={positional.QB} className={css(getBackground('QB'))}/>*/}
-      <PositionContainer
-        position="TE"
-        players={data.fantasyFootballNerdRankings}
-      />
     </div>
   );
 };

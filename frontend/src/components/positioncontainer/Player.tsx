@@ -5,7 +5,6 @@ import classNames from 'classnames';
 
 import { IconButton } from '../shared/Button';
 import { playerTaken, selectPlayer } from '../team/TeamActions';
-import { IPlayerRankingDTO } from '../rankings/graphql';
 import {
   QB_COLOR,
   RB_COLOR,
@@ -16,6 +15,7 @@ import {
 import { DEFAULT_PADDING } from '../../styles/paddings';
 import PlayerName from './PlayerName';
 import { getBackground } from '../rankings/Rankings';
+import { rankings_personalRankings_players } from '../rankings/__generated__/rankings';
 
 const styles = StyleSheet.create({
   disabled: {
@@ -51,12 +51,12 @@ const styles = StyleSheet.create({
 });
 
 interface IDispatchProps {
-  select: (player: IPlayerRankingDTO) => void;
-  take: (player: IPlayerRankingDTO) => void;
+  select: (player: rankings_personalRankings_players) => void;
+  take: (player: rankings_personalRankings_players) => void;
 }
 
 type IPlayerProps = {
-  player: IPlayerRankingDTO;
+  player: rankings_personalRankings_players;
   disabled?: boolean;
   className?: string;
 } & IDispatchProps;

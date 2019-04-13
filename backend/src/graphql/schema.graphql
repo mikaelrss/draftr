@@ -13,23 +13,67 @@ type Mutation {
   ): [RankedPlayer!]!
 }
 
+enum PlayerPosition {
+  RB
+  WR
+  QB
+  TE
+  K
+  DEF
+}
+
+enum NFLTeam {
+  ARI
+  ATL
+  BAL
+  BUF
+  CAR
+  CHI
+  CIN
+  CLE
+  DAL
+  DEN
+  DET
+  GB
+  HOU
+  IND
+  JAC
+  KC
+  LAC
+  LAR
+  MIA
+  MIN
+  NE
+  NO
+  NYG
+  NYJ
+  OAK
+  PHI
+  PIT
+  SEA
+  SF
+  TB
+  TEN
+  WAS
+}
+
 type Tier {
   tierId: Int!
-  players: [RankedPlayer]!
+  players: [RankedPlayer!]!
 }
 
 type RankedPlayer {
-  playerId: String
-  position: String
-  displayName: String
+  playerId: String!
+  position: PlayerPosition!
+  displayName: String!
   firstName: String
   lastName: String
-  team: String
+  team: NFLTeam!
   byeWeek: Float
   standDev: Float
   nerdRank: Float
-  positionRank: Float
-  overallRank: Float
+  positionRank: Float!
+  overallRank: Float!
 }
 
 type Player {

@@ -4,9 +4,10 @@ import classNames from 'classnames';
 
 import { ReactComponent as Done } from '../../svg/done.svg';
 import { ReactComponent as Clear } from '../../svg/clear.svg';
+import { ReactComponent as Add } from '../../svg/add.svg';
 import { PRIMARY, PRIMARY_TEXT } from '../../styles/colors';
 
-type Icon = 'done' | 'clear';
+type Icon = 'done' | 'clear' | 'add';
 
 const styles = StyleSheet.create({
   iconButton: {
@@ -24,6 +25,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  clickSurface: {
+    cursor: 'pointer',
+    width: '100%',
+    height: '100%',
+  },
 });
 
 const getIcon = (icon: Icon) => {
@@ -32,6 +38,8 @@ const getIcon = (icon: Icon) => {
       return <Done />;
     case 'clear':
       return <Clear />;
+    case 'add':
+      return <Add />;
   }
 };
 
@@ -63,7 +71,7 @@ interface IDivProps {
 }
 
 export const ClickableSurface = ({ onClick, children }: IDivProps) => (
-  <div onClick={onClick} style={{ width: '100%', height: '100%' }}>
+  <div onClick={onClick} className={css(styles.clickSurface)}>
     {children}
   </div>
 );

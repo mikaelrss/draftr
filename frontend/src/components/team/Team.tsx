@@ -5,11 +5,11 @@ import { StyleSheet, css } from 'aphrodite';
 import Paper from '../shared/Paper';
 import { DEFAULT_PADDING } from '../../styles/paddings';
 import { IState } from '../../redux/store';
-import { IPlayerRankingDTO } from '../rankings/graphql';
 import PlayerInfo from '../players/PlayerInfo';
 import { getBackground } from '../rankings/Rankings';
 import { removePlayer } from './TeamActions';
 import { ClickableSurface } from '../shared/Button';
+import { rankings_personalRankings_players } from '../rankings/__generated__/rankings';
 
 const styles = StyleSheet.create({
   team: {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 });
 
 interface IStateProps {
-  selectedPlayers: IPlayerRankingDTO[];
+  selectedPlayers: rankings_personalRankings_players[];
 }
 
 interface IDispatchProps {

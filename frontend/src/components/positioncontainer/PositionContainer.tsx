@@ -1,11 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { graphql, ChildMutateProps } from 'react-apollo';
-import { StyleSheet, css } from 'aphrodite/no-important';
-
-import { IPlayerRankingDTO, IPosition } from '../rankings/graphql';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { ChildMutateProps, graphql } from 'react-apollo';
+import { css, StyleSheet } from 'aphrodite/no-important';
 
 import Paper from '../shared/Paper';
 import Player from './Player';
@@ -15,6 +13,7 @@ import {
   positionRank,
   positionRankVariables,
 } from './__generated__/positionRank';
+import { rankings_personalRankings_players } from '../rankings/__generated__/rankings';
 
 const styles = StyleSheet.create({
   playerDragging: {
@@ -27,8 +26,8 @@ interface IStateProps {
 }
 
 interface IOwnProps {
-  position: IPosition;
-  players: IPlayerRankingDTO[];
+  tierId: number;
+  players: rankings_personalRankings_players[];
   className?: string;
 }
 
@@ -40,21 +39,8 @@ type ChildProps = ChildMutateProps<
 
 type Props = IOwnProps & IStateProps & ChildProps;
 
-const getTitle = (position: IPosition) => {
-  switch (position) {
-    case 'QB':
-      return 'Quarter Back';
-    case 'RB':
-      return 'Running Back';
-    case 'WR':
-      return 'Wide Receiver';
-    case 'TE':
-      return 'Tight End';
-  }
-};
-
 const PositionContainer = ({
-  position,
+  tierId,
   players,
   passed,
   className,
@@ -75,10 +61,10 @@ const PositionContainer = ({
   return (
     <div>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={`droppable-${position}`}>
+        <Droppable droppableId={`droppable-${tierId}`}>
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              {getTitle(position)}
+              Tier {tierId}
               <Paper className={className} noPadding>
                 {players.map((player, index) => (
                   <Draggable

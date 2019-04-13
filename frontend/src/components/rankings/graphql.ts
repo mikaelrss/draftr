@@ -1,26 +1,17 @@
 import gql from 'graphql-tag';
-import { INFLTeam } from '../../svg/nfllogos/TeamLogo';
-
-export type IPosition = 'RB' | 'WR' | 'QB' | 'TE';
-
-export interface IPlayerRankingDTO {
-  playerId: string;
-  displayName: string;
-  position: IPosition;
-  team: INFLTeam;
-  overallRank: number;
-  positionRank: number;
-}
 
 export const GET_FANTASY_FOOTBALL_RANKINGS = gql`
   query rankings {
-    fantasyFootballNerdRankings {
-      displayName
-      position
-      playerId
-      team
-      overallRank
-      positionRank
+    personalRankings {
+      tierId
+      players {
+        playerId
+        displayName
+        position
+        overallRank
+        positionRank
+        team
+      }
     }
   }
 `;

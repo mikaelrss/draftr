@@ -1,7 +1,7 @@
 import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
-import { IPlayerRankingDTO } from '../rankings/graphql';
 import TeamLogo from '../../svg/nfllogos/TeamLogo';
+import { rankings_personalRankings_players } from '../rankings/__generated__/rankings';
 
 const styles = StyleSheet.create({
   name: {
@@ -14,7 +14,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const PlayerName = ({ player }: { player: IPlayerRankingDTO }) => (
+interface IProps {
+  player: rankings_personalRankings_players;
+}
+const PlayerName = ({ player }: IProps) => (
   <div className={css(styles.name)}>
     <TeamLogo team={player.team} className={css(styles.logo)} />
     {player.displayName}

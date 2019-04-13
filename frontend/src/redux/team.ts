@@ -1,14 +1,14 @@
-import { IPlayerRankingDTO } from '../components/rankings/graphql';
 import {
   ITeamActions,
   PLAYER_TAKEN,
   REMOVE_PLAYER,
   SELECT_PLAYER,
 } from '../components/team/TeamActions';
+import { rankings_personalRankings_players } from '../components/rankings/__generated__/rankings';
 
 export interface ITeamState {
-  selected: IPlayerRankingDTO[];
-  taken: IPlayerRankingDTO[];
+  selected: rankings_personalRankings_players[];
+  taken: rankings_personalRankings_players[];
 }
 
 const initialState: ITeamState = {

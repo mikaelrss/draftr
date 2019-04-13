@@ -22,9 +22,7 @@ export const createDefaultRankings = async () => {
 };
 
 export const getPersonalRankings = async () => {
-  const ranks = await getDefaultRankings();
-  console.log('TEUT', ranks);
-  // @ts-ignore
+  const ranks = (await getDefaultRankings()).toObject();
   return ranks.tiers;
 };
 

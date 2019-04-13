@@ -8,9 +8,9 @@
 
 export interface positionRank_setPlayerPositionRank {
   __typename: "RankedPlayer";
-  playerId: string | null;
-  displayName: string | null;
-  positionRank: number | null;
+  playerId: string;
+  displayName: string;
+  positionRank: number;
 }
 
 export interface positionRank {

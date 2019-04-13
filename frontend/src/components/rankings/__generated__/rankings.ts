@@ -2,20 +2,28 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { PlayerPosition, NFLTeam } from "./../../../types/graphqltypes";
+
 // ====================================================
 // GraphQL query operation: rankings
 // ====================================================
 
-export interface rankings_fantasyFootballNerdRankings {
+export interface rankings_personalRankings_players {
   __typename: "RankedPlayer";
-  displayName: string | null;
-  position: string | null;
-  playerId: string | null;
-  team: string | null;
-  overallRank: number | null;
-  positionRank: number | null;
+  playerId: string;
+  displayName: string;
+  position: PlayerPosition;
+  overallRank: number;
+  positionRank: number;
+  team: NFLTeam;
+}
+
+export interface rankings_personalRankings {
+  __typename: "Tier";
+  tierId: number;
+  players: rankings_personalRankings_players[];
 }
 
 export interface rankings {
-  fantasyFootballNerdRankings: rankings_fantasyFootballNerdRankings[];
+  personalRankings: rankings_personalRankings[];
 }
