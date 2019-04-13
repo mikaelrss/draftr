@@ -12,6 +12,7 @@
     "@types/react-dom": "16.8.3",
     "@types/react-redux": "^7.0.6",
     "aphrodite": "^2.3.1",
+    "apollo": "^2.8.3",
     "apollo-boost": "^0.3.1",
     "classnames": "^2.2.6",
     "graphql": "14.2.1",
@@ -37,7 +38,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "update-schema": "apollo schema:download",
+    "generate:graphql:types": "apollo codegen:generate --localSchemaFile=schema.json --target=typescript --includes=src/**/*.ts --globalTypesFile=src/types/graphql-queries.d.ts"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -48,5 +51,8 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "proxy": "http://localhost:4000"
+  "proxy": "http://localhost:4000",
+  "devDependencies": {
+    "apollo": "^2.8.3"
+  }
 }

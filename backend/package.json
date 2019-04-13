@@ -27,8 +27,6 @@
   "scripts": {
     "build": "tsc",
     "start:dev": "nodemon",
-    "start": "node dist/index.js",
-    "update-schema": "apollo schema:download",
-    "safe-update": "delay 4 && yarn update-schema"
+    "start": "node dist/index.js"
   }
 }

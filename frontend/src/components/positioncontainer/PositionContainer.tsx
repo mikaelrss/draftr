@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { graphql } from 'react-apollo';
+import { graphql, ChildMutateProps } from 'react-apollo';
 import { StyleSheet, css } from 'aphrodite/no-important';
 
 import { IPlayerRankingDTO, IPosition } from '../rankings/graphql';
@@ -11,6 +11,10 @@ import Paper from '../shared/Paper';
 import Player from './Player';
 import selector from './selector';
 import { SET_POSITION_RANKING } from './graphql';
+import {
+  positionRank,
+  positionRankVariables,
+} from './__generated__/positionRank';
 
 const styles = StyleSheet.create({
   playerDragging: {
@@ -26,10 +30,15 @@ interface IOwnProps {
   position: IPosition;
   players: IPlayerRankingDTO[];
   className?: string;
-  mutate?: (e: any) => any;
 }
 
-type Props = IOwnProps & IStateProps;
+type ChildProps = ChildMutateProps<
+  IOwnProps,
+  positionRank,
+  positionRankVariables
+>;
+
+type Props = IOwnProps & IStateProps & ChildProps;
 
 const getTitle = (position: IPosition) => {
   switch (position) {
@@ -54,7 +63,6 @@ const PositionContainer = ({
   const isDisabled = (id: string) => passed.includes(id);
   const onDragEnd = (result: any) => {
     console.log('Drag ended', result);
-    // @ts-ignore
     mutate({
       variables: {
         playerId: result.draggableId,
@@ -106,7 +114,12 @@ const PositionContainer = ({
 
 const withRedux = connect<IStateProps>(selector);
 
-const withApollo = graphql(SET_POSITION_RANKING);
+const withApollo = graphql<
+  IOwnProps,
+  positionRank,
+  positionRankVariables,
+  ChildProps
+>(SET_POSITION_RANKING);
 
 export default compose<React.ComponentType<IOwnProps>>(
   withRedux,

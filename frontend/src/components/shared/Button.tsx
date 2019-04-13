@@ -35,7 +35,7 @@ const getIcon = (icon: Icon) => {
   }
 };
 
-interface IconProps {
+interface IIconProps {
   icon: Icon;
   onClick: () => void;
   className?: string;
@@ -47,7 +47,7 @@ export const IconButton = ({
   onClick,
   className,
   disabled,
-}: IconProps) => (
+}: IIconProps) => (
   <button
     onClick={onClick}
     disabled={disabled}

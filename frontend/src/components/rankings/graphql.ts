@@ -13,7 +13,7 @@ export interface IPlayerRankingDTO {
 }
 
 export const GET_FANTASY_FOOTBALL_RANKINGS = gql`
-  query {
+  query rankings {
     fantasyFootballNerdRankings {
       displayName
       position

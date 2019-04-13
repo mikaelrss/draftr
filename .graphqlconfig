@@ -1,5 +1,4 @@
 {
-  "schemaPath": "./backend/schema.json",
   "extensions": {
     "endpoints": {
       "Draftr": {
