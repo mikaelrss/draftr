@@ -39,14 +39,14 @@ export const resolvers = {
     players: async () => await getQBs(),
     fantasyFootballNerdRankings: async () =>
       await getFantasyFootballNerdRankings(),
-    createDefaultRankings: async () => {
-      await createDefaultRankings();
-      return 'Created default rankings';
-    },
     personalRankings: async () =>
       (await getPersonalRankings(CURRENT_USER)).tiers,
   },
   Mutation: {
+    createDefaultRankings: async (root: any, args: { userId: string }) => {
+      await createDefaultRankings(args.userId);
+      return 'Created default rankings';
+    },
     setPlayerPositionRank: async (root: any, args: ISetPlayerPositionArgs) => {
       const rankings = await getFantasyFootballNerdRankings();
       const playerIndex = rankings.findIndex(p => p.playerId === args.playerId);

@@ -12,10 +12,10 @@ interface IRankings {
   tiers: ITier[];
 }
 
-export const createDefaultRankings = async () => {
+export const createDefaultRankings = async (userId: string) => {
   const rankMap: any = {};
   const testObject: IRankings = {
-    userId: DEFAULT_RANKINGS,
+    userId,
     tiers: [{ tierId: 1, rankMap, uuid: uuid() }],
   };
   const fantasyRankings = await getFantasyFootballNerdRankings();
@@ -100,10 +100,14 @@ export const changePlayerRank = async (
 ) => {
   const ranks = await getPersonalRankings(userId);
   const tierDowngrade = destinationTier > originTier;
+  const destTIre = ranks.tiers[destinationTier - 1];
+  console.log('ONTEUHNTOEUH', destTIre);
+  const destinationTierEmpty =
+    !destTIre.rankMap || Object.keys(destTIre.rankMap).length <= 0;
   const originTierArray = ranks.tiers[originTier - 1];
   const originRank = originTierArray.rankMap[+playerId].overallRank;
 
-  if (tierDowngrade) {
+  if (tierDowngrade && destinationTierEmpty) {
     return await movePlayerAndRest(
       playerId,
       originTier,

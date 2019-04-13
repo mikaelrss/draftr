@@ -1,11 +1,11 @@
 type Query {
   players: [Player!]!
   fantasyFootballNerdRankings: [RankedPlayer!]!
-  createDefaultRankings: String
   personalRankings: [Tier!]!
 }
 
 type Mutation {
+  createDefaultRankings(userId: String!): String
   setPlayerPositionRank(
     playerId: String!
     positionRank: Float!
