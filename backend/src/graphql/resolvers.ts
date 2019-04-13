@@ -80,7 +80,8 @@ export const resolvers = {
         .map(p => ({
           ...p,
           ...tier.rankMap[p.playerId],
-        }));
+        }))
+        .sort((a, b) => a.overallRank - b.overallRank);
     },
   },
   Player: {

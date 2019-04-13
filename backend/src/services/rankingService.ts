@@ -48,6 +48,9 @@ export const createNewTier = async (userId: string) => {
   await PlayerRankings.updateOne({ _id: rankings._id }, newRankings);
 };
 
+const getRankMap = (ranks: IRankings, index: number) =>
+  ranks.tiers[index - 1].rankMap;
+
 const rankedTier = (rankMap: IRankMap) =>
   Object.values(rankMap).sort((a, b) => a.overallRank - b.overallRank);
 
@@ -60,7 +63,21 @@ const createRankMap = (ranks: IRank[]) =>
     {},
   );
 
-const movePlayerAndRest = async (
+const movePlayerPropagate = async (
+  playerId: string,
+  originTier: number,
+  destinationTier: number,
+  destinationRank: number,
+  ranks: IRankings,
+) => {
+  console.log('===== ENTER PROPAGATE ======');
+  const originTierRankMap = getRankMap(ranks, originTier);
+  const origin = rankedTier(originTierRankMap);
+
+  console.log('Origins', origin);
+};
+
+const movePlayerCascade = async (
   playerId: string,
   originTier: number,
   destinationTier: number,
@@ -99,16 +116,26 @@ export const changePlayerRank = async (
   userId: string,
 ) => {
   const ranks = await getPersonalRankings(userId);
+
   const tierDowngrade = destinationTier > originTier;
-  const destTIre = ranks.tiers[destinationTier - 1];
-  console.log('ONTEUHNTOEUH', destTIre);
-  const destinationTierEmpty =
-    !destTIre.rankMap || Object.keys(destTIre.rankMap).length <= 0;
+  const tierUpgrade = destinationTier < originTier;
+
+  const { rankMap } = ranks.tiers[destinationTier - 1];
+  const destinationEmpty = !rankMap || Object.keys(rankMap).length <= 0;
   const originTierArray = ranks.tiers[originTier - 1];
   const originRank = originTierArray.rankMap[+playerId].overallRank;
 
-  if (tierDowngrade && destinationTierEmpty) {
-    return await movePlayerAndRest(
+  if (tierDowngrade && destinationEmpty) {
+    return await movePlayerCascade(
+      playerId,
+      originTier,
+      destinationTier,
+      destinationRank,
+      ranks,
+    );
+  }
+  if (tierDowngrade) {
+    return await movePlayerPropagate(
       playerId,
       originTier,
       destinationTier,
