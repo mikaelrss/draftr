@@ -18,20 +18,28 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     border: '1px solid #e2e2e2',
   },
+  noPadding: {
+    padding: '0 !important',
+  },
 });
 
 interface IProps {
   children: ReactNode;
   className?: string;
   noShadow?: boolean;
+  noPadding?: boolean;
 }
 
-const Paper = ({ children, className, noShadow }: IProps) => {
+const Paper = ({ children, className, noShadow, noPadding }: IProps) => {
   return (
     <div
       className={classNames(
         className,
-        css(styles.paper, noShadow && styles.noShadow),
+        css(
+          styles.paper,
+          noShadow && styles.noShadow,
+          noPadding && styles.noPadding,
+        ),
       )}
     >
       {children}

@@ -6,9 +6,16 @@ import classNames from 'classnames';
 import { IconButton } from '../shared/Button';
 import { playerTaken, selectPlayer } from '../team/TeamActions';
 import { IPlayerRankingDTO } from '../rankings/graphql';
-import { SECONDARY } from '../../styles/colors';
+import {
+  QB_COLOR,
+  RB_COLOR,
+  SECONDARY,
+  TE_COLOR,
+  WR_COLOR,
+} from '../../styles/colors';
 import { DEFAULT_PADDING } from '../../styles/paddings';
 import PlayerName from './PlayerName';
+import { getBackground } from '../rankings/Rankings';
 
 const styles = StyleSheet.create({
   disabled: {
@@ -21,6 +28,8 @@ const styles = StyleSheet.create({
     gridTemplateColumns: 'auto 30px 70px',
     height: '50px',
     alignItems: 'center',
+    paddingLeft: `${DEFAULT_PADDING / 2}px`,
+    paddingRight: `${DEFAULT_PADDING / 2}px`,
   },
   clear: {
     marginLeft: '6px',
@@ -35,6 +44,10 @@ const styles = StyleSheet.create({
     height: '50px',
     left: `-${DEFAULT_PADDING / 2}px`,
   },
+  rb: { backgroundColor: `${RB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
+  wr: { backgroundColor: `${WR_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
+  te: { backgroundColor: `${TE_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
+  qb: { backgroundColor: `${QB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
 });
 
 interface IDispatchProps {
@@ -58,12 +71,16 @@ const Player = ({
   return (
     <div
       className={classNames(
-        css(styles.player, disabled && styles.disabled),
+        css(
+          styles.player,
+          disabled && styles.disabled,
+          getBackground(player.position),
+        ),
         className,
       )}
     >
       <PlayerName player={player} />
-      <div>{player.positionRank}</div>
+      <div>{player.overallRank}</div>
       <div>
         <IconButton
           icon="done"

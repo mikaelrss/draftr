@@ -1,6 +1,8 @@
 type Query {
   players: [Player!]!
   fantasyFootballNerdRankings: [RankedPlayer!]!
+  createDefaultRankings: String
+  personalRankings: [Tier!]!
 }
 
 type Mutation {
@@ -9,6 +11,11 @@ type Mutation {
     positionRank: Float!
     fromPositionRank: Float!
   ): [RankedPlayer!]!
+}
+
+type Tier {
+  tierId: Int!
+  players: [RankedPlayer]!
 }
 
 type RankedPlayer {

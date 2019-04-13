@@ -18,7 +18,12 @@ const PlayerSchema = new Schema({
 const PlayerRankingsSchema = new Schema(
   {
     userId: Schema.Types.String,
-    rankMap: Schema.Types.Mixed,
+    tiers: [
+      new Schema({
+        tierId: Schema.Types.Number,
+        rankMap: Schema.Types.Mixed,
+      }),
+    ],
   },
   { strict: false },
 );

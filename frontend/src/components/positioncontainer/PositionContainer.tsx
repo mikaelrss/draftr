@@ -79,7 +79,7 @@ const PositionContainer = ({
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {getTitle(position)}
-              <Paper className={className}>
+              <Paper className={className} noPadding>
                 {players.map((player, index) => (
                   <Draggable
                     draggableId={player.playerId}

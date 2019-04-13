@@ -47,28 +47,15 @@ const Rankings = () => {
   const { data, loading } = useQuery<IData>(GET_FANTASY_FOOTBALL_RANKINGS);
   if (loading || !data) return <Loader />;
 
-  const positional = groupBy(data.fantasyFootballNerdRankings, 'position');
+  // const positional = groupBy(data.fantasyFootballNerdRankings, 'position');
   return (
     <div className={css(styles.box)}>
-      <PositionContainer
-        position="RB"
-        players={positional.RB}
-        className={css(getBackground('RB'))}
-      />
-      <PositionContainer
-        position="WR"
-        players={positional.WR}
-        className={css(getBackground('WR'))}
-      />
-      <PositionContainer
-        position="QB"
-        players={positional.QB}
-        className={css(getBackground('QB'))}
-      />
+      {/*<PositionContainer position="RB" players={positional.RB} className={css(getBackground('RB'))}/>*/}
+      {/*<PositionContainer position="WR" players={positional.WR} className={css(getBackground('WR'))}/>*/}
+      {/*<PositionContainer position="QB" players={positional.QB} className={css(getBackground('QB'))}/>*/}
       <PositionContainer
         position="TE"
-        players={positional.TE}
-        className={css(getBackground('TE'))}
+        players={data.fantasyFootballNerdRankings}
       />
     </div>
   );
