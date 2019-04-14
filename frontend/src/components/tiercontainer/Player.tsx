@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'white',
     opacity: 0.6,
-    width: `calc(100% + ${DEFAULT_PADDING}px)`,
+    width: '100%',
     top: 0,
     height: '50px',
     left: `-${DEFAULT_PADDING / 2}px`,
