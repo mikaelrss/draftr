@@ -43,17 +43,12 @@ export const createNewTier = async (userId: string): Promise<IRanking> => {
   return ranks;
 };
 
-const getRankMap = (ranks: IRanking, index: number) => {
-  const rankMap = ranks.tiers[index - 1].rankMap;
-  console.log('GETTING RANK MAP', rankMap);
-  return rankMap;
-};
+const getRankMap = (ranks: IRanking, index: number) =>
+  ranks.tiers[index - 1].rankMap;
 
 const rankedTier = (rankMap: IRankMap): IRank[] => {
   if (!rankMap) return [];
-  const values = Object.values(rankMap);
-  console.log('Trying RANKED TIER', rankMap, values);
-  return values.sort((a, b) => a.overallRank - b.overallRank);
+  return Object.values(rankMap).sort((a, b) => a.overallRank - b.overallRank);
 };
 
 const createRankMap = (ranks: IRank[]): IRankMap =>
@@ -173,6 +168,55 @@ const transformPlayerRankings = (
   ];
 };
 
+const movePlayerInsideTier = async (
+  playerId: string,
+  tierId: number,
+  destIndex: number,
+  ranks: IRanking,
+) => {
+  const tier = rankedTier(getRankMap(ranks, tierId));
+
+  console.log('TIER', tier);
+
+  const currentRank = tier.find(r => r.playerId === playerId);
+  const currentIndex = tier.findIndex(r => r.playerId === playerId);
+
+  const newRank = currentRank.overallRank - (currentIndex - destIndex + 1);
+  console.log('RANK', currentRank.overallRank);
+  console.log('new rank', newRank);
+
+  const movingUp = newRank < currentRank.overallRank;
+  let newTier: IRank[];
+
+  if (movingUp) {
+    newTier = [
+      ...tier.slice(0, destIndex - 1),
+      { ...currentRank, overallRank: newRank },
+      ...tier.slice(destIndex - 1, currentIndex).map(increaseRank),
+      ...tier.slice(currentIndex + 1),
+    ];
+  } else {
+    const PRE_MOVE = tier.slice(0, currentIndex);
+    const POST_MOVE = tier.slice(currentIndex + 1, destIndex).map(decreaseRank);
+    const POST_ALL = tier.slice(destIndex);
+    newTier = [
+      ...PRE_MOVE,
+      ...POST_MOVE,
+      { ...currentRank, overallRank: newRank },
+      ...POST_ALL,
+    ];
+  }
+
+  const tiers = ranks.toObject().tiers;
+  ranks.tiers = [
+    ...tiers.slice(0, tierId - 1),
+    { ...tiers[tierId - 1], rankMap: createRankMap(newTier) },
+    ...tiers.slice(tierId),
+  ];
+  ranks.save();
+  return ranks.tiers;
+};
+
 const movePlayerCascade = async (
   playerId: string,
   originTier: number,
@@ -231,14 +275,11 @@ const movePlayerPropagateLeft = async (
       : origin[0].overallRank,
   };
 
-  console.log('NEW RANK', newRank);
-
   const newDestination = [
     ...destination.slice(0, destRank - 1),
     newRank,
     ...destination.slice(destRank - 1).map(operation),
   ];
-  console.log('NEW DESTINATION', newDestination);
 
   const intermediate = mapIntermediateTiers(
     ranks,
@@ -247,23 +288,18 @@ const movePlayerPropagateLeft = async (
     operation,
   );
 
-  console.log('INTERMEDIATE', intermediate);
+  const tiers = ranks.toObject().tiers;
+  const PRE_DESTINATION = tiers.slice(0, destinationTier - 1);
+  const POST_ORIGIN = tiers.slice(originTier);
 
-  //
-  const test = ranks.toObject();
-  const PRE_DESTINATION = test.tiers.slice(0, destinationTier - 1);
-  const POST_ORIGIN = test.tiers.slice(originTier);
-
-  console.log('PRE DESTINATION', PRE_DESTINATION);
-
-  const CHANGE_DESTINATION = test.tiers[destinationTier - 1];
-  const CHANGE_ORIGIN = test.tiers[originTier - 1];
+  const CHANGE_DESTINATION = tiers[destinationTier - 1];
+  const CHANGE_ORIGIN = tiers[originTier - 1];
 
   ranks.tiers = [
     ...PRE_DESTINATION,
     { ...CHANGE_DESTINATION, rankMap: createRankMap(newDestination) },
     ...intermediate.map((tier, index) => ({
-      ...test.tiers[destinationTier + index],
+      ...tiers[destinationTier + index],
       rankMap: createRankMap(tier),
     })),
     {
@@ -326,13 +362,12 @@ export const changePlayerRank = async (
     );
   }
 
-  const newOverallRank =
-    Object.keys(originTierArray.rankMap).length + destinationRank - 1;
-  console.log('ORIGINRANK', originRank, newOverallRank);
-  const newOriginTier = [];
-
-  console.log('RaNNNK', ranks);
-  console.log('Args', playerId, destinationRank, destinationTier, originTier);
+  return await movePlayerInsideTier(
+    playerId,
+    originTier,
+    destinationRank,
+    ranks,
+  );
 };
 
 export const getPersonalRankings = async (userId: string): Promise<IRanking> =>
