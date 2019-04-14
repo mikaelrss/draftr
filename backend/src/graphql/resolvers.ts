@@ -57,18 +57,18 @@ export const resolvers = {
       return rankings;
     },
     changeRank: async (root: any, args: IChangeRankArgs) => {
-      return await changePlayerRank(
+      console.time('changeRank');
+      const result = await changePlayerRank(
         args.playerId,
         args.originTier,
         args.destinationTier,
         args.destinationRank,
         'mikaelrss',
       );
+      console.timeEnd('changeRank');
+      return result;
     },
-    createTier: async () => {
-      await createNewTier(CURRENT_USER);
-      return (await getPersonalRankings(CURRENT_USER)).tiers;
-    },
+    createTier: async () => (await createNewTier(CURRENT_USER)).tiers,
   },
   Tier: {
     players: async (tier: ITier) => {

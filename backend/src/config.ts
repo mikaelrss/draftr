@@ -11,3 +11,5 @@ export const FORMAT = 'json';
 export const PPR = 0;
 
 export const DUMMY_USERNAME = 'mikaelrss';
+
+export const ENGINE_API_KEY = process.env.ENGINE_API_KEY;

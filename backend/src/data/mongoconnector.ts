@@ -1,5 +1,6 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 import { MONGO_PASSWORD, MONGO_URL, MONGO_USER } from '../config';
+import { IRankMap } from '../graphql/types';
 
 const URI = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_URL}/DraftrDev`;
 
@@ -15,6 +16,17 @@ const PlayerSchema = new Schema({
   byeWeek: Schema.Types.Number,
 });
 
+export interface ITiers extends Document {
+  uuid: string;
+  tierId: number;
+  rankMap: IRankMap;
+}
+
+export interface IRanking extends Document {
+  userId: string;
+  tiers: ITiers[];
+}
+
 const PlayerRankingsSchema = new Schema(
   {
     userId: Schema.Types.String,
@@ -29,7 +41,7 @@ const PlayerRankingsSchema = new Schema(
   { strict: false },
 );
 
-export const PlayerRankings = mongoose.model(
+export const PlayerRankings = mongoose.model<IRanking>(
   'playerrankings',
   PlayerRankingsSchema,
 );

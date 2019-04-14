@@ -69,7 +69,10 @@ const TierContainer = ({
           <div {...provided.droppableProps} ref={provided.innerRef}>
             Tier {tierId}
             <Paper
-              className={classNames(css(styles.paper), className)}
+              className={classNames(
+                css(players.length === 0 && styles.paper),
+                className,
+              )}
               noPadding
             >
               {players.map((player, index) => (

@@ -3,8 +3,11 @@ import { importSchema } from 'graphql-import';
 import path from 'path';
 
 import { resolvers } from './graphql/resolvers';
+import { ENGINE_API_KEY } from './config';
 
-const typeDefs = importSchema(path.join(__dirname, '../src/graphql/schema.graphql'));
+const typeDefs = importSchema(
+  path.join(__dirname, '../src/graphql/schema.graphql'),
+);
 const PORT = process.env.PORT || 4000;
 
 const server = new ApolloServer({
@@ -12,6 +15,9 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   introspection: true,
+  engine: {
+    apiKey: ENGINE_API_KEY,
+  },
 });
 server.setGraphQLPath('/graphql');
 
