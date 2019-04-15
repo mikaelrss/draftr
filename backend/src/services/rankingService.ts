@@ -1,7 +1,7 @@
 import uuid from 'uuid/v4';
 
 import { getFantasyFootballNerdRankings } from '../api/rankings';
-import { IRanking, PlayerRankings } from '../data/mongoconnector';
+import { IRankingModel, PlayerRankings } from '../data/mongoconnector';
 import { IRank, IRankMap } from '../graphql/types';
 
 const DEFAULT_RANKINGS = 'defaultRankings';
@@ -27,7 +27,7 @@ export const createDefaultRankings = async (userId: string) => {
   test.save();
 };
 
-export const createNewTier = async (userId: string): Promise<IRanking> => {
+export const createNewTier = async (userId: string): Promise<IRankingModel> => {
   const ranks = await getPersonalRankings(userId);
   const rankObject = ranks.toObject();
 
@@ -43,7 +43,7 @@ export const createNewTier = async (userId: string): Promise<IRanking> => {
   return ranks;
 };
 
-const getRankMap = (ranks: IRanking, index: number) =>
+const getRankMap = (ranks: IRankingModel, index: number) =>
   ranks.tiers[index - 1].rankMap;
 
 const rankedTier = (rankMap: IRankMap): IRank[] => {
@@ -97,7 +97,7 @@ const createDestination = (
 ];
 
 const mapIntermediateTiers = (
-  ranks: IRanking,
+  ranks: IRankingModel,
   originTier: number,
   destinationTier: number,
   operation: IRankMapper,
@@ -111,7 +111,7 @@ const movePlayerPropagate = async (
   originTier: number,
   destinationTier: number,
   destRank: number,
-  ranks: IRanking,
+  ranks: IRankingModel,
   operation: IRankMapper,
 ) => {
   const origin = rankedTier(getRankMap(ranks, originTier));
@@ -148,7 +148,7 @@ const movePlayerPropagate = async (
 };
 
 const transformPlayerRankings = (
-  ranks: IRanking,
+  ranks: IRankingModel,
   newOrigin: IRank[],
   newDest: IRank[],
   originTier: number,
@@ -172,7 +172,7 @@ const movePlayerInsideTier = async (
   playerId: string,
   tierId: number,
   destIndex: number,
-  ranks: IRanking,
+  ranks: IRankingModel,
 ) => {
   const tier = rankedTier(getRankMap(ranks, tierId));
 
@@ -222,7 +222,7 @@ const movePlayerCascade = async (
   originTier: number,
   destinationTier: number,
   destinationRank: number,
-  ranks: IRanking,
+  ranks: IRankingModel,
 ) => {
   if (destinationTier - originTier > 1) {
     throw Error('Cannot move more than one TIER at a time');
@@ -250,7 +250,7 @@ const movePlayerPropagateLeft = async (
   originTier: number,
   destinationTier: number,
   destRank: number,
-  ranks: IRanking,
+  ranks: IRankingModel,
   operation: IRankMapper,
 ) => {
   console.log('VARS', originTier, destinationTier);
@@ -370,7 +370,7 @@ export const changePlayerRank = async (
   );
 };
 
-export const getPersonalRankings = async (userId: string): Promise<IRanking> =>
+export const getPersonalRankings = async (userId: string): Promise<IRankingModel> =>
   await PlayerRankings.findOne({
     userId,
   });

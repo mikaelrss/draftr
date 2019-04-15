@@ -1,10 +1,18 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { MONGO_PASSWORD, MONGO_URL, MONGO_USER } from '../config';
+import {
+  MONGO_PASSWORD,
+  MONGO_URL,
+  MONGO_USER,
+  MLAB_URL,
+  MLAB_PASSWORD,
+  MLAB_USER,
+} from '../config';
 import { IRankMap } from '../graphql/types';
 
+const MLAB_URI = `mongodb://${MLAB_USER}:${MLAB_PASSWORD}@${MLAB_URL}/draftrdev`;
 const URI = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_URL}/DraftrDev`;
 
-mongoose.connect(URI, { useNewUrlParser: true });
+mongoose.connect(MLAB_URI, { useNewUrlParser: true });
 
 const PlayerSchema = new Schema({
   playerId: Schema.Types.String,
@@ -16,15 +24,25 @@ const PlayerSchema = new Schema({
   byeWeek: Schema.Types.Number,
 });
 
-export interface ITiers extends Document {
+export interface ITiersModel extends Document {
   uuid: string;
   tierId: number;
   rankMap: IRankMap;
 }
 
-export interface IRanking extends Document {
+export interface IRankingModel extends Document {
   userId: string;
-  tiers: ITiers[];
+  tiers: ITiersModel[];
+}
+
+export interface IPlayerModel extends Document {
+  playerId: string;
+  position: string;
+  displayName: string;
+  firstName: string;
+  lastName: string;
+  team: string;
+  byeWeek: number;
 }
 
 const PlayerRankingsSchema = new Schema(
@@ -41,9 +59,9 @@ const PlayerRankingsSchema = new Schema(
   { strict: false },
 );
 
-export const PlayerRankings = mongoose.model<IRanking>(
+export const PlayerRankings = mongoose.model<IRankingModel>(
   'playerrankings',
   PlayerRankingsSchema,
 );
 
-export const Player = mongoose.model('players', PlayerSchema);
+export const Player = mongoose.model<IPlayerModel>('players', PlayerSchema);

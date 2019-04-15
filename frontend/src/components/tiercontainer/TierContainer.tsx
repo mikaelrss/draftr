@@ -62,6 +62,8 @@ const TierContainer = ({
     });
   };
 
+  console.log('RENDER TIER');
+
   return (
     <div>
       <Droppable droppableId={`tier#${tierId}`}>

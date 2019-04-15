@@ -45,6 +45,7 @@ interface IProps {
 }
 
 const Paper = ({ children, className, noShadow, noPadding }: IProps) => {
+  console.log("RENDER PAPER");
   return (
     <div
       className={classNames(

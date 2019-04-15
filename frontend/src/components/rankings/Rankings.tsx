@@ -47,6 +47,7 @@ export const getBackground = (position: PlayerPosition) => {
 
 const Rankings = () => {
   const { data, loading } = useQuery<rankings>(GET_FANTASY_FOOTBALL_RANKINGS);
+  console.log('DATA update', data);
   const changeRankMutation = useMutation<changeRank, changeRankVariables>(
     CHANGE_RANK,
   );
@@ -58,9 +59,7 @@ const Rankings = () => {
     );
 
   const onDragEnd = (result: DropResult) => {
-    console.log('END', result);
     if (!result.destination) {
-      console.log('NO destination');
       return;
     }
     changeRankMutation({
@@ -70,13 +69,7 @@ const Rankings = () => {
         destTier: +result.destination.droppableId.replace('tier#', ''),
         destRank: +result.destination.index + 1,
       },
-    })
-      .then(() => {
-        console.log('SUCC');
-      })
-      .catch(() => {
-        console.log('ERR');
-      });
+    });
   };
 
   return (

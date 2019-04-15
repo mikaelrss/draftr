@@ -6,11 +6,7 @@ type Query {
 
 type Mutation {
   createDefaultRankings(userId: String!): String
-  setPlayerPositionRank(
-    playerId: String!
-    positionRank: Float!
-    fromPositionRank: Float!
-  ): [RankedPlayer!]!
+  createPlayerList: String
   changeRank(
     playerId: String!
     originTier: Int!

@@ -24,6 +24,7 @@
     }
   },
   "jsRules": {
+    "quotemark": false,
     "max-line-length": {
       "options": [80]
     }

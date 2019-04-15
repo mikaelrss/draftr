@@ -1,37 +1,17 @@
-import { getQBs, IPlayer, IRankedPlayer } from '../api/players';
+import { getQBs, IPlayer } from '../api/players';
 import { getFantasyFootballNerdRankings } from '../api/rankings';
 import {
   changePlayerRank,
   createDefaultRankings,
   createNewTier,
-  getDefaultRankings,
   getPersonalRankings,
 } from '../services/rankingService';
-import { getAllPlayers } from '../services/playerService';
-import { IChangeRankArgs, ISetPlayerPositionArgs, ITier } from './types';
-
-const moveDownList = (
-  players: IRankedPlayer[],
-  playerIndex: number,
-  toRank: number,
-) => {
-  const previouslyRanked = players.slice(0, playerIndex);
-
-  const changed = players.slice(playerIndex + 1, toRank).map(p => ({
-    ...p,
-    positionRank: p.positionRank,
-  }));
-
-  return [
-    ...previouslyRanked,
-    ...changed,
-    {
-      ...players[playerIndex],
-      positionRank: toRank,
-    },
-    ...players.slice(toRank + 1),
-  ];
-};
+import {
+  createPlayerList,
+  getAllPlayers,
+  mapPlayer,
+} from '../services/playerService';
+import { IChangeRankArgs, ITier } from './types';
 
 const CURRENT_USER = 'mikaelrss';
 export const resolvers = {
@@ -39,22 +19,21 @@ export const resolvers = {
     players: async () => await getQBs(),
     fantasyFootballNerdRankings: async () =>
       await getFantasyFootballNerdRankings(),
-    personalRankings: async () =>
-      (await getPersonalRankings(CURRENT_USER)).tiers,
+    personalRankings: async () => {
+      console.time('AGQL -- personalRankings');
+      const iTiers = (await getPersonalRankings(CURRENT_USER)).tiers;
+      console.timeEnd('AGQL -- personalRankings');
+      return iTiers;
+    },
   },
   Mutation: {
     createDefaultRankings: async (root: any, args: { userId: string }) => {
       await createDefaultRankings(args.userId);
       return 'Created default rankings';
     },
-    setPlayerPositionRank: async (root: any, args: ISetPlayerPositionArgs) => {
-      const rankings = await getFantasyFootballNerdRankings();
-      const playerIndex = rankings.findIndex(p => p.playerId === args.playerId);
-      const movePlayerDown = args.positionRank > args.fromPositionRank;
-
-      if (movePlayerDown)
-        return moveDownList(rankings, playerIndex, args.positionRank);
-      return rankings;
+    createPlayerList: async () => {
+      await createPlayerList();
+      return 'Players inserted from Fantasy Football Nerds';
     },
     changeRank: async (root: any, args: IChangeRankArgs) => {
       console.time('changeRank');
@@ -68,20 +47,31 @@ export const resolvers = {
       console.timeEnd('changeRank');
       return result;
     },
-    createTier: async () => (await createNewTier(CURRENT_USER)).tiers,
+    createTier: async () => {
+      console.time('MUTATION == createTier');
+      const iTiersModels = (await createNewTier(CURRENT_USER)).tiers;
+      console.timeEnd('MUTATION == createTier');
+      return iTiersModels;
+    },
   },
   Tier: {
     players: async (tier: ITier) => {
-      const all = await getAllPlayers();
-      if (!tier.rankMap) return [];
-      const tierPlayerIds = Object.keys(tier.rankMap);
-      return all
-        .filter(player => tierPlayerIds.includes(player.playerId))
-        .map(p => ({
-          ...p,
-          ...tier.rankMap[p.playerId],
-        }))
-        .sort((a, b) => a.overallRank - b.overallRank);
+      const timer = async () => {
+        const all = await getAllPlayers();
+        if (!tier.rankMap) return [];
+        const tierPlayerIds = Object.keys(tier.rankMap);
+        return all
+          .filter(player => tierPlayerIds.includes(player.playerId))
+          .map(p => ({
+            ...mapPlayer(p),
+            ...tier.rankMap[p.playerId],
+          }))
+          .sort((a, b) => a.overallRank - b.overallRank);
+      };
+      console.time(`AGQL -- RESOLVER -- TIER - players - #${tier.tierId}`);
+      const result = await timer();
+      console.timeEnd(`AGQL -- RESOLVER -- TIER - players - #${tier.tierId}`);
+      return result;
     },
   },
   Player: {

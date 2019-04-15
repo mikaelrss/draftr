@@ -17,11 +17,14 @@ const styles = StyleSheet.create({
 interface IProps {
   player: rankings_personalRankings_players;
 }
-const PlayerName = ({ player }: IProps) => (
-  <div className={css(styles.name)}>
-    <TeamLogo team={player.team} className={css(styles.logo)} />
-    {player.displayName}
-  </div>
-);
+const PlayerName = ({ player }: IProps) => {
+  console.log("RENDER PLAYER NAME");
+  return (
+    <div className={css(styles.name)}>
+      <TeamLogo team={player.team} className={css(styles.logo)}/>
+      {player.displayName}
+    </div>
+  );
+};
 
 export default PlayerName;

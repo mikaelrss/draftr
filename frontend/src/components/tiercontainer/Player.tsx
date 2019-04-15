@@ -68,6 +68,7 @@ const Player = ({
   disabled,
   className,
 }: IPlayerProps) => {
+  console.log('RENDER PLAYER');
   return (
     <div
       className={classNames(
