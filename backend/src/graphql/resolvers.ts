@@ -19,7 +19,7 @@ export const resolvers = {
     players: async () => await getQBs(),
     fantasyFootballNerdRankings: async () =>
       await getFantasyFootballNerdRankings(),
-    personalRankings: async () => {
+    tiers: async () => {
       console.time('AGQL -- personalRankings');
       const iTiers = (await getPersonalRankings(CURRENT_USER)).tiers;
       console.timeEnd('AGQL -- personalRankings');

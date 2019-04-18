@@ -55,18 +55,15 @@ export const IconButton = ({
   onClick,
   className,
   disabled,
-}: IIconProps) => {
-  console.log('RENDER ICON BUTTON');
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={classNames(css(styles.iconButton), className)}
-    >
-      {getIcon(icon)}
-    </button>
-  );
-};
+}: IIconProps) => (
+  <button
+    onClick={onClick}
+    disabled={disabled}
+    className={classNames(css(styles.iconButton), className)}
+  >
+    {getIcon(icon)}
+  </button>
+);
 
 interface IDivProps {
   onClick: () => any;

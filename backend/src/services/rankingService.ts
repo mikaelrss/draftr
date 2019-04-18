@@ -176,14 +176,10 @@ const movePlayerInsideTier = async (
 ) => {
   const tier = rankedTier(getRankMap(ranks, tierId));
 
-  console.log('TIER', tier);
-
   const currentRank = tier.find(r => r.playerId === playerId);
   const currentIndex = tier.findIndex(r => r.playerId === playerId);
 
   const newRank = currentRank.overallRank - (currentIndex - destIndex + 1);
-  console.log('RANK', currentRank.overallRank);
-  console.log('new rank', newRank);
 
   const movingUp = newRank < currentRank.overallRank;
   let newTier: IRank[];
@@ -253,11 +249,8 @@ const movePlayerPropagateLeft = async (
   ranks: IRankingModel,
   operation: IRankMapper,
 ) => {
-  console.log('VARS', originTier, destinationTier);
   const origin = rankedTier(getRankMap(ranks, originTier));
-  console.log('ORIGIN', origin);
   const destination = rankedTier(getRankMap(ranks, destinationTier));
-  console.log('DESTINATION', destination);
 
   const playerIndex = origin.findIndex(r => r.playerId === playerId);
   const movedRank = origin.find(r => r.playerId === playerId);
@@ -266,7 +259,6 @@ const movePlayerPropagateLeft = async (
     ...origin.slice(0, playerIndex).map(operation),
     ...origin.slice(playerIndex + 1),
   ];
-  console.log('NEW ORIGIN', newOrigin);
 
   const newRank = {
     ...movedRank,
@@ -328,8 +320,6 @@ export const changePlayerRank = async (
 
   const { rankMap } = ranks.tiers[destinationTier - 1];
   const destinationEmpty = !rankMap || Object.keys(rankMap).length <= 0;
-  const originTierArray = ranks.tiers[originTier - 1];
-  const originRank = originTierArray.rankMap[+playerId].overallRank;
 
   if (tierDowngrade && destinationEmpty) {
     return await movePlayerCascade(
@@ -351,7 +341,6 @@ export const changePlayerRank = async (
     );
   }
   if (tierUpgrade) {
-    // TODO: This don't work
     return await movePlayerPropagateLeft(
       playerId,
       originTier,
@@ -370,7 +359,9 @@ export const changePlayerRank = async (
   );
 };
 
-export const getPersonalRankings = async (userId: string): Promise<IRankingModel> =>
+export const getPersonalRankings = async (
+  userId: string,
+): Promise<IRankingModel> =>
   await PlayerRankings.findOne({
     userId,
   });

@@ -1,5 +1,6 @@
 import React from 'react';
-import { useQuery, useMutation } from 'react-apollo-hooks';
+import { graphql, ChildMutateProps } from 'react-apollo';
+import { useQuery } from 'react-apollo-hooks';
 import { StyleSheet, css } from 'aphrodite';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
@@ -12,6 +13,7 @@ import { PlayerPosition } from '../../types/graphqltypes';
 import AddTier from '../addtier/AddTier';
 import Spinner from '../shared/Spinner';
 import { changeRank, changeRankVariables } from './__generated__/changeRank';
+import { generateOptimisticRankChange } from './utils';
 
 const styles = StyleSheet.create({
   box: {
@@ -45,12 +47,11 @@ export const getBackground = (position: PlayerPosition) => {
   }
 };
 
-const Rankings = () => {
+type ChildProps = ChildMutateProps<{}, changeRank, changeRankVariables>;
+type IProps = ChildProps;
+
+const Rankings = ({ mutate }: IProps) => {
   const { data, loading } = useQuery<rankings>(GET_FANTASY_FOOTBALL_RANKINGS);
-  console.log('DATA update', data);
-  const changeRankMutation = useMutation<changeRank, changeRankVariables>(
-    CHANGE_RANK,
-  );
   if (loading || !data)
     return (
       <div className={css(styles.centered)}>
@@ -62,12 +63,32 @@ const Rankings = () => {
     if (!result.destination) {
       return;
     }
-    changeRankMutation({
+
+    const playerId = result.draggableId;
+
+    const origTier = +result.source.droppableId.replace('tier#', '');
+    const destTier = +result.destination.droppableId.replace('tier#', '');
+    const destRank = +result.destination.index + 1;
+
+    const optimisticResponse = generateOptimisticRankChange(
+      {
+        playerId,
+        originTier: origTier,
+        destinationTier: destTier,
+        destinationRank: destRank,
+      },
+      data,
+    );
+
+    mutate({
       variables: {
-        playerId: result.draggableId,
-        origTier: +result.source.droppableId.replace('tier#', ''),
-        destTier: +result.destination.droppableId.replace('tier#', ''),
-        destRank: +result.destination.index + 1,
+        playerId,
+        origTier,
+        destTier,
+        destRank,
+      },
+      optimisticResponse: {
+        changeRank: optimisticResponse,
       },
     });
   };
@@ -75,7 +96,7 @@ const Rankings = () => {
   return (
     <div className={css(styles.box)}>
       <DragDropContext onDragEnd={onDragEnd}>
-        {data.personalRankings.map(tier => (
+        {data.tiers.map(tier => (
           <TierContainer
             tierId={tier.tierId}
             players={tier.players}
@@ -88,4 +109,8 @@ const Rankings = () => {
   );
 };
 
-export default Rankings;
+const withApollo = graphql<{}, changeRank, changeRankVariables, ChildProps>(
+  CHANGE_RANK,
+);
+
+export default withApollo(Rankings);

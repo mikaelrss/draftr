@@ -1,7 +1,7 @@
 type Query {
   players: [Player!]!
   fantasyFootballNerdRankings: [RankedPlayer!]!
-  personalRankings: [Tier!]!
+  tiers: [Tier!]!
 }
 
 type Mutation {

@@ -6,7 +6,7 @@ const cache = new InMemoryCache({
   dataIdFromObject: (obj: any) => obj.uuid,
 });
 
-const uri = 'http://localhost:3000/graphql';
+const uri = 'http://localhost:4000/graphql';
 
 export const client = new ApolloClient({
   uri,

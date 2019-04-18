@@ -9,7 +9,7 @@ import PlayerInfo from '../players/PlayerInfo';
 import { getBackground } from '../rankings/Rankings';
 import { removePlayer } from './TeamActions';
 import { ClickableSurface } from '../shared/Button';
-import { rankings_personalRankings_players } from '../rankings/__generated__/rankings';
+import { rankings_tiers_players } from '../rankings/__generated__/rankings';
 
 const styles = StyleSheet.create({
   team: {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 });
 
 interface IStateProps {
-  selectedPlayers: rankings_personalRankings_players[];
+  selectedPlayers: rankings_tiers_players[];
 }
 
 interface IDispatchProps {

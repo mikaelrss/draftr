@@ -15,7 +15,7 @@ import {
 import { DEFAULT_PADDING } from '../../styles/paddings';
 import PlayerName from './PlayerName';
 import { getBackground } from '../rankings/Rankings';
-import { rankings_personalRankings_players } from '../rankings/__generated__/rankings';
+import { rankings_tiers_players } from '../rankings/__generated__/rankings';
 
 const styles = StyleSheet.create({
   disabled: {
@@ -51,12 +51,12 @@ const styles = StyleSheet.create({
 });
 
 interface IDispatchProps {
-  select: (player: rankings_personalRankings_players) => void;
-  take: (player: rankings_personalRankings_players) => void;
+  select: (player: rankings_tiers_players) => void;
+  take: (player: rankings_tiers_players) => void;
 }
 
 type IPlayerProps = {
-  player: rankings_personalRankings_players;
+  player: rankings_tiers_players;
   disabled?: boolean;
   className?: string;
 } & IDispatchProps;
@@ -67,38 +67,35 @@ const Player = ({
   take,
   disabled,
   className,
-}: IPlayerProps) => {
-  console.log('RENDER PLAYER');
-  return (
-    <div
-      className={classNames(
-        css(
-          styles.player,
-          disabled && styles.disabled,
-          getBackground(player.position),
-        ),
-        className,
-      )}
-    >
-      <PlayerName player={player} />
-      <div>{player.overallRank}</div>
-      <div>
-        <IconButton
-          icon="done"
-          onClick={() => select(player)}
-          disabled={disabled}
-        />
-        <IconButton
-          icon="clear"
-          className={css(styles.clear)}
-          onClick={() => take(player)}
-          disabled={disabled}
-        />
-      </div>
-      {disabled && <div className={css(styles.shade)} />}
+}: IPlayerProps) => (
+  <div
+    className={classNames(
+      css(
+        styles.player,
+        disabled && styles.disabled,
+        getBackground(player.position),
+      ),
+      className,
+    )}
+  >
+    <PlayerName player={player} />
+    <div>{player.overallRank}</div>
+    <div>
+      <IconButton
+        icon="done"
+        onClick={() => select(player)}
+        disabled={disabled}
+      />
+      <IconButton
+        icon="clear"
+        className={css(styles.clear)}
+        onClick={() => take(player)}
+        disabled={disabled}
+      />
     </div>
-  );
-};
+    {disabled && <div className={css(styles.shade)} />}
+  </div>
+);
 
 const withRedux = connect<{}, IDispatchProps>(
   null,

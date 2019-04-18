@@ -44,22 +44,19 @@ interface IProps {
   noPadding?: boolean;
 }
 
-const Paper = ({ children, className, noShadow, noPadding }: IProps) => {
-  console.log("RENDER PAPER");
-  return (
-    <div
-      className={classNames(
-        className,
-        css(
-          styles.paper,
-          noShadow && styles.noShadow,
-          noPadding && styles.noPadding,
-        ),
-      )}
-    >
-      {children}
-    </div>
-  );
-};
+const Paper = ({ children, className, noShadow, noPadding }: IProps) => (
+  <div
+    className={classNames(
+      className,
+      css(
+        styles.paper,
+        noShadow && styles.noShadow,
+        noPadding && styles.noPadding,
+      ),
+    )}
+  >
+    {children}
+  </div>
+);
 
 export default Paper;

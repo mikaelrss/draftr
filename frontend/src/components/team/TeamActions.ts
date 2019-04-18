@@ -1,4 +1,4 @@
-import { rankings_personalRankings_players } from '../rankings/__generated__/rankings';
+import { rankings_tiers_players } from '../rankings/__generated__/rankings';
 
 export const SELECT_PLAYER = 'SELECT_PLAYER';
 export const PLAYER_TAKEN = 'PLAYER_TAKEN';
@@ -6,12 +6,12 @@ export const REMOVE_PLAYER = 'REMOVE_PLAYER';
 
 export interface ISelectPlayerAction {
   type: typeof SELECT_PLAYER;
-  payload: rankings_personalRankings_players;
+  payload: rankings_tiers_players;
 }
 
 export interface IPlayerTakenAction {
   type: typeof PLAYER_TAKEN;
-  payload: rankings_personalRankings_players;
+  payload: rankings_tiers_players;
 }
 
 export interface IRemovePlayerAction {
@@ -19,12 +19,12 @@ export interface IRemovePlayerAction {
   payload: string;
 }
 
-export const selectPlayer = (player: rankings_personalRankings_players) => ({
+export const selectPlayer = (player: rankings_tiers_players) => ({
   type: SELECT_PLAYER,
   payload: player,
 });
 
-export const playerTaken = (player: rankings_personalRankings_players) => ({
+export const playerTaken = (player: rankings_tiers_players) => ({
   type: PLAYER_TAKEN,
   payload: player,
 });

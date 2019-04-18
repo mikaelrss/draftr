@@ -52,7 +52,7 @@ const AddTier = () => {
     update: (proxy, mutationResult) => {
       const data = proxy.readQuery({ query: GET_FANTASY_FOOTBALL_RANKINGS });
       // @ts-ignore
-      data.personalRankings.push({
+      data.tiers.push({
         ...mutationResult.data.createTier.slice(-1)[0],
         players: [],
       });

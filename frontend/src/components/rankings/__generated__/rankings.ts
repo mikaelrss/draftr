@@ -8,7 +8,7 @@ import { PlayerPosition, NFLTeam } from "./../../../types/graphqltypes";
 // GraphQL query operation: rankings
 // ====================================================
 
-export interface rankings_personalRankings_players {
+export interface rankings_tiers_players {
   __typename: "RankedPlayer";
   playerId: string;
   displayName: string;
@@ -18,13 +18,13 @@ export interface rankings_personalRankings_players {
   team: NFLTeam;
 }
 
-export interface rankings_personalRankings {
+export interface rankings_tiers {
   __typename: "Tier";
   uuid: string;
   tierId: number;
-  players: rankings_personalRankings_players[];
+  players: rankings_tiers_players[];
 }
 
 export interface rankings {
-  personalRankings: rankings_personalRankings[];
+  tiers: rankings_tiers[];
 }

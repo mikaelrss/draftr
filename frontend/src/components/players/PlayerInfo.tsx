@@ -1,10 +1,10 @@
 import React from 'react';
 
 import PlayerName from '../tiercontainer/PlayerName';
-import { rankings_personalRankings_players } from '../rankings/__generated__/rankings';
+import { rankings_tiers_players } from '../rankings/__generated__/rankings';
 
 interface IProps {
-  player: rankings_personalRankings_players;
+  player: rankings_tiers_players;
 }
 
 const PlayerInfo = ({ player }: IProps) => {
