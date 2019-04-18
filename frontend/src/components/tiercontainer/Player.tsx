@@ -17,6 +17,7 @@ import PlayerName from './PlayerName';
 import { getBackground } from '../rankings/Rankings';
 import { rankings_tiers_players } from '../rankings/__generated__/rankings';
 
+export const PLAYER_HEIGHT = 50;
 const styles = StyleSheet.create({
   disabled: {
     opacity: 0.35,
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
     width: '100%',
     top: 0,
-    height: '50px',
+    height: `${PLAYER_HEIGHT}px`,
     left: `-${DEFAULT_PADDING / 2}px`,
   },
   rb: { backgroundColor: `${RB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },

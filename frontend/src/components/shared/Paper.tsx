@@ -8,7 +8,6 @@ import { SECONDARY } from '../../styles/colors';
 const styles = StyleSheet.create({
   paper: {
     maxHeight: '600px',
-    overflowY: 'auto',
     backgroundColor: 'white',
     boxSizing: 'border-box',
     padding: `${DEFAULT_PADDING / 2}px`,

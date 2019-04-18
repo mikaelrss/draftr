@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import Paper from '../shared/Paper';
-import Player from './Player';
+import Player, { PLAYER_HEIGHT } from './Player';
 import selector from './selector';
 import { rankings_tiers_players } from '../rankings/__generated__/rankings';
 
@@ -14,8 +14,15 @@ const styles = StyleSheet.create({
   playerDragging: {
     backgroundColor: 'lightgreen',
   },
+  defaultPaper: {
+    paddingBottom: '0 !important',
+    overflowY: 'auto',
+  },
   paper: {
     minHeight: '300px',
+  },
+  isDraggingOver: {
+    paddingBottom: `${PLAYER_HEIGHT}px !important`,
   },
 });
 
@@ -37,12 +44,16 @@ const TierContainer = ({ tierId, players, passed, className }: Props) => {
   return (
     <div>
       <Droppable droppableId={`tier#${tierId}`}>
-        {provided => (
+        {(provided, snapshot) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
             Tier {tierId}
             <Paper
               className={classNames(
-                css(players.length === 0 && styles.paper),
+                css(
+                  styles.defaultPaper,
+                  players.length === 0 && styles.paper,
+                  snapshot.isDraggingOver && styles.isDraggingOver,
+                ),
                 className,
               )}
               noPadding
@@ -53,7 +64,7 @@ const TierContainer = ({ tierId, players, passed, className }: Props) => {
                   index={index}
                   key={player.playerId}
                 >
-                  {(draggableProvided, { isDragging }) => (
+                  {(draggableProvided, prop) => (
                     <div
                       ref={draggableProvided.innerRef}
                       {...draggableProvided.draggableProps}
@@ -63,7 +74,9 @@ const TierContainer = ({ tierId, players, passed, className }: Props) => {
                         player={player}
                         key={player.playerId}
                         disabled={isDisabled(player.playerId)}
-                        className={css(isDragging && styles.playerDragging)}
+                        className={css(
+                          prop.isDragging && styles.playerDragging,
+                        )}
                       />
                     </div>
                   )}
