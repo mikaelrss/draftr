@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    border: `3px dotted ${SECONDARY}`,
+    border: `3px dashed ${SECONDARY}`,
   },
   container: {
     transition: 'opacity 150ms ease-in-out',

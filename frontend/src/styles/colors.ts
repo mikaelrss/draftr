@@ -5,7 +5,7 @@ const FLAX = '#ECDD7B';
 const MYRTLE_GREEN = '#1D7874';
 const DEEP_KOAMARU = '#333452';
 const ORANGE_SODA = '#FE5E41';
-const ORANGE_SODA_OPACITY = 'rgba(254, 94, 65, 0.61)';
+const ORANGE_SODA_OPACITY = 'rgba(254, 94, 65, 0.41)';
 
 export const RB_COLOR = FLAX;
 export const WR_COLOR = MYRTLE_GREEN;

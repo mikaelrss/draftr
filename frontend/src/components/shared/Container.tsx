@@ -5,6 +5,7 @@ import { DEFAULT_PADDING } from '../../styles/paddings';
 const style = StyleSheet.create({
   content: {
     marginTop: `${DEFAULT_PADDING}px`,
+    padding: `0 ${DEFAULT_PADDING}px`,
   },
 });
 

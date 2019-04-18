@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 });
 
 interface IProps {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   noShadow?: boolean;
   noPadding?: boolean;
