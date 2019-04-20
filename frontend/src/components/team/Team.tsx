@@ -23,6 +23,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gridGap: `${DEFAULT_PADDING / 2}px`,
     gridTemplateColumns: 'repeat(auto-fill, 200px)',
+    backgroundColor: 'transparent !important',
+    border: 'none !important',
   },
   paper: {
     padding: `${DEFAULT_PADDING / 4}px`,
@@ -34,6 +36,7 @@ const styles = StyleSheet.create({
   },
   container: {},
   placeholder: {
+    backgroundColor: 'transparent !important',
     width: '200px',
     border: `2px dashed ${HIGHLIGHT_COLOR}`,
     height: `42px`,

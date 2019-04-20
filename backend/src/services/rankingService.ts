@@ -25,6 +25,7 @@ export const createDefaultRankings = async (userId: string) => {
 
   const test = new PlayerRankings(testObject);
   test.save();
+  return test;
 };
 
 export const createNewTier = async (userId: string): Promise<IRankingModel> => {
@@ -361,10 +362,16 @@ export const changePlayerRank = async (
 
 export const getPersonalRankings = async (
   userId: string,
-): Promise<IRankingModel> =>
-  await PlayerRankings.findOne({
+): Promise<IRankingModel> => {
+  const ranks = await PlayerRankings.findOne({
     userId,
   });
+  if (ranks == null) {
+    return await createDefaultRankings(userId);
+    console.log(ranks);
+  }
+  return ranks;
+};
 
 export const getDefaultRankings = async () =>
   await PlayerRankings.findOne({

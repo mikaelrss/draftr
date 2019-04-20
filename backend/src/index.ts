@@ -1,20 +1,39 @@
 import { ApolloServer } from 'apollo-server';
 import { importSchema } from 'graphql-import';
+import jwt from 'jsonwebtoken';
+
 import path from 'path';
 
 import { resolvers } from './graphql/resolvers';
 import { ENGINE_API_KEY } from './config';
+import { getKey, options } from './auth/JwtVerifier';
 
 const typeDefs = importSchema(
   path.join(__dirname, '../src/graphql/schema.graphql'),
 );
 const PORT = process.env.PORT || 4000;
 
+export interface IContext {
+  user: string;
+}
+
 const server = new ApolloServer({
   // @ts-ignore
   typeDefs,
   resolvers,
   introspection: true,
+  context: async context => {
+    const authHeader = context.req.headers.authorization.replace('Bearer ', '');
+    const user = await new Promise((resolve, reject) => {
+      jwt.verify(authHeader, getKey, options, (err: any, decoded: any) => {
+        if (err) reject(err);
+        resolve(decoded.sub);
+      });
+    });
+    return {
+      user,
+    };
+  },
   engine: {
     apiKey: ENGINE_API_KEY,
   },

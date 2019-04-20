@@ -12,17 +12,18 @@ import {
   mapPlayer,
 } from '../services/playerService';
 import { IChangeRankArgs, ITier } from './types';
+import { IContext } from '../index';
 
-const CURRENT_USER = 'mikaelrss';
 export const resolvers = {
   Query: {
     players: async () => await getQBs(),
     fantasyFootballNerdRankings: async () =>
       await getFantasyFootballNerdRankings(),
-    tiers: async () => {
-      console.time('AGQL -- personalRankings');
-      const iTiers = (await getPersonalRankings(CURRENT_USER)).tiers;
-      console.timeEnd('AGQL -- personalRankings');
+    tiers: async (root: any, args: any, context: IContext) => {
+      console.log(context.user);
+      // console.time('AGQL -- personalRankings');
+      const iTiers = (await getPersonalRankings(context.user)).tiers;
+      // console.timeEnd('AGQL -- personalRankings');
       return iTiers;
     },
   },
@@ -35,22 +36,22 @@ export const resolvers = {
       await createPlayerList();
       return 'Players inserted from Fantasy Football Nerds';
     },
-    changeRank: async (root: any, args: IChangeRankArgs) => {
-      console.time('changeRank');
+    changeRank: async (root: any, args: IChangeRankArgs, context: IContext) => {
+      // console.time('changeRank');
       const result = await changePlayerRank(
         args.playerId,
         args.originTier,
         args.destinationTier,
         args.destinationRank,
-        'mikaelrss',
+        context.user,
       );
-      console.timeEnd('changeRank');
+      // console.timeEnd('changeRank');
       return result;
     },
-    createTier: async () => {
-      console.time('MUTATION == createTier');
-      const iTiersModels = (await createNewTier(CURRENT_USER)).tiers;
-      console.timeEnd('MUTATION == createTier');
+    createTier: async (root: any, args: any, context: IContext) => {
+      // console.time('MUTATION == createTier');
+      const iTiersModels = (await createNewTier(context.user)).tiers;
+      // console.timeEnd('MUTATION == createTier');
       return iTiersModels;
     },
   },
@@ -68,9 +69,9 @@ export const resolvers = {
           }))
           .sort((a, b) => a.overallRank - b.overallRank);
       };
-      console.time(`AGQL -- RESOLVER -- TIER - players - #${tier.tierId}`);
+      // console.time(`AGQL -- RESOLVER -- TIER - players - #${tier.tierId}`);
       const result = await timer();
-      console.timeEnd(`AGQL -- RESOLVER -- TIER - players - #${tier.tierId}`);
+      // console.timeEnd(`AGQL -- RESOLVER -- TIER - players - #${tier.tierId}`);
       return result;
     },
   },

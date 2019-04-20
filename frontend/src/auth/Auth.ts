@@ -20,11 +20,14 @@ export interface IIdTokenPayload {
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
-    domain: 'draftr.eu.auth0.com',
-    clientID: 'QuCAaoAt3NBXInVnjUGvALyzHggEoxUm',
-    redirectUri: 'http://localhost:3000/callback',
-    responseType: 'token id_token',
-    scope: 'openid profile',
+    audience: process.env.REACT_APP_AUDIENCE,
+    // @ts-ignore
+    domain: process.env.REACT_APP_DOMAIN,
+    // @ts-ignore
+    clientID: process.env.REACT_APP_CLIENT_ID,
+    redirectUri: process.env.REACT_APP_REDIRECT_URI,
+    responseType: process.env.REACT_APP_RESPONSE_TYPE,
+    scope: process.env.REACT_APP_SCOPE,
   });
 
   accessToken: string | null;
@@ -44,18 +47,20 @@ export default class Auth {
 
   // prettier-ignore
   handleAuthentication = () => {
-    this.auth0.parseHash((err, authResult) => {
+    this.auth0.parseHash((err: any, authResult: any) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
+        window.location.reload(true);
       } else if (err) {
         history.replace('/home');
         console.log(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
       }
     });
   }
 
-  getAccessToken = () => this.accessToken;
+  // prettier-ignore
+  getAccessToken = () =>
+    this.accessToken || localStorage.getItem('accessToken')
 
   getIdToken = () => this.idToken;
 
@@ -78,20 +83,15 @@ export default class Auth {
     localStorage.setItem('expiresAt', expiresAt.toString());
     localStorage.setItem('idTokenPayload', JSON.stringify(idTokenPayload));
 
-    // navigate to the home route
-    history.replace('/home');
   }
 
   renewSession() {
-    this.auth0.checkSession({}, (err, authResult) => {
+    this.auth0.checkSession({}, (err: any, authResult: any) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
       } else if (err) {
         this.logout();
         console.log(err);
-        alert(
-          `Could not get a new token (${err.error}: ${err.error_description}).`,
-        );
       }
     });
   }
