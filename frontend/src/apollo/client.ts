@@ -7,7 +7,12 @@ const cache = new InMemoryCache({
   dataIdFromObject: (obj: any) => obj.uuid,
 });
 
-const uri = 'http://localhost:4000/graphql';
+const uri =
+  process.env.NODE_ENV === 'production'
+    ? 'https://draftr-api.herokuapp.com/graphql'
+    : 'http://localhost:4000/graphql';
+
+console.log('ur.', uri);
 
 export const client = new ApolloClient({
   uri,
@@ -22,5 +27,8 @@ export const client = new ApolloClient({
     if (error.graphQLErrors) {
       error.graphQLErrors.forEach((err: any) => toast.error(err.message));
     }
+  },
+  fetchOptions: {
+    credentials: 'include',
   },
 });

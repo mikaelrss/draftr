@@ -20,8 +20,9 @@
     "start:dev": "run-p start:fe:dev start:be:dev",
     "start:fe:dev": "yarn workspace frontend start",
     "start:be:dev": "yarn workspace backend start:dev",
-    "start": "yarn workspace backend start",
-    "lint": "tslint -p tslint.json"
+    "start": "yarn workspace frontend start:prod",
+    "lint": "tslint -p tslint.json",
+    "heroku-postbuild": "yarn run build"
   },
   "devDependencies": {
     "husky": "^1.3.1",

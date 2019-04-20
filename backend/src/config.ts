@@ -8,6 +8,7 @@ export const {
   MONGO_URL,
   MONGO_USER,
   MONGO_PASSWORD,
+  DB_NAME,
   BASE_URL,
   API_KEY,
   ENGINE_API_KEY,

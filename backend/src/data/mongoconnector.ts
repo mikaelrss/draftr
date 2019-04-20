@@ -6,13 +6,14 @@ import {
   MLAB_URL,
   MLAB_PASSWORD,
   MLAB_USER,
+  DB_NAME,
 } from '../config';
 import { IRankMap } from '../graphql/types';
 
 const MLAB_URI = `mongodb://${MLAB_USER}:${MLAB_PASSWORD}@${MLAB_URL}/draftrdev`;
-const URI = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_URL}/DraftrDev`;
+const URI = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_URL}/${DB_NAME}`;
 
-mongoose.connect(MLAB_URI, { useNewUrlParser: true });
+mongoose.connect(URI, { useNewUrlParser: true });
 
 const PlayerSchema = new Schema({
   playerId: Schema.Types.String,

@@ -1,5 +1,10 @@
 import jwksClient from 'jwks-rsa';
-import { AUTH_AUDIENCE, AUTH_ISSUER, AUTH_ALGORITHM, AUTH_URL } from '../config';
+import {
+  AUTH_AUDIENCE,
+  AUTH_ISSUER,
+  AUTH_ALGORITHM,
+  AUTH_URL,
+} from '../config';
 
 export const client = jwksClient({
   jwksUri: AUTH_URL,
@@ -8,6 +13,7 @@ export const client = jwksClient({
 export const getKey = (header: any, cb: any) => {
   client.getSigningKey(header.kid, (err: any, key: any) => {
     const signingKey = key.publicKey || key.rsaPublicKey;
+    console.log('KEY', signingKey);
     cb(null, signingKey);
   });
 };

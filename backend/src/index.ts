@@ -21,12 +21,22 @@ const server = new ApolloServer({
   // @ts-ignore
   typeDefs,
   resolvers,
+  cors: {
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  },
   introspection: true,
+  playground: true,
   context: async context => {
-    const authHeader = context.req.headers.authorization.replace('Bearer ', '');
+    const authorization = context.req.headers.authorization;
+    console.log('AUTH header', authorization);
+    if (!authorization) return {};
+    const authHeader = authorization.replace('Bearer ', '');
     const user = await new Promise((resolve, reject) => {
       jwt.verify(authHeader, getKey, options, (err: any, decoded: any) => {
         if (err) reject(err);
+        console.log('DECODED', decoded);
+        if (!decoded) return {};
         resolve(decoded.sub);
       });
     });
@@ -38,6 +48,7 @@ const server = new ApolloServer({
     apiKey: ENGINE_API_KEY,
   },
 });
+
 server.setGraphQLPath('/graphql');
 
 server.listen({ port: PORT }).then((res: any) => {

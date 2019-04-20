@@ -42,11 +42,13 @@
     "redux-starter-kit": "^0.4.3",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
+    "serve": "^11.0.0",
     "styled-components": "^4.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "start-prod": "serve -s build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "update-schema": "apollo schema:download",
@@ -61,7 +63,6 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "proxy": "http://localhost:4000",
   "devDependencies": {
     "apollo": "^2.8.3"
   }
