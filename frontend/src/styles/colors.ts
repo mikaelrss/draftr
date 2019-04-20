@@ -1,5 +1,6 @@
 const BLUE = '#2196f3';
 const CHERRY = '#f50057';
+const CHERRY_DARK = '#b80046';
 
 const FLAX = '#ECDD7B';
 const MYRTLE_GREEN = '#1D7874';
@@ -15,6 +16,7 @@ export const TE_COLOR = ORANGE_SODA;
 export const PRIMARY = BLUE;
 export const PRIMARY_TEXT = 'white';
 export const SECONDARY = CHERRY;
+export const SECONDARY_HOVER = CHERRY_DARK;
 export const SECONDARY_TEXT = 'white';
 
 export const HIGHLIGHT_COLOR = ORANGE_SODA_OPACITY;

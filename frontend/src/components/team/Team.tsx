@@ -69,7 +69,7 @@ const Team = ({ selectedPlayers, remove }: IProps) => {
         </ClickableSurface>
       ))}
       {placeholders.map(p => (
-        <Paper className={css(styles.placeholder)} />
+        <Paper className={css(styles.placeholder)} key={`${p.playerId}-plch`} />
       ))}
     </Paper>
   );

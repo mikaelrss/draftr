@@ -5,7 +5,13 @@ import classNames from 'classnames';
 import { ReactComponent as Done } from '../../svg/done.svg';
 import { ReactComponent as Clear } from '../../svg/clear.svg';
 import { ReactComponent as Add } from '../../svg/add.svg';
-import { PRIMARY, PRIMARY_TEXT } from '../../styles/colors';
+import {
+  PRIMARY,
+  PRIMARY_TEXT,
+  SECONDARY,
+  SECONDARY_HOVER,
+} from '../../styles/colors';
+import { DEFAULT_PADDING } from '../../styles/paddings';
 
 type Icon = 'done' | 'clear' | 'add';
 
@@ -29,6 +35,17 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
     width: '100%',
     height: '100%',
+  },
+  button: {
+    height: '32px',
+    border: 'none',
+    outline: 'none',
+    backgroundColor: SECONDARY,
+    color: PRIMARY_TEXT,
+    padding: `0 ${DEFAULT_PADDING}px`,
+    ':hover': {
+      backgroundColor: SECONDARY_HOVER,
+    },
   },
 });
 
@@ -83,3 +100,21 @@ export const ClickableSurface = ({
     {children}
   </div>
 );
+
+interface IButtonProps {
+  onClick: () => any;
+  value?: string;
+  className?: string;
+  style?: object;
+}
+
+export const Button = ({ onClick, className, style, value }: IButtonProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className={classNames(className, css(styles.button))}
+    >
+      {value}
+    </button>
+  );
+};
