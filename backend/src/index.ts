@@ -29,13 +29,11 @@ const server = new ApolloServer({
   playground: true,
   context: async context => {
     const authorization = context.req.headers.authorization;
-    console.log('AUTH header', authorization);
     if (!authorization) return {};
     const authHeader = authorization.replace('Bearer ', '');
     const user = await new Promise((resolve, reject) => {
       jwt.verify(authHeader, getKey, options, (err: any, decoded: any) => {
         if (err) reject(err);
-        console.log('DECODED', decoded);
         if (!decoded) return {};
         resolve(decoded.sub);
       });

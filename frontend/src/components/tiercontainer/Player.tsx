@@ -12,7 +12,7 @@ import {
   TE_COLOR,
   WR_COLOR,
 } from '../../styles/colors';
-import { DEFAULT_PADDING } from '../../styles/paddings';
+import { DEFAULT_PADDING } from '../../styles/constants';
 import PlayerName from './PlayerName';
 import { getBackground } from '../rankings/Rankings';
 import { rankings_tiers_players } from '../rankings/__generated__/rankings';

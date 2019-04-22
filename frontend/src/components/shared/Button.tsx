@@ -11,7 +11,7 @@ import {
   SECONDARY,
   SECONDARY_HOVER,
 } from '../../styles/colors';
-import { DEFAULT_PADDING } from '../../styles/paddings';
+import { DEFAULT_PADDING } from '../../styles/constants';
 
 type Icon = 'done' | 'clear' | 'add';
 

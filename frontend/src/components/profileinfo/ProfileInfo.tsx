@@ -3,7 +3,7 @@ import { StyleSheet, css } from 'aphrodite';
 
 import AuthContext from '../../auth/AuthContext';
 import { IIdTokenPayload } from '../../auth/Auth';
-import { DEFAULT_PADDING } from '../../styles/paddings';
+import { DEFAULT_PADDING } from '../../styles/constants';
 
 const styles = StyleSheet.create({
   info: {

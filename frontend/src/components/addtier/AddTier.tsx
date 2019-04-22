@@ -6,7 +6,7 @@ import { ReactComponent as Add } from '../../svg/add.svg';
 import Paper from '../shared/Paper';
 import { ClickableSurface } from '../shared/Button';
 import { PRIMARY, PRIMARY_TEXT, SECONDARY } from '../../styles/colors';
-import { DEFAULT_PADDING } from '../../styles/paddings';
+import { DEFAULT_PADDING } from '../../styles/constants';
 import { ADD_TIER_MUTATION } from './graphql';
 import { GET_FANTASY_FOOTBALL_RANKINGS } from '../rankings/graphql';
 import Spinner from '../shared/Spinner';

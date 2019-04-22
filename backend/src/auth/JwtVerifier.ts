@@ -13,7 +13,6 @@ export const client = jwksClient({
 export const getKey = (header: any, cb: any) => {
   client.getSigningKey(header.kid, (err: any, key: any) => {
     const signingKey = key.publicKey || key.rsaPublicKey;
-    console.log('KEY', signingKey);
     cb(null, signingKey);
   });
 };

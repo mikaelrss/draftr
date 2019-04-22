@@ -6,7 +6,7 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 import { CHANGE_RANK, GET_FANTASY_FOOTBALL_RANKINGS } from './graphql';
 import TierContainer from '../tiercontainer/TierContainer';
-import { DEFAULT_PADDING } from '../../styles/paddings';
+import { DEFAULT_PADDING } from '../../styles/constants';
 import { QB_COLOR, RB_COLOR, TE_COLOR, WR_COLOR } from '../../styles/colors';
 import { rankings } from './__generated__/rankings';
 import { PlayerPosition } from '../../types/graphqltypes';
