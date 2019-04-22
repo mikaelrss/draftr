@@ -21,7 +21,6 @@ const style = StyleSheet.create({
 
 const AppHeader = () => {
   const auth = useContext(AuthContext);
-  console.log(auth);
   return (
     <header className={css(style.header)}>
       <div>Draftr</div>

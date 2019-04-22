@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import thunk from 'redux-thunk';
 
 import team, { ITeamState } from './team';
@@ -14,10 +14,7 @@ const rootReducer = combineReducers<IState>({
 
 const store = createStore(
   rootReducer,
-  compose(
-    applyMiddleware(thunk),
-    composeWithDevTools(),
-  ),
+  composeWithDevTools(applyMiddleware(thunk)),
 );
 
 export default store;

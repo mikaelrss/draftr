@@ -23,7 +23,6 @@ const ProfileInfo = () => {
   const auth = useContext(AuthContext);
   if (!auth.idTokenPayload) return null;
   const idTokenPayload: IIdTokenPayload = auth.idTokenPayload;
-  console.log(idTokenPayload);
   return (
     <div className={css(styles.info)}>
       <img src={idTokenPayload.picture} className={css(styles.picture)} />
