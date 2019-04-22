@@ -7,7 +7,14 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { CHANGE_RANK, GET_FANTASY_FOOTBALL_RANKINGS } from './graphql';
 import TierContainer from '../tiercontainer/TierContainer';
 import { DEFAULT_PADDING } from '../../styles/constants';
-import { QB_COLOR, RB_COLOR, TE_COLOR, WR_COLOR } from '../../styles/colors';
+import {
+  DEF_COLOR,
+  K_COLOR,
+  QB_COLOR,
+  RB_COLOR,
+  TE_COLOR,
+  WR_COLOR,
+} from '../../styles/colors';
 import { rankings } from './__generated__/rankings';
 import { PlayerPosition } from '../../types/graphqltypes';
 import AddTier from '../addtier/AddTier';
@@ -22,10 +29,12 @@ const styles = StyleSheet.create({
     gridGap: `${DEFAULT_PADDING}px`,
     justifyContent: 'center',
   },
-  rb: { backgroundColor: `${RB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
-  wr: { backgroundColor: `${WR_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
-  te: { backgroundColor: `${TE_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
-  qb: { backgroundColor: `${QB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
+  rb: { backgroundColor: `${RB_COLOR}90`, paddingTop: 0, paddingBottom: 0 },
+  wr: { backgroundColor: `${WR_COLOR}90`, paddingTop: 0, paddingBottom: 0 },
+  te: { backgroundColor: `${TE_COLOR}90`, paddingTop: 0, paddingBottom: 0 },
+  qb: { backgroundColor: `${QB_COLOR}90`, paddingTop: 0, paddingBottom: 0 },
+  def: { backgroundColor: `${DEF_COLOR}90`, paddingTop: 0, paddingBottom: 0 },
+  k: { backgroundColor: `${K_COLOR}90`, paddingTop: 0, paddingBottom: 0 },
   centered: {
     width: '60px',
     marginLeft: 'auto',
@@ -34,7 +43,7 @@ const styles = StyleSheet.create({
 });
 
 export const getBackground = (position: PlayerPosition) => {
-  const { QB, RB, TE, WR } = PlayerPosition;
+  const { QB, RB, TE, WR, DEF, K } = PlayerPosition;
   switch (position) {
     case QB:
       return styles.qb;
@@ -44,6 +53,10 @@ export const getBackground = (position: PlayerPosition) => {
       return styles.te;
     case WR:
       return styles.wr;
+    case DEF:
+      return styles.def;
+    case K:
+      return styles.k;
   }
 };
 

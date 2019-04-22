@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import classNames from 'classnames';
 
-import { DEFAULT_PADDING } from '../../styles/constants';
+import { DEFAULT_PADDING, DROP_SHADOW } from '../../styles/constants';
 import { SECONDARY } from '../../styles/colors';
 
 const styles = StyleSheet.create({
@@ -11,8 +11,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     boxSizing: 'border-box',
     padding: `${DEFAULT_PADDING / 2}px`,
-    // prettier-ignore
-    boxShadow: '0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12)',
+    boxShadow: DROP_SHADOW,
     borderRadius: '4px',
 
     '::-webkit-scrollbar-track': {
