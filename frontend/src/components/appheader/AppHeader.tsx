@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { PRIMARY, PRIMARY_TEXT } from '../../styles/colors';
-import { DEFAULT_PADDING } from '../../styles/paddings';
+import { DEFAULT_PADDING } from '../../styles/constants';
 import { Button } from '../shared/Button';
 import AuthContext from '../../auth/AuthContext';
 import ProfileInfo from '../profileinfo/ProfileInfo';
@@ -21,7 +21,6 @@ const style = StyleSheet.create({
 
 const AppHeader = () => {
   const auth = useContext(AuthContext);
-  console.log(auth);
   return (
     <header className={css(style.header)}>
       <div>Draftr</div>

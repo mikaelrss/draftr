@@ -3,6 +3,7 @@ import { Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { ToastContainer } from 'react-toastify';
 import { StyleSheet, css } from 'aphrodite/no-important';
+import { StickyContainer } from 'react-sticky';
 import 'react-toastify/dist/ReactToastify.css';
 
 import AppHeader from '../appheader/AppHeader';
@@ -29,10 +30,12 @@ const Main = () => {
   const auth = useContext(AuthContext);
   if (auth.isAuthenticated()) {
     return (
-      <Container>
-        <Team />
-        <Rankings />
-      </Container>
+      <StickyContainer>
+        <Container>
+          <Team />
+          <Rankings />
+        </Container>
+      </StickyContainer>
     );
   }
   return (

@@ -12,8 +12,6 @@ const uri =
     ? 'https://draftr-api.herokuapp.com/graphql'
     : 'http://localhost:4000/graphql';
 
-console.log('ur.', uri);
-
 export const client = new ApolloClient({
   uri,
   cache,

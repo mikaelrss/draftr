@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import classNames from 'classnames';
 
-import { DEFAULT_PADDING } from '../../styles/paddings';
+import { DEFAULT_PADDING } from '../../styles/constants';
 import { SECONDARY } from '../../styles/colors';
 
 const styles = StyleSheet.create({

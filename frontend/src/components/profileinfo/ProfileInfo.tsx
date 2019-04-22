@@ -3,7 +3,7 @@ import { StyleSheet, css } from 'aphrodite';
 
 import AuthContext from '../../auth/AuthContext';
 import { IIdTokenPayload } from '../../auth/Auth';
-import { DEFAULT_PADDING } from '../../styles/paddings';
+import { DEFAULT_PADDING } from '../../styles/constants';
 
 const styles = StyleSheet.create({
   info: {
@@ -23,7 +23,6 @@ const ProfileInfo = () => {
   const auth = useContext(AuthContext);
   if (!auth.idTokenPayload) return null;
   const idTokenPayload: IIdTokenPayload = auth.idTokenPayload;
-  console.log(idTokenPayload);
   return (
     <div className={css(styles.info)}>
       <img src={idTokenPayload.picture} className={css(styles.picture)} />
