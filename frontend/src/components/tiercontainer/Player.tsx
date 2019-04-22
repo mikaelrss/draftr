@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { IconButton } from '../shared/Button';
 import { playerTaken, selectPlayer } from '../team/TeamActions';
 import {
+  PRIMARY_TEXT,
   QB_COLOR,
   RB_COLOR,
   SECONDARY,

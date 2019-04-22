@@ -16,7 +16,7 @@ import { getBackground } from '../rankings/Rankings';
 import { removePlayer } from './TeamActions';
 import { ClickableSurface } from '../shared/Button';
 import { rankings_tiers_players } from '../rankings/__generated__/rankings';
-import { HIGHLIGHT_COLOR } from '../../styles/colors';
+import { HIGHLIGHT_COLOR, PRIMARY } from '../../styles/colors';
 import PlayerName from '../tiercontainer/PlayerName';
 
 const styles = StyleSheet.create({
@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     [MOBILE_BREAKPOINT]: {
       left: `-${DEFAULT_PADDING / 4}px`,
     },
+    marginBottom: '0 !important',
   },
   stickyCommon: {
     height: '32px',
