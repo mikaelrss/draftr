@@ -4,11 +4,6 @@ import './index.scss';
 import App from './components/app/App';
 import * as serviceWorker from './serviceWorker';
 
-if (process.env.NODE_ENV === 'production') {
-  if (window.location.href.substr(0, 5) !== 'https') {
-    window.location.href = window.location.href.replace('http', 'https');
-  }
-}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
