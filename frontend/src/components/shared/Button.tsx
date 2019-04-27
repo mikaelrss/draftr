@@ -2,9 +2,6 @@ import React from 'react';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import classNames from 'classnames';
 
-import { ReactComponent as Done } from '../../svg/done.svg';
-import { ReactComponent as Clear } from '../../svg/clear.svg';
-import { ReactComponent as Add } from '../../svg/add.svg';
 import {
   PRIMARY,
   PRIMARY_TEXT,
@@ -12,8 +9,7 @@ import {
   SECONDARY_HOVER,
 } from '../../styles/colors';
 import { DEFAULT_PADDING } from '../../styles/constants';
-
-type Icon = 'done' | 'clear' | 'add';
+import Icon, { IconType } from './Icon';
 
 const styles = StyleSheet.create({
   iconButton: {
@@ -49,19 +45,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const getIcon = (icon: Icon) => {
-  switch (icon) {
-    case 'done':
-      return <Done />;
-    case 'clear':
-      return <Clear />;
-    case 'add':
-      return <Add />;
-  }
-};
-
 interface IIconProps {
-  icon: Icon;
+  icon: IconType;
   onClick: () => void;
   className?: string;
   disabled?: boolean;
@@ -78,7 +63,7 @@ export const IconButton = ({
     disabled={disabled}
     className={classNames(css(styles.iconButton), className)}
   >
-    {getIcon(icon)}
+    <Icon icon={icon} />
   </button>
 );
 
