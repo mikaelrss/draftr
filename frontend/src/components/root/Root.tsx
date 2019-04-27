@@ -31,8 +31,8 @@ const Main = () => {
   if (auth.isAuthenticated()) {
     return (
       <StickyContainer>
+        <Team />
         <Container>
-          <Team />
           <Rankings />
         </Container>
       </StickyContainer>
