@@ -6,7 +6,6 @@ import classNames from 'classnames';
 import { IconButton } from '../shared/Button';
 import { playerTaken, selectPlayer } from '../team/TeamActions';
 import {
-  PRIMARY_TEXT,
   QB_COLOR,
   RB_COLOR,
   SECONDARY,
@@ -17,6 +16,7 @@ import { DEFAULT_PADDING } from '../../styles/constants';
 import PlayerName from './PlayerName';
 import { getBackground } from '../rankings/Rankings';
 import { rankings_tiers_players } from '../rankings/__generated__/rankings';
+import { IconType } from '../shared/Icon';
 
 export const PLAYER_HEIGHT = 50;
 const styles = StyleSheet.create({
@@ -84,12 +84,12 @@ const Player = ({
     <div>{player.overallRank}</div>
     <div>
       <IconButton
-        icon="done"
+        icon={IconType.add}
         onClick={() => select(player)}
         disabled={disabled}
       />
       <IconButton
-        icon="clear"
+        icon={IconType.clear}
         className={css(styles.clear)}
         onClick={() => take(player)}
         disabled={disabled}
