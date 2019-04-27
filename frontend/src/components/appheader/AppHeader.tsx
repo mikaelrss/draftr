@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import { PRIMARY, PRIMARY_TEXT } from '../../styles/colors';
-import { DEFAULT_PADDING } from '../../styles/constants';
+import { DEFAULT_PADDING, MOBILE_BREAKPOINT } from '../../styles/constants';
 import { Button } from '../shared/Button';
 import AuthContext from '../../auth/AuthContext';
 import ProfileInfo from '../profileinfo/ProfileInfo';
@@ -19,6 +19,9 @@ const styles = StyleSheet.create({
     padding: `0 ${DEFAULT_PADDING}px`,
     color: PRIMARY_TEXT,
     justifyContent: 'space-between',
+    [MOBILE_BREAKPOINT]: {
+      fontSize: '0.7em',
+    },
   },
   icon: {
     width: `${ICON_SIZE}px`,
@@ -27,6 +30,9 @@ const styles = StyleSheet.create({
   titleContainer: {
     display: 'flex',
     alignItems: 'flex-end',
+    [MOBILE_BREAKPOINT]: {
+      alignItems: 'center',
+    },
   },
 });
 

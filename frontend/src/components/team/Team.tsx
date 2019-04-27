@@ -8,32 +8,33 @@ import {
   DEFAULT_PADDING,
   DESKTOP_BREAKPOINT,
   MOBILE_BREAKPOINT,
-  TRANSITION,
 } from '../../styles/constants';
 import { IState } from '../../redux/store';
-import PlayerInfo from '../players/PlayerInfo';
 import { getBackground } from '../rankings/Rankings';
 import { removePlayer } from './TeamActions';
 import { ClickableSurface } from '../shared/Button';
 import { rankings_tiers_players } from '../rankings/__generated__/rankings';
-import { HIGHLIGHT_COLOR, PRIMARY } from '../../styles/colors';
+import { HIGHLIGHT_COLOR } from '../../styles/colors';
 import PlayerName from '../tiercontainer/PlayerName';
 
 const styles = StyleSheet.create({
   team: {
-    maxHeight: 'unset !important',
-    margin: `0 0 ${DEFAULT_PADDING}px 60px`,
-    maxWidth: '1075px',
-    width: '100%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    position: 'relative',
     display: 'grid',
-    justifyContent: 'center',
+    gridTemplateColumns: 'repeat(auto-fill, 120px)',
     gridGap: `${DEFAULT_PADDING / 2}px`,
-    gridTemplateColumns: 'repeat(auto-fill, 200px)',
-    backgroundColor: 'transparent !important',
-    border: 'none !important',
-    transition: `backgroundColor ${TRANSITION}`,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    left: '0',
+    width: '100%',
+    [DESKTOP_BREAKPOINT]: {
+      gridTemplateColumns: 'repeat(auto-fill, 170px)',
+      fontSize: '0.75em',
+      svg: {
+        width: '20px !important',
+        height: '20px !important',
+      },
+    },
     [MOBILE_BREAKPOINT]: {
       gridTemplateColumns: 'repeat(auto-fill, 120px)',
       padding: `${DEFAULT_PADDING / 2}px 0 !important`,
@@ -52,42 +53,13 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     backgroundColor: 'transparent !important',
-    border: `2px dashed ${HIGHLIGHT_COLOR}`,
+    border: `1px dashed ${HIGHLIGHT_COLOR}`,
     boxShadow: 'unset !important',
-    [MOBILE_BREAKPOINT]: {
-      borderWidth: '1px',
-    },
-  },
-  stickyPlaceholder: {
-    borderWidth: '1px',
   },
   common: {
     maxWidth: '200px',
     width: '100%',
-    height: `42px`,
-  },
-  sticky: {
-    backgroundColor: 'white',
-    width: '100vw',
-    maxWidth: 'unset',
-    position: 'relative',
-    left: `-${DEFAULT_PADDING}px`,
-    gridTemplateColumns: 'repeat(auto-fill, 120px)',
-    [DESKTOP_BREAKPOINT]: {
-      gridTemplateColumns: 'repeat(auto-fill, 170px)',
-      fontSize: '0.75em',
-      svg: {
-        width: '20px !important',
-        height: '20px !important',
-      },
-    },
-    [MOBILE_BREAKPOINT]: {
-      left: `-${DEFAULT_PADDING / 4}px`,
-    },
-    marginBottom: '0 !important',
-  },
-  stickyCommon: {
-    height: '32px',
+    height: `32px`,
   },
   container: {
     zIndex: 2,
@@ -110,12 +82,9 @@ const Team = ({ selectedPlayers, remove }: IProps) => {
     .map((_, i) => ({ playerId: `placeholder-${i}` }));
   return (
     <Sticky>
-      {({ style, isSticky }) => (
+      {({ style }) => (
         <div style={style} className={css(styles.container)}>
-          <Paper
-            className={css(styles.team, isSticky && styles.sticky)}
-            noShadow
-          >
+          <Paper className={css(styles.team)} noShadow>
             {selectedPlayers.map(player => (
               <ClickableSurface
                 onClick={() => remove(player.playerId)}
@@ -126,7 +95,6 @@ const Team = ({ selectedPlayers, remove }: IProps) => {
                     getBackground(player.position),
                     styles.paper,
                     styles.common,
-                    isSticky && styles.stickyCommon,
                   )}
                 >
                   <PlayerName player={player} />
@@ -136,12 +104,7 @@ const Team = ({ selectedPlayers, remove }: IProps) => {
             ))}
             {placeholders.map(p => (
               <Paper
-                className={css(
-                  styles.placeholder,
-                  styles.common,
-                  isSticky && styles.stickyCommon,
-                  isSticky && styles.stickyPlaceholder,
-                )}
+                className={css(styles.placeholder, styles.common)}
                 key={`${p.playerId}-plch`}
               />
             ))}
