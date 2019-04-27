@@ -3,8 +3,11 @@ import { StyleSheet, css } from 'aphrodite';
 
 import AuthContext from '../../auth/AuthContext';
 import { IIdTokenPayload } from '../../auth/Auth';
-import { DEFAULT_PADDING } from '../../styles/constants';
+import { DEFAULT_PADDING, MOBILE_BREAKPOINT } from '../../styles/constants';
 import { Button } from '../shared/Button';
+
+const IMAGE_SIZE = 40;
+const MOBILE_IMAGE_SIZE = 30;
 
 const styles = StyleSheet.create({
   info: {
@@ -13,10 +16,14 @@ const styles = StyleSheet.create({
     fontSize: '0.7em',
   },
   picture: {
-    width: '40px',
-    height: '40px',
+    width: `${IMAGE_SIZE}px`,
+    height: `${IMAGE_SIZE}px`,
     borderRadius: '50%',
     marginRight: `${DEFAULT_PADDING / 2}px`,
+    [MOBILE_BREAKPOINT]: {
+      width: `${MOBILE_IMAGE_SIZE}px`,
+      height: `${MOBILE_IMAGE_SIZE}px`,
+    },
   },
   logout: {
     marginLeft: `${DEFAULT_PADDING / 2}px`,
