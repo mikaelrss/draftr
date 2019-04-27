@@ -4,6 +4,7 @@ import { StyleSheet, css } from 'aphrodite';
 import AuthContext from '../../auth/AuthContext';
 import { IIdTokenPayload } from '../../auth/Auth';
 import { DEFAULT_PADDING } from '../../styles/constants';
+import { Button } from '../shared/Button';
 
 const styles = StyleSheet.create({
   info: {
@@ -17,6 +18,9 @@ const styles = StyleSheet.create({
     borderRadius: '50%',
     marginRight: `${DEFAULT_PADDING / 2}px`,
   },
+  logout: {
+    marginLeft: `${DEFAULT_PADDING / 2}px`,
+  },
 });
 
 const ProfileInfo = () => {
@@ -26,7 +30,12 @@ const ProfileInfo = () => {
   return (
     <div className={css(styles.info)}>
       <img src={idTokenPayload.picture} className={css(styles.picture)} />
-      <div>{idTokenPayload.name}</div>
+      <div>{idTokenPayload.given_name}</div>
+      <Button
+        onClick={auth.logout}
+        className={css(styles.logout)}
+        value="Logout"
+      />
     </div>
   );
 };
