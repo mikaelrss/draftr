@@ -14,6 +14,7 @@ type Mutation {
     destinationRank: Int!
   ): [Tier!]!
   createTier: [Tier!]!
+  createTierAndMovePlayers(playerId: String!, originTier: Int!): [Tier!]!
 }
 
 enum PlayerPosition {

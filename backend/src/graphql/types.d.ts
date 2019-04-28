@@ -26,3 +26,8 @@ export interface IChangeRankArgs {
   destinationTier: number;
   destinationRank: number;
 }
+
+export interface ICreateTierAndMovePlayersArgs {
+  playerId: string;
+  originTier: number;
+}

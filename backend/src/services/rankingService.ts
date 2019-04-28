@@ -360,16 +360,36 @@ export const changePlayerRank = async (
   );
 };
 
+export const createTierAndMovePlayers = async (
+  userId: string,
+  originTier: number,
+  playerId: string,
+) => {
+  const rankings = await getPersonalRankings(userId);
+  console.log(rankings.tiers.length, originTier);
+  if (rankings.tiers.length !== originTier) {
+    // move single player to new tier
+    throw new Error(
+      'Need to move a player from last tier to create a new tier',
+    );
+  }
+  const newRanks = await createNewTier(userId);
+  return await movePlayerCascade(
+    playerId,
+    originTier,
+    originTier + 1,
+    1,
+    newRanks,
+  );
+};
+
 export const getPersonalRankings = async (
   userId: string,
 ): Promise<IRankingModel> => {
   const ranks = await PlayerRankings.findOne({
     userId,
   });
-  if (ranks == null) {
-    return await createDefaultRankings(userId);
-    console.log(ranks);
-  }
+  if (ranks == null) return await createDefaultRankings(userId);
   return ranks;
 };
 
