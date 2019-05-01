@@ -13,6 +13,7 @@ import Team from '../team/Team';
 import { SECONDARY } from '../../styles/colors';
 import LoginCallback from '../../auth/LoginCallback';
 import AuthContext from '../../auth/AuthContext';
+import RankingsContainer from '../rankings/RankingsContainer';
 
 const style = StyleSheet.create({
   root: {
@@ -33,7 +34,7 @@ const Main = () => {
       <StickyContainer>
         <Team />
         <Container>
-          <Rankings />
+          <RankingsContainer />
         </Container>
       </StickyContainer>
     );

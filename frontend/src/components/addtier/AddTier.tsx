@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-apollo-hooks';
+import { Droppable } from 'react-beautiful-dnd';
 import { StyleSheet, css } from 'aphrodite';
 
 import { ReactComponent as Add } from '../../svg/add.svg';
@@ -10,6 +11,8 @@ import { DEFAULT_PADDING } from '../../styles/constants';
 import { ADD_TIER_MUTATION } from './graphql';
 import { GET_FANTASY_FOOTBALL_RANKINGS } from '../rankings/graphql';
 import Spinner from '../shared/Spinner';
+
+export const ADD_TIER_DROPPABLE_ID = 'addNewTier';
 
 const styles = StyleSheet.create({
   paper: {
@@ -60,26 +63,33 @@ const AddTier = () => {
     },
   });
   return (
-    <ClickableSurface
-      className={css(styles.container)}
-      onClick={() => {
-        setLoading(true);
-        createTier()
-          .then(() => setLoading(false))
-          .catch(() => setLoading(false));
-      }}
-    >
-      New Tier
-      <Paper className={css(styles.paper)}>
-        <Spinner loading={loading} />
-        {!loading && (
-          <>
-            <div>Add a tier</div>
-            <Add className={css(styles.icon)} />
-          </>
-        )}
-      </Paper>
-    </ClickableSurface>
+    <Droppable droppableId={ADD_TIER_DROPPABLE_ID}>
+      {provided => (
+        <div ref={provided.innerRef} {...provided.droppableProps}>
+          <ClickableSurface
+            className={css(styles.container)}
+            onClick={() => {
+              setLoading(true);
+              createTier()
+                .then(() => setLoading(false))
+                .catch(() => setLoading(false));
+            }}
+          >
+            New Tier
+            <Paper className={css(styles.paper)}>
+              <Spinner loading={loading} />
+              {!loading && (
+                <>
+                  <div>Add a tier</div>
+                  <Add className={css(styles.icon)} />
+                </>
+              )}
+            </Paper>
+          </ClickableSurface>
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
   );
 };
 

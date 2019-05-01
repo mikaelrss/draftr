@@ -77,8 +77,10 @@ export const ClickableSurface = ({
   onClick,
   children,
   className,
+  ...props
 }: IDivProps) => (
   <div
+    {...props}
     onClick={onClick}
     className={classNames(css(styles.clickSurface), className)}
   >

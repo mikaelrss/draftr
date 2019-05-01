@@ -2,6 +2,7 @@ import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import moize from 'moize';
 
 import { IconButton } from '../shared/Button';
 import { playerTaken, selectPlayer } from '../team/TeamActions';
@@ -43,8 +44,8 @@ const styles = StyleSheet.create({
     opacity: 0.6,
     width: '100%',
     top: 0,
+    left: 0,
     height: `${PLAYER_HEIGHT}px`,
-    left: `-${DEFAULT_PADDING / 2}px`,
   },
   rb: { backgroundColor: `${RB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
   wr: { backgroundColor: `${WR_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
@@ -106,4 +107,4 @@ const withRedux = connect<{}, IDispatchProps>(
     take: playerTaken,
   },
 );
-export default withRedux(Player);
+export default withRedux(moize.deep(Player));

@@ -4,6 +4,7 @@ import {
   changePlayerRank,
   createDefaultRankings,
   createNewTier,
+  createTierAndMovePlayers,
   getPersonalRankings,
 } from '../services/rankingService';
 import {
@@ -11,7 +12,7 @@ import {
   getAllPlayers,
   mapPlayer,
 } from '../services/playerService';
-import { IChangeRankArgs, ITier } from './types';
+import { IChangeRankArgs, ICreateTierAndMovePlayersArgs, ITier } from './types';
 import { IContext } from '../index';
 
 export const resolvers = {
@@ -19,13 +20,8 @@ export const resolvers = {
     players: async () => await getQBs(),
     fantasyFootballNerdRankings: async () =>
       await getFantasyFootballNerdRankings(),
-    tiers: async (root: any, args: any, context: IContext) => {
-      console.log(context.user);
-      // console.time('AGQL -- personalRankings');
-      const iTiers = (await getPersonalRankings(context.user)).tiers;
-      // console.timeEnd('AGQL -- personalRankings');
-      return iTiers;
-    },
+    tiers: async (root: any, args: any, context: IContext) =>
+      (await getPersonalRankings(context.user)).tiers,
   },
   Mutation: {
     createDefaultRankings: async (root: any, args: { userId: string }) => {
@@ -36,24 +32,26 @@ export const resolvers = {
       await createPlayerList();
       return 'Players inserted from Fantasy Football Nerds';
     },
-    changeRank: async (root: any, args: IChangeRankArgs, context: IContext) => {
-      // console.time('changeRank');
-      const result = await changePlayerRank(
+    changeRank: async (root: any, args: IChangeRankArgs, context: IContext) =>
+      await changePlayerRank(
         args.playerId,
         args.originTier,
         args.destinationTier,
         args.destinationRank,
         context.user,
-      );
-      // console.timeEnd('changeRank');
-      return result;
-    },
-    createTier: async (root: any, args: any, context: IContext) => {
-      // console.time('MUTATION == createTier');
-      const iTiersModels = (await createNewTier(context.user)).tiers;
-      // console.timeEnd('MUTATION == createTier');
-      return iTiersModels;
-    },
+      ),
+    createTier: async (root: any, args: any, context: IContext) =>
+      (await createNewTier(context.user)).tiers,
+    createTierAndMovePlayers: async (
+      root: any,
+      args: ICreateTierAndMovePlayersArgs,
+      context: IContext,
+    ) =>
+      await createTierAndMovePlayers(
+        context.user,
+        args.originTier,
+        args.playerId,
+      ),
   },
   Tier: {
     players: async (tier: ITier) => {
@@ -69,9 +67,7 @@ export const resolvers = {
           }))
           .sort((a, b) => a.overallRank - b.overallRank);
       };
-      // console.time(`AGQL -- RESOLVER -- TIER - players - #${tier.tierId}`);
       const result = await timer();
-      // console.timeEnd(`AGQL -- RESOLVER -- TIER - players - #${tier.tierId}`);
       return result;
     },
   },

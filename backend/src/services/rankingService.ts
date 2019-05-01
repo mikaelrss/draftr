@@ -3,6 +3,14 @@ import uuid from 'uuid/v4';
 import { getFantasyFootballNerdRankings } from '../api/rankings';
 import { IRankingModel, PlayerRankings } from '../data/mongoconnector';
 import { IRank, IRankMap } from '../graphql/types';
+import {
+  createRankMap,
+  decreaseRank,
+  findPrecedingRank,
+  getRankMap,
+  increaseRank,
+  rankedTier,
+} from './rankingUtils';
 
 const DEFAULT_RANKINGS = 'defaultRankings';
 
@@ -44,33 +52,6 @@ export const createNewTier = async (userId: string): Promise<IRankingModel> => {
   return ranks;
 };
 
-const getRankMap = (ranks: IRankingModel, index: number) =>
-  ranks.tiers[index - 1].rankMap;
-
-const rankedTier = (rankMap: IRankMap): IRank[] => {
-  if (!rankMap) return [];
-  return Object.values(rankMap).sort((a, b) => a.overallRank - b.overallRank);
-};
-
-const createRankMap = (ranks: IRank[]): IRankMap =>
-  ranks.reduce(
-    (acc, rank) => ({
-      ...acc,
-      [rank.playerId]: rank,
-    }),
-    {},
-  );
-
-const decreaseRank = (rank: IRank) => ({
-  ...rank,
-  overallRank: rank.overallRank - 1,
-});
-
-const increaseRank = (rank: IRank) => ({
-  ...rank,
-  overallRank: rank.overallRank + 1,
-});
-
 const createNewOrigin = (
   playerId: string,
   origin: IRank[],
@@ -88,11 +69,15 @@ const createDestination = (
   destination: IRank[],
   destinationRank: number,
   mapOperation: IRankMapper,
+  ranks: IRankingModel,
+  destinationTier: number,
 ) => [
   ...destination.slice(0, destinationRank - 1).map(mapOperation),
   {
     ...playerRank,
-    overallRank: destination[destinationRank - 1].overallRank - 1,
+    overallRank: !!destination[destinationRank - 1]
+      ? destination[destinationRank - 1].overallRank - 1
+      : findPrecedingRank(ranks, destinationTier),
   },
   ...destination.slice(destinationRank - 1),
 ];
@@ -133,6 +118,8 @@ const movePlayerPropagate = async (
     destination,
     destRank,
     operation,
+    ranks,
+    destinationTier,
   );
   transformPlayerRankings(
     ranks,
@@ -265,7 +252,7 @@ const movePlayerPropagateLeft = async (
     ...movedRank,
     overallRank: !!destination[destRank - 1]
       ? destination[destRank - 1].overallRank
-      : origin[0].overallRank,
+      : findPrecedingRank(ranks, destinationTier) + 1,
   };
 
   const newDestination = [
@@ -321,8 +308,9 @@ export const changePlayerRank = async (
 
   const { rankMap } = ranks.tiers[destinationTier - 1];
   const destinationEmpty = !rankMap || Object.keys(rankMap).length <= 0;
+  const isLastTier = ranks.tiers.length === destinationTier;
 
-  if (tierDowngrade && destinationEmpty) {
+  if (tierDowngrade && destinationEmpty && isLastTier) {
     return await movePlayerCascade(
       playerId,
       originTier,
@@ -360,16 +348,36 @@ export const changePlayerRank = async (
   );
 };
 
+export const createTierAndMovePlayers = async (
+  userId: string,
+  originTier: number,
+  playerId: string,
+) => {
+  const rankings = await getPersonalRankings(userId);
+  console.log(rankings.tiers.length, originTier);
+  if (rankings.tiers.length !== originTier) {
+    // move single player to new tier
+    throw new Error(
+      'Need to move a player from last tier to create a new tier',
+    );
+  }
+  const newRanks = await createNewTier(userId);
+  return await movePlayerCascade(
+    playerId,
+    originTier,
+    originTier + 1,
+    1,
+    newRanks,
+  );
+};
+
 export const getPersonalRankings = async (
   userId: string,
 ): Promise<IRankingModel> => {
   const ranks = await PlayerRankings.findOne({
     userId,
   });
-  if (ranks == null) {
-    return await createDefaultRankings(userId);
-    console.log(ranks);
-  }
+  if (ranks == null) return await createDefaultRankings(userId);
   return ranks;
 };
 

@@ -16,7 +16,7 @@ export const createPlayerList = async () => {
     ...byPosition.K.slice(0, 32),
     ...byPosition.DEF,
   ];
-  mostImportant.forEach(player => {
+  allPlayers.forEach(player => {
     const model = new Player({
       ...player,
     });

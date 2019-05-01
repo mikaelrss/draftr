@@ -1,10 +1,10 @@
 import React from 'react';
-import { graphql, ChildMutateProps } from 'react-apollo';
+import { graphql, ChildMutateProps, compose, MutationFn } from 'react-apollo';
 import { useQuery } from 'react-apollo-hooks';
 import { StyleSheet, css } from 'aphrodite';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
-import { CHANGE_RANK, GET_FANTASY_FOOTBALL_RANKINGS } from './graphql';
+import { GET_FANTASY_FOOTBALL_RANKINGS } from './graphql';
 import TierContainer from '../tiercontainer/TierContainer';
 import { DEFAULT_PADDING } from '../../styles/constants';
 import {
@@ -17,10 +17,14 @@ import {
 } from '../../styles/colors';
 import { rankings } from './__generated__/rankings';
 import { PlayerPosition } from '../../types/graphqltypes';
-import AddTier from '../addtier/AddTier';
+import AddTier, { ADD_TIER_DROPPABLE_ID } from '../addtier/AddTier';
 import Spinner from '../shared/Spinner';
 import { changeRank, changeRankVariables } from './__generated__/changeRank';
 import { generateOptimisticRankChange } from './utils';
+import {
+  newTierChangeRank,
+  newTierChangeRankVariables,
+} from './__generated__/newTierChangeRank';
 
 const styles = StyleSheet.create({
   box: {
@@ -60,10 +64,12 @@ export const getBackground = (position: PlayerPosition) => {
   }
 };
 
-type ChildProps = ChildMutateProps<{}, changeRank, changeRankVariables>;
-type IProps = ChildProps;
+interface IProps {
+  changeRankMutation: MutationFn<changeRank, changeRankVariables>;
+  createTierMutation: MutationFn<newTierChangeRank, newTierChangeRankVariables>;
+}
 
-const Rankings = ({ mutate }: IProps) => {
+const Rankings = ({ changeRankMutation, createTierMutation }: IProps) => {
   const { data, loading } = useQuery<rankings>(GET_FANTASY_FOOTBALL_RANKINGS);
   if (loading || !data)
     return (
@@ -73,13 +79,28 @@ const Rankings = ({ mutate }: IProps) => {
     );
 
   const onDragEnd = (result: DropResult) => {
-    if (!result.destination) {
+    if (!result.destination) return;
+
+    const origTier = +result.source.droppableId.replace('tier#', '');
+    const playerId = result.draggableId;
+
+    if (result.destination.droppableId === ADD_TIER_DROPPABLE_ID) {
+      createTierMutation({
+        variables: {
+          originTier: origTier,
+          playerId,
+        },
+        update: (proxy, mutationResult) => {
+          if (mutationResult.data == null) return;
+          proxy.writeQuery({
+            query: GET_FANTASY_FOOTBALL_RANKINGS,
+            data: { tiers: mutationResult.data.createTierAndMovePlayers },
+          });
+        },
+      });
       return;
     }
 
-    const playerId = result.draggableId;
-
-    const origTier = +result.source.droppableId.replace('tier#', '');
     const destTier = +result.destination.droppableId.replace('tier#', '');
     const destRank = +result.destination.index + 1;
 
@@ -93,7 +114,7 @@ const Rankings = ({ mutate }: IProps) => {
       data,
     );
 
-    mutate({
+    changeRankMutation({
       variables: {
         playerId,
         origTier,
@@ -116,14 +137,10 @@ const Rankings = ({ mutate }: IProps) => {
             key={`TIER_${tier.tierId}`}
           />
         ))}
+        <AddTier />
       </DragDropContext>
-      <AddTier />
     </div>
   );
 };
 
-const withApollo = graphql<{}, changeRank, changeRankVariables, ChildProps>(
-  CHANGE_RANK,
-);
-
-export default withApollo(Rankings);
+export default Rankings;
