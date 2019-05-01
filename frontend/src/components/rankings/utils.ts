@@ -88,6 +88,18 @@ const movePlayerInsideTier = (
   ];
 };
 
+const findPrecedingRank = (
+  tiers: rankings_tiers[],
+  destinationTier: number,
+): number => {
+  if (destinationTier === 0) return 1;
+  const preceding = tiers[destinationTier - 1];
+  if (preceding.players.length === 0) {
+    return findPrecedingRank(tiers, destinationTier - 1);
+  }
+  return preceding.players.slice(-1)[0].overallRank;
+};
+
 const movePlayerPropagateLeft = (
   playerId: string,
   originTier: number,
@@ -114,7 +126,7 @@ const movePlayerPropagateLeft = (
     ...rank,
     overallRank: !!destination.players[destinationRank - 1]
       ? destination.players[destinationRank - 1].overallRank
-      : origin.players[0].overallRank,
+      : findPrecedingRank(tiers, destinationTier) + 1,
   };
 
   const newDestination = [

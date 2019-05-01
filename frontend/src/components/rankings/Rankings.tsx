@@ -85,16 +85,12 @@ const Rankings = ({ changeRankMutation, createTierMutation }: IProps) => {
     const playerId = result.draggableId;
 
     if (result.destination.droppableId === ADD_TIER_DROPPABLE_ID) {
-      console.log(result);
       createTierMutation({
         variables: {
           originTier: origTier,
           playerId,
         },
         update: (proxy, mutationResult) => {
-          const queryData = proxy.readQuery({
-            query: GET_FANTASY_FOOTBALL_RANKINGS,
-          });
           if (mutationResult.data == null) return;
           proxy.writeQuery({
             query: GET_FANTASY_FOOTBALL_RANKINGS,

@@ -46,13 +46,12 @@ export const resolvers = {
       root: any,
       args: ICreateTierAndMovePlayersArgs,
       context: IContext,
-    ) => {
-      return await createTierAndMovePlayers(
+    ) =>
+      await createTierAndMovePlayers(
         context.user,
         args.originTier,
         args.playerId,
-      );
-    },
+      ),
   },
   Tier: {
     players: async (tier: ITier) => {
