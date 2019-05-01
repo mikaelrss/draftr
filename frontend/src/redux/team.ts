@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import {
   ITeamActions,
   PLAYER_TAKEN,
@@ -22,7 +23,10 @@ const teamReducer = (
 ): ITeamState => {
   switch (action.type) {
     case SELECT_PLAYER:
-      if (state.selected.length >= 15) return state;
+      if (state.selected.length >= 15) {
+        toast.error('Already drafted maximum number of players');
+        return state;
+      }
       return { ...state, selected: [...state.selected, action.payload] };
     case PLAYER_TAKEN:
       return { ...state, taken: [...state.taken, action.payload] };
