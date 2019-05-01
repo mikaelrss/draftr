@@ -9,6 +9,7 @@ import Paper from '../shared/Paper';
 import Player, { PLAYER_HEIGHT } from './Player';
 import selector from './selector';
 import { rankings_tiers_players } from '../rankings/__generated__/rankings';
+import TierRow from './TierRow';
 
 const styles = StyleSheet.create({
   playerDragging: {
@@ -59,28 +60,12 @@ const TierContainer = ({ tierId, players, passed, className }: Props) => {
               noPadding
             >
               {players.map((player, index) => (
-                <Draggable
-                  draggableId={player.playerId}
+                <TierRow
+                  player={player}
                   index={index}
-                  key={player.playerId}
-                >
-                  {(draggableProvided, prop) => (
-                    <div
-                      ref={draggableProvided.innerRef}
-                      {...draggableProvided.draggableProps}
-                      {...draggableProvided.dragHandleProps}
-                    >
-                      <Player
-                        player={player}
-                        key={player.playerId}
-                        disabled={isDisabled(player.playerId)}
-                        className={css(
-                          prop.isDragging && styles.playerDragging,
-                        )}
-                      />
-                    </div>
-                  )}
-                </Draggable>
+                  key={`row-${player.playerId}`}
+                  disabled={isDisabled(player.playerId)}
+                />
               ))}
             </Paper>
             {provided.placeholder}

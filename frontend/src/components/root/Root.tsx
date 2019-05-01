@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import AppHeader from '../appheader/AppHeader';
 import Container from '../shared/Container';
-import Rankings from '../rankings/Rankings';
 import Team from '../team/Team';
 import { SECONDARY } from '../../styles/colors';
 import LoginCallback from '../../auth/LoginCallback';
