@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { Droppable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import Paper from '../shared/Paper';
-import Player, { PLAYER_HEIGHT } from './Player';
+import { PLAYER_HEIGHT } from './Player';
 import selector from './selector';
 import { rankings_tiers_players } from '../rankings/__generated__/rankings';
 import TierRow from './TierRow';
@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
   },
   isDraggingOver: {
     paddingBottom: `${PLAYER_HEIGHT}px !important`,
+  },
+  placeholder: {
+    height: 0,
   },
 });
 
@@ -68,7 +71,9 @@ const TierContainer = ({ tierId, players, passed, className }: Props) => {
                 />
               ))}
             </Paper>
-            {provided.placeholder}
+            <div className={css(styles.placeholder)}>
+              {provided.placeholder}
+            </div>
           </div>
         )}
       </Droppable>
