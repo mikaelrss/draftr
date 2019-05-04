@@ -19,7 +19,7 @@ import { getBackground } from '../rankings/Rankings';
 import { rankings_tiers_players } from '../rankings/__generated__/rankings';
 import { IconType } from '../shared/Icon';
 
-export const PLAYER_HEIGHT = 50;
+export const PLAYER_HEIGHT = 48;
 const styles = StyleSheet.create({
   disabled: {
     opacity: 0.35,
@@ -29,14 +29,20 @@ const styles = StyleSheet.create({
     fontSize: '0.5em',
     display: 'grid',
     gridTemplateColumns: 'auto 30px 70px',
-    height: '50px',
+    height: `${PLAYER_HEIGHT}px`,
     alignItems: 'center',
     paddingLeft: `${DEFAULT_PADDING / 2}px`,
     paddingRight: `${DEFAULT_PADDING / 2}px`,
   },
+  add: {
+    marginRight: '6px',
+  },
   clear: {
-    marginLeft: '6px',
     backgroundColor: `${SECONDARY} !important`,
+  },
+  icon: {
+    height: `${PLAYER_HEIGHT * 0.64}px !important`,
+    width: `${PLAYER_HEIGHT * 0.64}px !important`,
   },
   shade: {
     position: 'absolute',
@@ -46,6 +52,10 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     height: `${PLAYER_HEIGHT}px`,
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
   rb: { backgroundColor: `${RB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
   wr: { backgroundColor: `${WR_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
@@ -83,15 +93,16 @@ const Player = ({
   >
     <PlayerName player={player} />
     <div>{player.overallRank}</div>
-    <div>
+    <div className={css(styles.buttonContainer)}>
       <IconButton
         icon={IconType.add}
+        className={css(styles.icon, styles.add)}
         onClick={() => select(player)}
         disabled={disabled}
       />
       <IconButton
         icon={IconType.clear}
-        className={css(styles.clear)}
+        className={css(styles.clear, styles.icon)}
         onClick={() => take(player)}
         disabled={disabled}
       />

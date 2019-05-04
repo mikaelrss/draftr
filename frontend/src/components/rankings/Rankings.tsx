@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, ChildMutateProps, compose, MutationFn } from 'react-apollo';
+import { MutationFn } from 'react-apollo';
 import { useQuery } from 'react-apollo-hooks';
 import { StyleSheet, css } from 'aphrodite';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
