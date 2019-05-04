@@ -11,20 +11,33 @@ import {
   increaseRank,
   rankedTier,
 } from './rankingUtils';
+import { IRankedPlayer } from '../api/players';
+import { newTierChangeRankVariables } from 'frontend/src/components/rankings/__generated__/newTierChangeRank';
 
 const DEFAULT_RANKINGS = 'defaultRankings';
 
 type IRankMapper = (r: IRank) => IRank;
+const DEFAULT_TIERS = 20;
 
 export const createDefaultRankings = async (userId: string) => {
-  const rankMap: any = {};
+  const fantasyRankings = await getFantasyFootballNerdRankings();
+  const tiers = new Array(DEFAULT_TIERS)
+    .fill({})
+    .map((item: any, index: number) => ({
+      ...item,
+      rankMap: {},
+      tierId: index + 1,
+      uuid: uuid(),
+    }));
+
   const testObject = {
     userId,
-    tiers: [{ tierId: 1, rankMap, uuid: uuid() }],
+    tiers,
   };
-  const fantasyRankings = await getFantasyFootballNerdRankings();
-  fantasyRankings.forEach((player: any) => {
-    rankMap[player.playerId] = {
+
+  fantasyRankings.forEach((player: IRankedPlayer, index: number) => {
+    const tierIndex = Math.min(Math.ceil((index + 1) / 8), DEFAULT_TIERS) - 1;
+    testObject.tiers[tierIndex].rankMap[player.playerId] = {
       playerId: player.playerId,
       positionRank: +player.positionRank,
       overallRank: +player.overallRank,
