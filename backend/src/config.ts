@@ -16,6 +16,11 @@ export const {
   AUTH_ISSUER,
   AUTH_ALGORITHM,
   AUTH_URL,
+  PGHOST,
+  PGUSER,
+  PGPASSWORD,
+  PGDATABASE,
+  PGPORT
 } = process.env;
 
 export const FORMAT = 'json';

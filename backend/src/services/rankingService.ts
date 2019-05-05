@@ -13,6 +13,7 @@ import {
 } from './rankingUtils';
 import { IRankedPlayer } from '../api/players';
 import { newTierChangeRankVariables } from 'frontend/src/components/rankings/__generated__/newTierChangeRank';
+import { insertRankings } from '../repositories/rankingRepository';
 
 const DEFAULT_RANKINGS = 'defaultRankings';
 
@@ -45,6 +46,7 @@ export const createDefaultRankings = async (userId: string) => {
   });
 
   const test = new PlayerRankings(testObject);
+  insertRankings(testObject);
   test.save();
   return test;
 };

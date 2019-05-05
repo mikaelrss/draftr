@@ -32,6 +32,9 @@
     "mongo": "^0.1.0",
     "mongodb": "^3.2.3",
     "mongoose": "^5.5.1",
+    "pg": "^7.10.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^5.8.5",
     "uuid": "^3.3.2"
   },
   "scripts": {

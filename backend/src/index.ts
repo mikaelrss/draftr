@@ -1,5 +1,6 @@
 import { ApolloServer } from 'apollo-server';
 import { importSchema } from 'graphql-import';
+import { Sequelize } from 'sequelize';
 import jwt from 'jsonwebtoken';
 
 import path from 'path';
