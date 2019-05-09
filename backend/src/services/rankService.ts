@@ -1,8 +1,9 @@
 import uuid from 'uuid/v4';
+import groupBy from 'lodash.groupby';
 
 import { getFantasyFootballNerdRankings } from '../api/rankings';
 import { IRankingModel, PlayerRankings } from '../data/mongoconnector';
-import { IRank, IRankMap } from '../graphql/types';
+import { IRank } from '../graphql/types';
 import {
   createRankMap,
   decreaseRank,
@@ -12,8 +13,10 @@ import {
   rankedTier,
 } from './rankingUtils';
 import { IRankedPlayer } from '../api/players';
-import { newTierChangeRankVariables } from 'frontend/src/components/rankings/__generated__/newTierChangeRank';
-import { insertRankings } from '../repositories/rankingRepository';
+import { fetchRank, insertRank } from '../repositories/rankRepository';
+import { insertTier } from '../repositories/tierRepository';
+import { insertRankedPlayer } from '../repositories/rankedPlayerRepository';
+import { getRankId, setRankId } from './userPreferenceService';
 
 const DEFAULT_RANKINGS = 'defaultRankings';
 
@@ -45,10 +48,22 @@ export const createDefaultRankings = async (userId: string) => {
     };
   });
 
-  const test = new PlayerRankings(testObject);
-  insertRankings(testObject);
-  test.save();
-  return test;
+  const rank = await insertRank(userId);
+  console.log(rank);
+  testObject.tiers.forEach(async tier => {
+    const inserted = await insertTier(
+      { tierId: tier.tierId, name: `${tier.tierId}` },
+      rank.id,
+    );
+    Object.values(tier.rankMap).forEach(async (player: any) => {
+      await insertRankedPlayer(
+        inserted.id,
+        player.playerId,
+        player.overallRank,
+      );
+    });
+  });
+  await setRankId(userId, rank.id);
 };
 
 export const createNewTier = async (userId: string): Promise<IRankingModel> => {
@@ -386,14 +401,18 @@ export const createTierAndMovePlayers = async (
   );
 };
 
-export const getPersonalRankings = async (
-  userId: string,
-): Promise<IRankingModel> => {
-  const ranks = await PlayerRankings.findOne({
-    userId,
-  });
-  if (ranks == null) return await createDefaultRankings(userId);
-  return ranks;
+export const getPersonalRankings = async (userId: string): Promise<any> => {
+  const rankId = await getRankId(userId);
+  console.log(rankId);
+  if (rankId == null) await createDefaultRankings(userId);
+  const ranks = await fetchRank(rankId || (await getRankId(userId)));
+  const tiers = groupBy(ranks, 'tierOrder');
+  const mapped = Object.keys(tiers).map(tierOrder => ({
+    tierId: tierOrder,
+    uuid: tiers[tierOrder][0].uuid,
+    players: tiers[tierOrder],
+  }));
+  return mapped;
 };
 
 export const getDefaultRankings = async () =>

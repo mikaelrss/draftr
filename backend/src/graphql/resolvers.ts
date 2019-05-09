@@ -6,12 +6,8 @@ import {
   createNewTier,
   createTierAndMovePlayers,
   getPersonalRankings,
-} from '../services/rankingService';
-import {
-  createPlayerList,
-  getAllPlayers,
-  mapPlayer,
-} from '../services/playerService';
+} from '../services/rankService';
+import { createPlayerList } from '../services/playerService';
 import { IChangeRankArgs, ICreateTierAndMovePlayersArgs, ITier } from './types';
 import { IContext } from '../index';
 
@@ -21,7 +17,7 @@ export const resolvers = {
     fantasyFootballNerdRankings: async () =>
       await getFantasyFootballNerdRankings(),
     tiers: async (root: any, args: any, context: IContext) =>
-      (await getPersonalRankings(context.user)).tiers,
+      await getPersonalRankings(context.user),
   },
   Mutation: {
     createDefaultRankings: async (root: any, args: { userId: string }) => {
@@ -54,22 +50,8 @@ export const resolvers = {
       ),
   },
   Tier: {
-    players: async (tier: ITier) => {
-      const timer = async () => {
-        const all = await getAllPlayers();
-        if (!tier.rankMap) return [];
-        const tierPlayerIds = Object.keys(tier.rankMap);
-        return all
-          .filter(player => tierPlayerIds.includes(player.playerId))
-          .map(p => ({
-            ...mapPlayer(p),
-            ...tier.rankMap[p.playerId],
-          }))
-          .sort((a, b) => a.overallRank - b.overallRank);
-      };
-      const result = await timer();
-      return result;
-    },
+    players: async (tier: ITier) =>
+      tier.players.sort((a, b) => a.overallRank - b.overallRank),
   },
   Player: {
     lastName: async ({ lname }: IPlayer) => lname,

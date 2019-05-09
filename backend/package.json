@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@types/pg": "^7.4.14",
     "apollo": "^2.6.2",
     "delay-cli": "^1.1.0",
     "log-update": "^3.2.0",

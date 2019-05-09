@@ -77,7 +77,7 @@ type RankedPlayer {
   byeWeek: Float
   standDev: Float
   nerdRank: Float
-  positionRank: Float!
+  positionRank: Float
   overallRank: Float!
 }
 

@@ -1,3 +1,5 @@
+import { IRankedPlayer } from '../api/players';
+
 export interface ISetPlayerPositionArgs {
   playerId: string;
   positionRank: number;
@@ -17,7 +19,7 @@ export interface IRankMap {
 export interface ITier {
   uuid: string;
   tierId: number;
-  rankMap: IRankMap;
+  players: IRankedPlayer[];
 }
 
 export interface IChangeRankArgs {
