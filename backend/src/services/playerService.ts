@@ -36,6 +36,7 @@ export const createPlayerList = async () => {
     .forEach(insertPlayer);
 };
 
+
 export const mapPlayer = (playerModel: IPlayerModel) => ({
   playerId: playerModel.playerId,
   position: playerModel.position,

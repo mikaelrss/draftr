@@ -13,10 +13,15 @@ import {
   rankedTier,
 } from './rankingUtils';
 import { IRankedPlayer } from '../api/players';
-import { fetchRank, insertRank } from '../repositories/rankRepository';
+import {
+  fetchRank,
+  insertRank,
+  PlayerRank,
+} from '../repositories/rankRepository';
 import { insertTier } from '../repositories/tierRepository';
 import { insertRankedPlayer } from '../repositories/rankedPlayerRepository';
-import { getRankId, setRankId } from './userPreferenceService';
+import { getRank, getRankId, setRankId } from './userPreferenceService';
+import { createNewTier } from './tierService';
 
 const DEFAULT_RANKINGS = 'defaultRankings';
 
@@ -64,22 +69,6 @@ export const createDefaultRankings = async (userId: string) => {
     });
   });
   await setRankId(userId, rank.id);
-};
-
-export const createNewTier = async (userId: string): Promise<IRankingModel> => {
-  const ranks = await getPersonalRankings(userId);
-  const rankObject = ranks.toObject();
-
-  ranks.tiers = [
-    ...rankObject.tiers,
-    {
-      uuid: uuid(),
-      tierId: ranks.tiers.length + 1,
-      rankMap: {},
-    },
-  ];
-  ranks.save();
-  return ranks;
 };
 
 const createNewOrigin = (
@@ -330,14 +319,15 @@ export const changePlayerRank = async (
   userId: string,
 ) => {
   console.time('fetchRanks');
-  const ranks = await getPersonalRankings(userId);
+  const ranks = await getPersonalTier(userId);
   console.timeEnd('fetchRanks');
 
   const tierDowngrade = destinationTier > originTier;
   const tierUpgrade = destinationTier < originTier;
-
+  // @ts-ignore
   const { rankMap } = ranks.tiers[destinationTier - 1];
   const destinationEmpty = !rankMap || Object.keys(rankMap).length <= 0;
+  // @ts-ignore
   const isLastTier = ranks.tiers.length === destinationTier;
 
   if (tierDowngrade && destinationEmpty && isLastTier) {
@@ -346,6 +336,7 @@ export const changePlayerRank = async (
       originTier,
       destinationTier,
       destinationRank,
+      // @ts-ignore
       ranks,
     );
   }
@@ -355,6 +346,7 @@ export const changePlayerRank = async (
       originTier,
       destinationTier,
       destinationRank,
+      // @ts-ignore
       ranks,
       decreaseRank,
     );
@@ -365,6 +357,7 @@ export const changePlayerRank = async (
       originTier,
       destinationTier,
       destinationRank,
+      // @ts-ignore
       ranks,
       increaseRank,
     );
@@ -374,6 +367,7 @@ export const changePlayerRank = async (
     playerId,
     originTier,
     destinationRank,
+    // @ts-ignore
     ranks,
   );
 };
@@ -383,8 +377,10 @@ export const createTierAndMovePlayers = async (
   originTier: number,
   playerId: string,
 ) => {
-  const rankings = await getPersonalRankings(userId);
+  const rankings = await getPersonalTier(userId);
+  // @ts-ignore
   console.log(rankings.tiers.length, originTier);
+  // @ts-ignore
   if (rankings.tiers.length !== originTier) {
     // move single player to new tier
     throw new Error(
@@ -397,22 +393,54 @@ export const createTierAndMovePlayers = async (
     originTier,
     originTier + 1,
     1,
+    // @ts-ignore
     newRanks,
   );
 };
 
-export const getPersonalRankings = async (userId: string): Promise<any> => {
+export interface PersonalTier {
+  tierId: number;
+  uuid: string;
+  players: PlayerRank[];
+  name?: string;
+}
+
+export const getPersonalTier = async (
+  userId: string,
+): Promise<PersonalTier[]> => {
   const rankId = await getRankId(userId);
   console.log(rankId);
   if (rankId == null) await createDefaultRankings(userId);
   const ranks = await fetchRank(rankId || (await getRankId(userId)));
   const tiers = groupBy(ranks, 'tierOrder');
-  const mapped = Object.keys(tiers).map(tierOrder => ({
-    tierId: tierOrder,
-    uuid: tiers[tierOrder][0].uuid,
-    players: tiers[tierOrder],
-  }));
+  const mapped = Object.keys(tiers).map(tierOrder => {
+    console.log(tiers[tierOrder]);
+    return {
+      tierId: +tierOrder,
+      uuid: tiers[tierOrder][0].uuid,
+      players: tiers[tierOrder].filter(p => p.playerId != null),
+    };
+  });
   return mapped;
+};
+
+export interface PersonalRank {
+  id: number;
+  uuid: string;
+  name: string;
+  tiers: PersonalTier[];
+}
+
+export const getPersonalRank = async (
+  userId: string,
+): Promise<PersonalRank> => {
+  const rank = await getRank(userId);
+  return {
+    id: rank.id,
+    uuid: rank.uuid,
+    name: rank.name,
+    tiers: await getPersonalTier(userId),
+  };
 };
 
 export const getDefaultRankings = async () =>

@@ -56,7 +56,7 @@ const AddTier = () => {
       const data = proxy.readQuery({ query: GET_FANTASY_FOOTBALL_RANKINGS });
       // @ts-ignore
       data.tiers.push({
-        ...mutationResult.data.createTier.slice(-1)[0],
+        ...mutationResult.data.createTier,
         players: [],
       });
       proxy.writeQuery({ query: GET_FANTASY_FOOTBALL_RANKINGS, data });

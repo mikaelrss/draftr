@@ -1,6 +1,6 @@
 import { dbClient } from '../index';
 
-interface IRankEntity {
+interface RankEntity {
   name: string;
   id: number;
 }
@@ -19,7 +19,7 @@ interface IRankObjectEntity {
   uuid: string;
 }
 
-interface IRank {
+export interface PlayerRank {
   playerId: number;
   overallRank: number;
   tierOrder: number;
@@ -29,22 +29,21 @@ interface IRank {
   uuid: string;
 }
 
-export const insertRank = async (name: string): Promise<IRankEntity> => {
+export const insertRank = async (name: string): Promise<RankEntity> => {
   const query = `insert into draftr.rank(name)
                  VALUES ($1) RETURNING *`;
   const values = [name];
   const result = await dbClient.query(query, values);
-  console.log(result.rows);
   return result.rows[0];
 };
 
-export const fetchRank = async (rankId: number) => {
+export const fetchRank = async (rankId: number): Promise<PlayerRank[]> => {
   const query = `SELECT t.tier_order, overall_rank, player_id, p.display_name, p.position, p.team, t.uuid
-from draftr.ranked_player
-         LEFT join draftr.tier as t on ranked_player.tier_id = t.id
-         LEFT join draftr.rank as r on t.rank_id = r.id
-         LEFT JOIN draftr.player as p on ranked_player.player_id = p.id
-where r.id = $1`;
+from draftr.rank
+         join draftr.tier as t on rank.id = t.rank_id
+         LEFT JOIN draftr.ranked_player as rp on rp.tier_id = t.id
+         LEFT join draftr.player as p on rp.player_id = p.id
+where draftr.rank.id = $1`;
   const values = [rankId];
   const result = await dbClient.query(query, values);
   return result.rows.map(row => ({
