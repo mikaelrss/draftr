@@ -1,17 +1,20 @@
 import gql from 'graphql-tag';
 
 export const GET_FANTASY_FOOTBALL_RANKINGS = gql`
-  query rankings {
-    tiers {
+  query rankings($id: String!) {
+    rank(id: $id) {
+      name
       uuid
-      tierId
-      players {
-        playerId
-        displayName
-        position
-        overallRank
-        positionRank
-        team
+      tiers {
+        tierId
+        players {
+          playerId
+          displayName
+          position
+          overallRank
+          positionRank
+          team
+        }
       }
     }
   }

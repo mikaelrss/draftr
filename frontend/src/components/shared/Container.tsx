@@ -13,7 +13,7 @@ const style = StyleSheet.create({
 });
 
 interface IProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const Container = ({ children }: IProps) => {

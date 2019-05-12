@@ -8,8 +8,8 @@ import { css, StyleSheet } from 'aphrodite/no-important';
 import Paper from '../shared/Paper';
 import { PLAYER_HEIGHT } from './Player';
 import selector from './selector';
-import { rankings_tiers_players } from '../rankings/__generated__/rankings';
 import TierRow from './TierRow';
+import { rankings_rank_tiers_players } from '../rankings/__generated__/rankings';
 
 const styles = StyleSheet.create({
   playerDragging: {
@@ -36,7 +36,7 @@ interface IStateProps {
 
 interface IOwnProps {
   tierId: number;
-  players: rankings_tiers_players[];
+  players: rankings_rank_tiers_players[];
   className?: string;
 }
 

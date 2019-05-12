@@ -1,7 +1,7 @@
 import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import TeamLogo from '../../svg/nfllogos/TeamLogo';
-import { rankings_tiers_players } from '../rankings/__generated__/rankings';
+import { rankings_rank_tiers_players } from '../rankings/__generated__/rankings';
 import { DEFAULT_PADDING, MOBILE_BREAKPOINT } from '../../styles/constants';
 
 const styles = StyleSheet.create({
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 interface IProps {
-  player: rankings_tiers_players;
+  player: rankings_rank_tiers_players;
 }
 const PlayerName = ({ player }: IProps) => (
   <div className={css(styles.name)}>

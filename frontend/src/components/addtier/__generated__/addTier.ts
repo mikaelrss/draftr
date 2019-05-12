@@ -13,5 +13,5 @@ export interface addTier_createTier {
 }
 
 export interface addTier {
-  createTier: addTier_createTier[];
+  createTier: addTier_createTier;
 }

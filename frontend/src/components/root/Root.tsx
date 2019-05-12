@@ -33,7 +33,7 @@ const Main = () => {
       <StickyContainer>
         <Team />
         <Container>
-          <RankingsContainer />
+          <Route path="/rank/:id" component={RankingsContainer} />
         </Container>
       </StickyContainer>
     );

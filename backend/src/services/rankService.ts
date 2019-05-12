@@ -1,8 +1,7 @@
-import uuid from 'uuid/v4';
-import groupBy from 'lodash.groupby';
+import createUuid from 'uuid/v4';
 
 import { getFantasyFootballNerdRankings } from '../api/rankings';
-import { IRankingModel, PlayerRankings } from '../data/mongoconnector';
+import { IRankingModel } from '../data/mongoconnector';
 import { IRank } from '../graphql/types';
 import {
   createRankMap,
@@ -14,14 +13,19 @@ import {
 } from './rankingUtils';
 import { IRankedPlayer } from '../api/players';
 import {
-  fetchRank,
+  fetchRankByUuid,
+  fetchRankByUserId,
   insertRank,
   PlayerRank,
 } from '../repositories/rankRepository';
 import { insertTier } from '../repositories/tierRepository';
 import { insertRankedPlayer } from '../repositories/rankedPlayerRepository';
-import { getRank, getRankId, setRankId } from './userPreferenceService';
-import { createNewTier } from './tierService';
+import { setRankId } from './userPreferenceService';
+import {
+  createNewTier,
+  getPersonalTier,
+  getTiersByRankId,
+} from './tierService';
 
 const DEFAULT_RANKINGS = 'defaultRankings';
 
@@ -36,7 +40,7 @@ export const createDefaultRankings = async (userId: string) => {
       ...item,
       rankMap: {},
       tierId: index + 1,
-      uuid: uuid(),
+      uuid: createUuid(),
     }));
 
   const testObject = {
@@ -405,25 +409,6 @@ export interface PersonalTier {
   name?: string;
 }
 
-export const getPersonalTier = async (
-  userId: string,
-): Promise<PersonalTier[]> => {
-  const rankId = await getRankId(userId);
-  console.log(rankId);
-  if (rankId == null) await createDefaultRankings(userId);
-  const ranks = await fetchRank(rankId || (await getRankId(userId)));
-  const tiers = groupBy(ranks, 'tierOrder');
-  const mapped = Object.keys(tiers).map(tierOrder => {
-    console.log(tiers[tierOrder]);
-    return {
-      tierId: +tierOrder,
-      uuid: tiers[tierOrder][0].uuid,
-      players: tiers[tierOrder].filter(p => p.playerId != null),
-    };
-  });
-  return mapped;
-};
-
 export interface PersonalRank {
   id: number;
   uuid: string;
@@ -431,10 +416,19 @@ export interface PersonalRank {
   tiers: PersonalTier[];
 }
 
+export const getRankByUuid = async (uuid: string) => {
+  const rank = await fetchRankByUuid(uuid);
+  return {
+    uuid: rank.uuid,
+    name: rank.name,
+    tiers: await getTiersByRankId(rank.id),
+  };
+};
+
 export const getPersonalRank = async (
   userId: string,
 ): Promise<PersonalRank> => {
-  const rank = await getRank(userId);
+  const rank = await fetchRankByUserId(userId);
   return {
     id: rank.id,
     uuid: rank.uuid,
@@ -442,8 +436,3 @@ export const getPersonalRank = async (
     tiers: await getPersonalTier(userId),
   };
 };
-
-export const getDefaultRankings = async () =>
-  await PlayerRankings.findOne({
-    userId: DEFAULT_RANKINGS,
-  }).exec();

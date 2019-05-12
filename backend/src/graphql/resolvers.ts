@@ -4,20 +4,23 @@ import {
   changePlayerRank,
   createDefaultRankings,
   createTierAndMovePlayers,
-  getPersonalTier,
+  getRankByUuid,
 } from '../services/rankService';
 import { createPlayerList } from '../services/playerService';
 import { IChangeRankArgs, ICreateTierAndMovePlayersArgs, ITier } from './types';
 import { IContext } from '../index';
-import { createNewTier } from '../services/tierService';
+import { createNewTier, getPersonalTier } from '../services/tierService';
 
 export const resolvers = {
   Query: {
     players: async () => await getQBs(),
     fantasyFootballNerdRankings: async () =>
       await getFantasyFootballNerdRankings(),
-    tiers: async (root: any, args: any, context: IContext) =>
+    tiers: async (root: any, args: { id: string }, context: IContext) =>
       await getPersonalTier(context.user),
+    rank: async (root: any, args: { id: string }) => {
+      return await getRankByUuid(args.id);
+    },
   },
   Mutation: {
     createDefaultRankings: async (root: any, args: { userId: string }) => {

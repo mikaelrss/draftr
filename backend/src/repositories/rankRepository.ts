@@ -1,21 +1,9 @@
 import { dbClient } from '../index';
+import { fetchRankId } from '../services/userPreferenceService';
 
 interface RankEntity {
-  name: string;
   id: number;
-}
-
-interface IRankObjectEntity {
-  id: number;
-  tier_id: number;
-  player_id: number;
-  overall_rank: number;
-  rank_id: number;
-  tier_order: number;
   name: string;
-  display_name: string;
-  position: string;
-  team: string;
   uuid: string;
 }
 
@@ -55,4 +43,21 @@ where draftr.rank.id = $1`;
     team: row.team,
     uuid: row.uuid,
   }));
+};
+
+export const fetchRankByUuid = async (uuid: string): Promise<RankEntity> => {
+  const query = `SELECT *
+                 from draftr.rank
+                 where uuid = $1`;
+  const values = [uuid];
+  const result = await dbClient.query(query, values);
+  return result.rows[0];
+};
+
+export const fetchRankByUserId = async (userId: string) => {
+  const rankId = await fetchRankId(userId);
+  const query = `SELECT * from draftr.rank where id = $1`;
+  const values = [rankId];
+  const result = await dbClient.query(query, values);
+  return result.rows[0];
 };

@@ -14,7 +14,7 @@ export interface newTierChangeRank_createTierAndMovePlayers_players {
   displayName: string;
   position: PlayerPosition;
   overallRank: number;
-  positionRank: number;
+  positionRank: number | null;
   team: NFLTeam;
 }
 

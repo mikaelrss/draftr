@@ -13,7 +13,7 @@ import { IState } from '../../redux/store';
 import { getBackground } from '../rankings/Rankings';
 import { removePlayer } from './TeamActions';
 import { ClickableSurface } from '../shared/Button';
-import { rankings_tiers_players } from '../rankings/__generated__/rankings';
+import { rankings_rank_tiers_players } from '../rankings/__generated__/rankings';
 import { HIGHLIGHT_COLOR } from '../../styles/colors';
 import PlayerName from '../tiercontainer/PlayerName';
 
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 });
 
 interface IStateProps {
-  selectedPlayers: rankings_tiers_players[];
+  selectedPlayers: rankings_rank_tiers_players[];
 }
 
 interface IDispatchProps {
