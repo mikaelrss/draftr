@@ -24,7 +24,7 @@ export interface ITier {
 
 export interface IChangeRankArgs {
   rankUuid: string;
-  playerId: string;
+  playerId: number;
   destinationTier: number;
   destinationRank: number;
 }

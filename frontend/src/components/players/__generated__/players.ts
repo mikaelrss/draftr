@@ -8,7 +8,7 @@
 
 export interface players_players {
   __typename: "Player";
-  playerId: string | null;
+  playerId: number | null;
   lastName: string | null;
   dateOfBirth: string | null;
   firstName: string | null;

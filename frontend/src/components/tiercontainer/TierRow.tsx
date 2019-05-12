@@ -19,7 +19,11 @@ interface IProps {
 }
 
 const TierRow = ({ player, index, disabled }: IProps) => (
-  <Draggable draggableId={player.playerId} index={index} key={player.playerId}>
+  <Draggable
+    draggableId={`${player.playerId}`}
+    index={index}
+    key={player.playerId}
+  >
     {(draggableProvided, prop) => (
       <div
         ref={draggableProvided.innerRef}

@@ -119,7 +119,7 @@ const Rankings = ({ changeRankMutation, createTierMutation, match }: Props) => {
 
     changeRankMutation({
       variables: {
-        playerId,
+        playerId: +playerId,
         rankUuid,
         destTier,
         destRank,

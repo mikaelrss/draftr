@@ -10,7 +10,7 @@ import { PlayerPosition, NFLTeam } from "./../../../types/graphqltypes";
 
 export interface rankings_rank_tiers_players {
   __typename: "RankedPlayer";
-  playerId: string;
+  playerId: number;
   displayName: string;
   position: PlayerPosition;
   overallRank: number;

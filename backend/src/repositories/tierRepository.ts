@@ -22,3 +22,14 @@ export const insertTier = async (
   const result = await dbClient.query(query, values);
   return result.rows[0];
 };
+
+export const fetchTierByTierOrder = async (
+  rankId: number,
+  tierOrder: number,
+) => {
+  console.log(rankId, tierOrder, 'HAL');
+  const query =
+    'SELECT * FROM draftr.tier where tier_order = $2 and rank_id = $1';
+  const values = [rankId, tierOrder];
+  return (await dbClient.query(query, values)).rows[0];
+};

@@ -10,11 +10,11 @@ type Mutation {
   createPlayerList: String
   changeRank(
     rankUuid: String!
-    playerId: String!
+    playerId: Int!
     destinationTier: Int!
     destinationRank: Int!
   ): Rank
-  createTier: Tier!
+  createTier(id: String!): Tier!
   createTierAndMovePlayers(playerId: String!, originTier: Int!): [Tier!]!
 }
 
@@ -75,7 +75,7 @@ type Tier {
 }
 
 type RankedPlayer {
-  playerId: String!
+  playerId: Int!
   position: PlayerPosition!
   displayName: String!
   firstName: String
@@ -89,7 +89,7 @@ type RankedPlayer {
 }
 
 type Player {
-  playerId: String
+  playerId: Int
   active: Boolean
   lastName: String
   firstName: String

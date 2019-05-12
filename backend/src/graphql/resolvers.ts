@@ -2,9 +2,7 @@ import { getQBs, IPlayer } from '../api/players';
 import { getFantasyFootballNerdRankings } from '../api/rankings';
 import {
   changePlayer,
-  changePlayerRank,
   createDefaultRankings,
-  createTierAndMovePlayers,
   getRankByUuid,
 } from '../services/rankService';
 import { createPlayerList } from '../services/playerService';
@@ -24,7 +22,11 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createDefaultRankings: async (root: any, args: { userId: string }) => {
+    createDefaultRankings: async (
+      root: any,
+      args: { userId: string },
+      context: any,
+    ) => {
       await createDefaultRankings(args.userId);
       return 'Created default rankings';
     },
@@ -32,26 +34,30 @@ export const resolvers = {
       await createPlayerList();
       return 'Players inserted from Fantasy Football Nerds';
     },
-    changeRank: async (root: any, args: IChangeRankArgs, context: IContext) =>
+    changeRank: async (root: any, args: IChangeRankArgs, context: IContext) => {
       await changePlayer(
         args.rankUuid,
         args.playerId,
         args.destinationTier,
         args.destinationRank,
         context.user,
-      ),
-    createTier: async (root: any, args: any, context: IContext) =>
-      await createNewTier(context.user),
+      );
+      return await getRankByUuid(args.rankUuid);
+    },
+    createTier: async (root: any, args: { id: string }, context: IContext) =>
+      await createNewTier(args.id, context.user),
     createTierAndMovePlayers: async (
       root: any,
       args: ICreateTierAndMovePlayersArgs,
       context: IContext,
-    ) =>
-      await createTierAndMovePlayers(
-        context.user,
-        args.originTier,
-        args.playerId,
-      ),
+    ) => {
+      console.log('test');
+    },
+    // await createTierAndMovePlayers(
+    //   context.user,
+    //   args.originTier,
+    //   args.playerId,
+    // ),
   },
   Tier: {
     players: async (tier: ITier) =>

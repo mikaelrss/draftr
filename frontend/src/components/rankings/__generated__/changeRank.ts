@@ -10,7 +10,7 @@ import { PlayerPosition, NFLTeam } from "./../../../types/graphqltypes";
 
 export interface changeRank_changeRank_tiers_players {
   __typename: "RankedPlayer";
-  playerId: string;
+  playerId: number;
   displayName: string;
   position: PlayerPosition;
   overallRank: number;
@@ -37,7 +37,7 @@ export interface changeRank {
 }
 
 export interface changeRankVariables {
-  playerId: string;
+  playerId: number;
   rankUuid: string;
   destTier: number;
   destRank: number;

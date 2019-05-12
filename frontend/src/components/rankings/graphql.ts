@@ -39,7 +39,7 @@ export const NEW_TIER_CHANGE_RANK = gql`
 
 export const CHANGE_RANK = gql`
   mutation changeRank(
-    $playerId: String!
+    $playerId: Int!
     $rankUuid: String!
     $destTier: Int!
     $destRank: Int!

@@ -71,7 +71,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  remove: (id: string) => void;
+  remove: (id: number) => void;
 }
 
 type IProps = IStateProps & IDispatchProps;

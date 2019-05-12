@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { useMutation } from 'react-apollo-hooks';
 import { Droppable } from 'react-beautiful-dnd';
 import { StyleSheet, css } from 'aphrodite';
@@ -11,6 +12,11 @@ import { DEFAULT_PADDING } from '../../styles/constants';
 import { ADD_TIER_MUTATION } from './graphql';
 import { GET_FANTASY_FOOTBALL_RANKINGS } from '../rankings/graphql';
 import Spinner from '../shared/Spinner';
+import { addTier, addTierVariables } from './__generated__/addTier';
+import {
+  rankings,
+  rankingsVariables,
+} from '../rankings/__generated__/rankings';
 
 export const ADD_TIER_DROPPABLE_ID = 'addNewTier';
 
@@ -49,16 +55,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const AddTier = () => {
+const AddTier = ({ match }: RouteComponentProps<{ id: string }>) => {
   const [loading, setLoading] = useState(false);
-  const createTier = useMutation(ADD_TIER_MUTATION, {
+  const createTier = useMutation<addTier, addTierVariables>(ADD_TIER_MUTATION, {
     update: (proxy, mutationResult) => {
-      const data = proxy.readQuery({ query: GET_FANTASY_FOOTBALL_RANKINGS });
-      // @ts-ignore
-      data.tiers.push({
+      const data = proxy.readQuery<rankings, rankingsVariables>({
+        query: GET_FANTASY_FOOTBALL_RANKINGS,
+        variables: { id: match.params.id },
+      });
+      if (data == null || data.rank == null) return;
+      console.log(data);
+      data.rank.tiers.push({
         ...mutationResult.data.createTier,
         players: [],
       });
+      console.log(data);
       proxy.writeQuery({ query: GET_FANTASY_FOOTBALL_RANKINGS, data });
     },
   });
@@ -70,7 +81,11 @@ const AddTier = () => {
             className={css(styles.container)}
             onClick={() => {
               setLoading(true);
-              createTier()
+              createTier({
+                variables: {
+                  rankUuid: match.params.id,
+                },
+              })
                 .then(() => setLoading(false))
                 .catch(() => setLoading(false));
             }}
@@ -93,4 +108,4 @@ const AddTier = () => {
   );
 };
 
-export default AddTier;
+export default withRouter(AddTier);

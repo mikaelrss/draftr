@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 });
 
 interface IStateProps {
-  passed: string[];
+  passed: number[];
 }
 
 interface IOwnProps {
@@ -43,7 +43,7 @@ interface IOwnProps {
 type Props = IOwnProps & IStateProps;
 
 const TierContainer = ({ tierId, players, passed, className }: Props) => {
-  const isDisabled = (id: string) => passed.includes(id);
+  const isDisabled = (id: number) => passed.includes(id);
 
   return (
     <div>

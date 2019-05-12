@@ -16,7 +16,7 @@ export interface IPlayerTakenAction {
 
 export interface IRemovePlayerAction {
   type: typeof REMOVE_PLAYER;
-  payload: string;
+  payload: number;
 }
 
 export const selectPlayer = (player: rankings_rank_tiers_players) => ({
@@ -29,7 +29,7 @@ export const playerTaken = (player: rankings_rank_tiers_players) => ({
   payload: player,
 });
 
-export const removePlayer = (playerId: string) => ({
+export const removePlayer = (playerId: number) => ({
   type: REMOVE_PLAYER,
   payload: playerId,
 });
