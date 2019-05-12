@@ -1,4 +1,5 @@
 import createUuid from 'uuid/v4';
+import { ForbiddenError } from 'apollo-server';
 
 import { getFantasyFootballNerdRankings } from '../api/rankings';
 import { IRankingModel } from '../data/mongoconnector';
@@ -20,7 +21,7 @@ import {
 } from '../repositories/rankRepository';
 import { insertTier } from '../repositories/tierRepository';
 import { insertRankedPlayer } from '../repositories/rankedPlayerRepository';
-import { setRankId } from './userPreferenceService';
+import { setRankId, userOwnsRank } from './userPreferenceService';
 import {
   createNewTier,
   getPersonalTier,
@@ -315,6 +316,44 @@ const movePlayerPropagateLeft = async (
   return ranks.tiers;
 };
 
+export const createTierAndMovePlayers = async (
+  userId: string,
+  originTier: number,
+  playerId: string,
+) => {
+  const rankings = await getPersonalTier(userId);
+  // @ts-ignore
+  console.log(rankings.tiers.length, originTier);
+  // @ts-ignore
+  if (rankings.tiers.length !== originTier) {
+    // move single player to new tier
+    throw new Error(
+      'Need to move a player from last tier to create a new tier',
+    );
+  }
+  const newRanks = await createNewTier(userId);
+  return await movePlayerCascade(
+    playerId,
+    originTier,
+    originTier + 1,
+    1,
+    // @ts-ignore
+    newRanks,
+  );
+};
+
+export const changePlayer = async (
+  rankUuid: string,
+  playerId: string,
+  destinationTier: number,
+  destinationRank: number,
+  userId: string,
+) => {
+  const ranks = await getRankByUuid(rankUuid);
+  if (!userOwnsRank(ranks.id, userId)) throw new ForbiddenError('Forbidden');
+  console.log(rankUuid, playerId, destinationTier, destinationRank);
+};
+
 export const changePlayerRank = async (
   playerId: string,
   originTier: number,
@@ -376,32 +415,6 @@ export const changePlayerRank = async (
   );
 };
 
-export const createTierAndMovePlayers = async (
-  userId: string,
-  originTier: number,
-  playerId: string,
-) => {
-  const rankings = await getPersonalTier(userId);
-  // @ts-ignore
-  console.log(rankings.tiers.length, originTier);
-  // @ts-ignore
-  if (rankings.tiers.length !== originTier) {
-    // move single player to new tier
-    throw new Error(
-      'Need to move a player from last tier to create a new tier',
-    );
-  }
-  const newRanks = await createNewTier(userId);
-  return await movePlayerCascade(
-    playerId,
-    originTier,
-    originTier + 1,
-    1,
-    // @ts-ignore
-    newRanks,
-  );
-};
-
 export interface PersonalTier {
   tierId: number;
   uuid: string;
@@ -419,6 +432,7 @@ export interface PersonalRank {
 export const getRankByUuid = async (uuid: string) => {
   const rank = await fetchRankByUuid(uuid);
   return {
+    id: rank.id,
     uuid: rank.uuid,
     name: rank.name,
     tiers: await getTiersByRankId(rank.id),

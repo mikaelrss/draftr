@@ -1,6 +1,7 @@
 import { getQBs, IPlayer } from '../api/players';
 import { getFantasyFootballNerdRankings } from '../api/rankings';
 import {
+  changePlayer,
   changePlayerRank,
   createDefaultRankings,
   createTierAndMovePlayers,
@@ -32,9 +33,9 @@ export const resolvers = {
       return 'Players inserted from Fantasy Football Nerds';
     },
     changeRank: async (root: any, args: IChangeRankArgs, context: IContext) =>
-      await changePlayerRank(
+      await changePlayer(
+        args.rankUuid,
         args.playerId,
-        args.originTier,
         args.destinationTier,
         args.destinationRank,
         context.user,

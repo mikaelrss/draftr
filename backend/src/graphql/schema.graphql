@@ -9,11 +9,11 @@ type Mutation {
   createDefaultRankings(userId: String!): String
   createPlayerList: String
   changeRank(
+    rankUuid: String!
     playerId: String!
-    originTier: Int!
     destinationTier: Int!
     destinationRank: Int!
-  ): [Tier!]!
+  ): Rank
   createTier: Tier!
   createTierAndMovePlayers(playerId: String!, originTier: Int!): [Tier!]!
 }

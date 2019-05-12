@@ -70,8 +70,9 @@ type Props = {
 } & RouteComponentProps<{ id: string }>;
 
 const Rankings = ({ changeRankMutation, createTierMutation, match }: Props) => {
+  const rankUuid = match.params.id;
   const { data, loading } = useQuery<rankings>(GET_FANTASY_FOOTBALL_RANKINGS, {
-    variables: { id: match.params.id },
+    variables: { id: rankUuid },
   });
   if (loading || !data)
     return (
@@ -119,7 +120,7 @@ const Rankings = ({ changeRankMutation, createTierMutation, match }: Props) => {
     changeRankMutation({
       variables: {
         playerId,
-        origTier,
+        rankUuid,
         destTier,
         destRank,
       },

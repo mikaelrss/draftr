@@ -40,25 +40,29 @@ export const NEW_TIER_CHANGE_RANK = gql`
 export const CHANGE_RANK = gql`
   mutation changeRank(
     $playerId: String!
+    $rankUuid: String!
     $destTier: Int!
     $destRank: Int!
-    $origTier: Int!
   ) {
     changeRank(
+      rankUuid: $rankUuid
       playerId: $playerId
       destinationRank: $destRank
       destinationTier: $destTier
-      originTier: $origTier
     ) {
+      name
       uuid
-      tierId
-      players {
-        playerId
-        displayName
-        position
-        overallRank
-        positionRank
-        team
+      tiers {
+        uuid
+        tierId
+        players {
+          playerId
+          displayName
+          position
+          overallRank
+          positionRank
+          team
+        }
       }
     }
   }
