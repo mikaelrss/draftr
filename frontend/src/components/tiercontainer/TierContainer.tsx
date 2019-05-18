@@ -26,6 +26,7 @@ import {
   deleteTierMutationVariables,
 } from './__generated__/deleteTierMutation';
 import { GET_FANTASY_FOOTBALL_RANKINGS } from '../rankings/graphql';
+import { ALL_RANKS_QUERY } from '../ranklist/graphql';
 
 const styles = StyleSheet.create({
   playerDragging: {

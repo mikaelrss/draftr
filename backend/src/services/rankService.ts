@@ -5,6 +5,7 @@ import { getFantasyFootballNerdRankings } from '../api/rankings';
 import { findNextRankNew, findPrecedingRankNew } from './rankingUtils';
 import { IRankedPlayer } from '../api/players';
 import {
+  addRank,
   fetchRankById,
   fetchRankByUserId,
   fetchRankByUuid,
@@ -16,6 +17,7 @@ import { insertTier } from '../repositories/tierRepository';
 import { insertRankedPlayer } from '../repositories/rankedPlayerRepository';
 import { setRankId, userOwnsRank } from './userPreferenceService';
 import {
+  createNewTier,
   getPersonalTier,
   getTierIdByTierOrder,
   getTiersByRankId,
@@ -97,6 +99,7 @@ export const changePlayer = async (
 };
 
 export interface PersonalTier {
+  id?: number;
   tierId: number;
   uuid: string;
   players: PlayerRank[];
@@ -140,6 +143,21 @@ export const getPersonalRank = async (
     name: rank.name,
     tiers: await getPersonalTier(userId),
   };
+};
+
+export const createRank = async (name: string, userId: string) => {
+  const fantasyRankings = await getFantasyFootballNerdRankings();
+  const newRank = await addRank(name, userId);
+  const newTier = await createNewTier(newRank.uuid, userId);
+  fantasyRankings.forEach(async (player: any) => {
+    await insertRankedPlayer(
+      newRank.id,
+      newTier.id,
+      player.playerId,
+      player.overallRank,
+    );
+  });
+  return newRank;
 };
 
 export const getRanks = async () => await fetchRanks();

@@ -2,11 +2,13 @@ import { IPlayer } from '../api/players';
 import {
   changePlayer,
   createDefaultRankings,
+  createRank,
+  getRankById,
   getRankByUuid,
   getRanks,
 } from '../services/rankService';
 import { createPlayerList } from '../services/playerService';
-import { DeleteTierArgs, IChangeRankArgs } from './types';
+import { CreateRankArgs, DeleteTierArgs, IChangeRankArgs } from './types';
 import { IContext } from '../index';
 import {
   createNewTier,
@@ -33,6 +35,10 @@ export const resolvers = {
     ) => {
       await createDefaultRankings(args.userId);
       return 'Created default rankings';
+    },
+    createRank: async (root: any, args: CreateRankArgs, context: IContext) => {
+      const rank = await createRank(args.name, context.user);
+      return await getRankById(rank.id);
     },
     createPlayerList: async () => {
       await createPlayerList();
