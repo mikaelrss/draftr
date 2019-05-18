@@ -1,7 +1,7 @@
 import { IPlayerModel } from '../data/mongoconnector';
 import { dbClient } from '../index';
 
-interface IPlayerEntity {
+export interface PlayerEntity {
   player_id: string;
   position: string;
   display_name: string;

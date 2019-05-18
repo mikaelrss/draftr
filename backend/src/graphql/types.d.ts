@@ -17,6 +17,7 @@ export interface IRankMap {
 }
 
 export interface ITier {
+  id: number;
   uuid: string;
   tierId: number;
   players: IRankedPlayer[];
@@ -32,4 +33,8 @@ export interface IChangeRankArgs {
 export interface ICreateTierAndMovePlayersArgs {
   playerId: string;
   originTier: number;
+}
+
+export interface DeleteTierArgs {
+  id: string;
 }

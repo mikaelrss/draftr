@@ -1,6 +1,4 @@
 type Query {
-  players: [Player!]!
-  fantasyFootballNerdRankings: [RankedPlayer!]!
   tiers(id: String!): [Tier!]!
   rank(id: String!): Rank
 }
@@ -15,7 +13,8 @@ type Mutation {
     destinationRank: Int!
   ): Rank
   createTier(id: String!): Tier!
-  createTierAndMovePlayers(playerId: String!, originTier: Int!): [Tier!]!
+  deleteTier(id: String!): Tier!
+  #  createTierAndMovePlayers(playerId: String!, originTier: Int!): [Tier!]!
 }
 
 type Rank {
@@ -70,6 +69,7 @@ enum NFLTeam {
 
 type Tier {
   uuid: String!
+  name: String
   tierId: Int!
   players: [RankedPlayer!]!
 }

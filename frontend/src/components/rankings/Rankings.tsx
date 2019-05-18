@@ -21,10 +21,6 @@ import { PlayerPosition } from '../../types/graphqltypes';
 import AddTier, { ADD_TIER_DROPPABLE_ID } from '../addtier/AddTier';
 import Spinner from '../shared/Spinner';
 import { changeRank, changeRankVariables } from './__generated__/changeRank';
-import {
-  newTierChangeRank,
-  newTierChangeRankVariables,
-} from './__generated__/newTierChangeRank';
 
 const styles = StyleSheet.create({
   box: {
@@ -66,10 +62,10 @@ export const getBackground = (position: PlayerPosition) => {
 
 type Props = {
   changeRankMutation: MutationFn<changeRank, changeRankVariables>;
-  createTierMutation: MutationFn<newTierChangeRank, newTierChangeRankVariables>;
+  // createTierMutation: MutationFn<newTierChangeRank, newTierChangeRankVariables>;
 } & RouteComponentProps<{ id: string }>;
 
-const Rankings = ({ changeRankMutation, createTierMutation, match }: Props) => {
+const Rankings = ({ changeRankMutation, match }: Props) => {
   const rankUuid = match.params.id;
   const { data, loading } = useQuery<rankings>(GET_FANTASY_FOOTBALL_RANKINGS, {
     variables: { id: rankUuid },
@@ -87,22 +83,22 @@ const Rankings = ({ changeRankMutation, createTierMutation, match }: Props) => {
     const origTier = +result.source.droppableId.replace('tier#', '');
     const playerId = result.draggableId;
 
-    if (result.destination.droppableId === ADD_TIER_DROPPABLE_ID) {
-      createTierMutation({
-        variables: {
-          originTier: origTier,
-          playerId,
-        },
-        update: (proxy, mutationResult) => {
-          if (mutationResult.data == null) return;
-          proxy.writeQuery({
-            query: GET_FANTASY_FOOTBALL_RANKINGS,
-            data: { tiers: mutationResult.data.createTierAndMovePlayers },
-          });
-        },
-      });
-      return;
-    }
+    // if (result.destination.droppableId === ADD_TIER_DROPPABLE_ID) {
+    //   createTierMutation({
+    //     variables: {
+    //       originTier: origTier,
+    //       playerId,
+    //     },
+    //     update: (proxy, mutationResult) => {
+    //       if (mutationResult.data == null) return;
+    //       proxy.writeQuery({
+    //         query: GET_FANTASY_FOOTBALL_RANKINGS,
+    //         data: { tiers: mutationResult.data.createTierAndMovePlayers },
+    //       });
+    //     },
+    //   });
+    //   return;
+    // }
 
     const destTier = +result.destination.droppableId.replace('tier#', '');
     const destRank = +result.destination.index + 1;
@@ -131,11 +127,7 @@ const Rankings = ({ changeRankMutation, createTierMutation, match }: Props) => {
     <div className={css(styles.box)}>
       <DragDropContext onDragEnd={onDragEnd}>
         {data.rank.tiers.map(tier => (
-          <TierContainer
-            tierId={tier.tierId}
-            players={tier.players}
-            key={`TIER_${tier.tierId}`}
-          />
+          <TierContainer tier={tier} key={`TIER_${tier.tierId}`} />
         ))}
         <AddTier />
       </DragDropContext>

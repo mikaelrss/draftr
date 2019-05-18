@@ -7,6 +7,8 @@ export const GET_FANTASY_FOOTBALL_RANKINGS = gql`
       uuid
       tiers {
         tierId
+        name
+        uuid
         players {
           playerId
           displayName
@@ -20,22 +22,22 @@ export const GET_FANTASY_FOOTBALL_RANKINGS = gql`
   }
 `;
 
-export const NEW_TIER_CHANGE_RANK = gql`
-  mutation newTierChangeRank($playerId: String!, $originTier: Int!) {
-    createTierAndMovePlayers(originTier: $originTier, playerId: $playerId) {
-      uuid
-      tierId
-      players {
-        playerId
-        displayName
-        position
-        overallRank
-        positionRank
-        team
-      }
-    }
-  }
-`;
+// export const NEW_TIER_CHANGE_RANK = gql`
+//   mutation newTierChangeRank($playerId: String!, $originTier: Int!) {
+//     createTierAndMovePlayers(originTier: $originTier, playerId: $playerId) {
+//       uuid
+//       tierId
+//       players {
+//         playerId
+//         displayName
+//         position
+//         overallRank
+//         positionRank
+//         team
+//       }
+//     }
+//   }
+// `;
 
 export const CHANGE_RANK = gql`
   mutation changeRank(

@@ -64,12 +64,10 @@ const AddTier = ({ match }: RouteComponentProps<{ id: string }>) => {
         variables: { id: match.params.id },
       });
       if (data == null || data.rank == null) return;
-      console.log(data);
       data.rank.tiers.push({
         ...mutationResult.data.createTier,
         players: [],
       });
-      console.log(data);
       proxy.writeQuery({ query: GET_FANTASY_FOOTBALL_RANKINGS, data });
     },
   });

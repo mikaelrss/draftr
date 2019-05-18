@@ -1,6 +1,7 @@
 import { fetchPlayerRank } from '../repositories/userPreferenceRepository';
 import {
   downgradePosition,
+  fetchPlayersByTierId,
   updateOverallPosition,
   updateTier,
   upgradePosition,
@@ -11,6 +12,10 @@ export const getPlayerRank = async (playerId: number, rankId: number) => {
   if (result == null) throw Error('Could not fetch player rank information');
   return result;
 };
+
+export const getPlayersByTierId = async (id: number) =>
+  await fetchPlayersByTierId(id);
+
 export const updatePlayerRank = async (
   rankId: number,
   playerId: number,

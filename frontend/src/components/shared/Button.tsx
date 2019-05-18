@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite/no-important';
+import { CircleSpinner } from 'react-spinners-kit';
 import classNames from 'classnames';
 
 import {
@@ -10,6 +11,7 @@ import {
 } from '../../styles/colors';
 import { DEFAULT_PADDING } from '../../styles/constants';
 import Icon, { IconType } from './Icon';
+import Spinner from './Spinner';
 
 const styles = StyleSheet.create({
   iconButton: {
@@ -49,6 +51,7 @@ interface IIconProps {
   icon: IconType;
   onClick: () => void;
   className?: string;
+  loading?: boolean;
   disabled?: boolean;
 }
 
@@ -56,6 +59,7 @@ export const IconButton = ({
   icon,
   onClick,
   className,
+  loading,
   disabled,
 }: IIconProps) => (
   <button
@@ -63,7 +67,8 @@ export const IconButton = ({
     disabled={disabled}
     className={classNames(css(styles.iconButton), className)}
   >
-    <Icon icon={icon} />
+    {loading && <CircleSpinner size={10} />}
+    {!loading && <Icon icon={icon} />}
   </button>
 );
 
@@ -98,6 +103,7 @@ interface IButtonProps {
 export const Button = ({ onClick, className, style, value }: IButtonProps) => {
   return (
     <button
+      style={style}
       onClick={onClick}
       className={classNames(className, css(styles.button))}
     >

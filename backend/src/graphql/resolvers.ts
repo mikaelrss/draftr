@@ -1,20 +1,22 @@
-import { getQBs, IPlayer } from '../api/players';
-import { getFantasyFootballNerdRankings } from '../api/rankings';
+import { IPlayer } from '../api/players';
 import {
   changePlayer,
   createDefaultRankings,
   getRankByUuid,
 } from '../services/rankService';
 import { createPlayerList } from '../services/playerService';
-import { IChangeRankArgs, ICreateTierAndMovePlayersArgs, ITier } from './types';
+import { DeleteTierArgs, IChangeRankArgs } from './types';
 import { IContext } from '../index';
-import { createNewTier, getPersonalTier } from '../services/tierService';
+import {
+  createNewTier,
+  deleteTier,
+  getPersonalTier,
+} from '../services/tierService';
+import { getPlayersByTierId } from '../services/rankedPlayerService';
+import { TierEntity } from '../repositories/tierRepository';
 
 export const resolvers = {
   Query: {
-    players: async () => await getQBs(),
-    fantasyFootballNerdRankings: async () =>
-      await getFantasyFootballNerdRankings(),
     tiers: async (root: any, args: { id: string }, context: IContext) =>
       await getPersonalTier(context.user),
     rank: async (root: any, args: { id: string }) => {
@@ -44,24 +46,17 @@ export const resolvers = {
       );
       return await getRankByUuid(args.rankUuid);
     },
+    deleteTier: async (root: any, args: DeleteTierArgs, context: IContext) => {
+      return await deleteTier(args.id, context.user);
+    },
     createTier: async (root: any, args: { id: string }, context: IContext) =>
       await createNewTier(args.id, context.user),
-    createTierAndMovePlayers: async (
-      root: any,
-      args: ICreateTierAndMovePlayersArgs,
-      context: IContext,
-    ) => {
-      console.log('test');
-    },
-    // await createTierAndMovePlayers(
-    //   context.user,
-    //   args.originTier,
-    //   args.playerId,
-    // ),
   },
   Tier: {
-    players: async (tier: ITier) =>
-      tier.players.sort((a, b) => a.overallRank - b.overallRank),
+    players: async (tier: TierEntity) => {
+      const players = tier.players || (await getPlayersByTierId(tier.id));
+      return players.sort((a, b) => a.overallRank - b.overallRank);
+    },
   },
   Player: {
     lastName: async ({ lname }: IPlayer) => lname,

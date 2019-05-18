@@ -1,16 +1,21 @@
-import { ForbiddenError } from 'apollo-server';
+import { ForbiddenError, ValidationError } from 'apollo-server';
 import {
   createDefaultRankings,
+  getRankById,
   getRankByUuid,
   PersonalTier,
 } from './rankService';
 import {
   fetchTierByTierOrder,
+  fetchTierByUuid,
   insertTier,
+  removeTierByUuid,
+  TierEntity,
 } from '../repositories/tierRepository';
 import { fetchRankId, userOwnsRank } from './userPreferenceService';
 import { fetchRank, PlayerRank } from '../repositories/rankRepository';
 import groupBy from 'lodash.groupby';
+import { getPlayersByTierId } from './rankedPlayerService';
 
 export const createNewTier = async (
   rankUuid: string,
@@ -31,6 +36,7 @@ export const createNewTier = async (
 const mapRanks = (ranks: PlayerRank[]) => {
   const tiers = groupBy(ranks, 'tierOrder');
   return Object.keys(tiers).map(tierOrder => ({
+    name: tiers[tierOrder][0].tierName,
     tierId: +tierOrder,
     uuid: tiers[tierOrder][0].uuid,
     players: tiers[tierOrder].filter(p => p.playerId != null),
@@ -58,4 +64,35 @@ export const getTierIdByTierOrder = async (
 ) => {
   const result = await fetchTierByTierOrder(rankId, tierOrder);
   return result.id;
+};
+
+const userOwnsTier = async (tierUuid: string, userId: string) => {
+  const tier = await fetchTierByUuid(tierUuid);
+  const rank = await getRankById(tier.rank_id);
+  return userOwnsRank(rank.id, userId);
+};
+
+const getTierByUuid = async (tierUuid: string): Promise<TierEntity> => {
+  const tierEntity = await fetchTierByUuid(tierUuid);
+  return {
+    id: tierEntity.id,
+    uuid: tierEntity.uuid,
+    rank_id: tierEntity.rank_id,
+    tier_order: tierEntity.tier_order,
+    name: tierEntity.name,
+    players: await getPlayersByTierId(tierEntity.id),
+  };
+};
+
+export const deleteTier = async (tierUuid: string, userId: string) => {
+  if (!userOwnsTier(tierUuid, userId)) {
+    throw new ForbiddenError("You don't own the tier");
+  }
+  const tier = await getTierByUuid(tierUuid);
+  if (!tier) throw new ValidationError('Tier does not exist');
+  if (tier.players.length !== 0) {
+    throw new ValidationError('You can not delete a tier with players');
+  }
+  await removeTierByUuid(tierUuid);
+  return tier;
 };

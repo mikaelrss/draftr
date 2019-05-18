@@ -9,6 +9,8 @@ import {
   fetchRankByUserId,
   insertRank,
   PlayerRank,
+  fetchRank,
+  fetchRankById,
 } from '../repositories/rankRepository';
 import { insertTier } from '../repositories/tierRepository';
 import { insertRankedPlayer } from '../repositories/rankedPlayerRepository';
@@ -51,7 +53,7 @@ export const createDefaultRankings = async (userId: string) => {
   console.log(rank);
   testObject.tiers.forEach(async tier => {
     const inserted = await insertTier(
-      { tierId: tier.tierId, name: `${tier.tierId}` },
+      { tierId: tier.tierId, name: 'default' },
       rank.id,
     );
     Object.values(tier.rankMap).forEach(async (player: any) => {
@@ -111,6 +113,16 @@ export interface PersonalRank {
 
 export const getRankByUuid = async (uuid: string) => {
   const rank = await fetchRankByUuid(uuid);
+  return {
+    id: rank.id,
+    uuid: rank.uuid,
+    name: rank.name,
+    tiers: await getTiersByRankId(rank.id),
+  };
+};
+
+export const getRankById = async (id: number) => {
+  const rank = await fetchRankById(id);
   return {
     id: rank.id,
     uuid: rank.uuid,

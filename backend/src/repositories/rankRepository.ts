@@ -11,6 +11,7 @@ export interface PlayerRank {
   playerId: number;
   overallRank: number;
   tierOrder: number;
+  tierName: string;
   displayName: string;
   position: string;
   team: string;
@@ -26,7 +27,7 @@ export const insertRank = async (name: string): Promise<RankEntity> => {
 };
 
 export const fetchRank = async (rankId: number): Promise<PlayerRank[]> => {
-  const query = `SELECT t.tier_order, overall_rank, player_id, p.display_name, p.position, p.team, t.uuid
+  const query = `SELECT t.tier_order, t.name, overall_rank, player_id, p.display_name, p.position, p.team, t.uuid
 from draftr.rank
          join draftr.tier as t on rank.id = t.rank_id
          LEFT JOIN draftr.ranked_player as rp on rp.tier_id = t.id
@@ -40,6 +41,7 @@ where draftr.rank.id = $1`;
     tierOrder: row.tier_order,
     displayName: row.display_name,
     position: row.position,
+    tierName: row.name,
     team: row.team,
     uuid: row.uuid,
   }));
@@ -54,10 +56,14 @@ export const fetchRankByUuid = async (uuid: string): Promise<RankEntity> => {
   return result.rows[0];
 };
 
-export const fetchRankByUserId = async (userId: string) => {
-  const rankId = await fetchRankId(userId);
+export const fetchRankById = async (id: number) => {
   const query = `SELECT * from draftr.rank where id = $1`;
-  const values = [rankId];
+  const values = [id];
   const result = await dbClient.query(query, values);
   return result.rows[0];
+};
+
+export const fetchRankByUserId = async (userId: string) => {
+  const rankId = await fetchRankId(userId);
+  return await fetchRankById(rankId);
 };

@@ -1,6 +1,6 @@
 import { dbClient } from '../index';
 
-interface IRankedPlayer {
+export interface RankedPlayer {
   id: number;
   tierId: number;
   playerId: number;
@@ -75,4 +75,12 @@ export const updateTier = async (
     'update draftr.ranked_player set tier_id = $1 where rank_id = $2 and player_id = $3';
   const values = [tierId, rankId, playerId];
   await dbClient.query(query, values);
+};
+
+export const fetchPlayersByTierId = async (id: number) => {
+  const query = `SELECT * FROM draftr.ranked_player where tier_id = $1`;
+  const values = [id];
+
+  const result = await dbClient.query(query, values);
+  return result.rows;
 };
