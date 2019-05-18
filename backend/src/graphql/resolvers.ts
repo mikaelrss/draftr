@@ -23,9 +23,7 @@ export const resolvers = {
     rank: async (root: any, args: { id: string }) => {
       return await getRankByUuid(args.id);
     },
-    ranks: async (root: any, args: any) => {
-      return await getRanks();
-    },
+    ranks: async (root: any, args: any) => await getRanks(),
   },
   Mutation: {
     createDefaultRankings: async (
