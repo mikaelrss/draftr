@@ -6,6 +6,7 @@ import Spinner from '../shared/Spinner';
 import Rank from '../rank/Rank';
 
 import { StyleSheet, css } from 'aphrodite/no-important';
+import Container from '../shared/Container';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,8 +15,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const RankList = () => {
-  return (
+const RankList = () => (
+  <Container>
     <Query<AllRanks, {}> query={ALL_RANKS_QUERY}>
       {({ loading, data }) => {
         if (loading) return <Spinner />;
@@ -30,7 +31,7 @@ const RankList = () => {
         );
       }}
     </Query>
-  );
-};
+  </Container>
+);
 
 export default RankList;

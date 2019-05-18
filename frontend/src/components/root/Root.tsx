@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { ToastContainer } from 'react-toastify';
 import { StyleSheet, css } from 'aphrodite/no-important';
@@ -57,10 +57,8 @@ const Root = () => (
       toastClassName={css(style.toastError)}
       autoClose={3000}
     />
-    <Router history={history}>
-      <Route path="/" component={Main} />
-      <Route path="/callback" component={LoginCallback} />
-    </Router>
+    <Route path="/" component={Main} />
+    <Route path="/callback" component={LoginCallback} />
   </div>
 );
 

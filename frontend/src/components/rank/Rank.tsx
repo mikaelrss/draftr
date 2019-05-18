@@ -1,18 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { AllRanks_ranks } from '../ranklist/__generated__/AllRanks';
 import Typography, { FontSize } from '../shared/Typography';
 import { StyleSheet, css } from 'aphrodite/no-important';
-import { SECONDARY_TEXT } from '../../styles/colors';
 import Paper from '../shared/Paper';
+import Link from '../shared/Link';
+import { SECONDARY_TEXT } from '../../styles/colors';
 
 const styles = StyleSheet.create({
-  link: {
-    textDecoration: 'none',
-    color: SECONDARY_TEXT,
-  },
   container: {
     width: '170px',
+  },
+  link: {
+    color: SECONDARY_TEXT,
   },
 });
 

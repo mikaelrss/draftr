@@ -6,6 +6,7 @@ import { Button } from '../shared/Button';
 import AuthContext from '../../auth/AuthContext';
 import ProfileInfo from '../profileinfo/ProfileInfo';
 import Icon, { IconType } from '../shared/Icon';
+import Link from '../shared/Link';
 
 const ICON_SIZE = 40;
 
@@ -40,10 +41,10 @@ const AppHeader = () => {
   const auth = useContext(AuthContext);
   return (
     <header className={css(styles.header)}>
-      <div className={css(styles.titleContainer)}>
+      <Link to="/ranks" className={css(styles.titleContainer)}>
         <Icon icon={IconType.draftr} className={css(styles.icon)} />
         <div>Draftr</div>
-      </div>
+      </Link>
       {!auth.isAuthenticated() && <Button onClick={auth.login} value="Login" />}
       {auth.isAuthenticated() && <ProfileInfo />}
     </header>
