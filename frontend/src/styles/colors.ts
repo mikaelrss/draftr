@@ -24,3 +24,4 @@ export const SECONDARY_HOVER = CHERRY_DARK;
 export const SECONDARY_TEXT = 'black';
 
 export const HIGHLIGHT_COLOR = ORANGE_SODA_OPACITY;
+export const ERROR_COLOR = CHERRY;

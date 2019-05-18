@@ -13,6 +13,8 @@ import { DEFAULT_PADDING } from '../../styles/constants';
 import Icon, { IconType } from './Icon';
 import Spinner from './Spinner';
 
+export const BUTTON_HEIGHT = 32;
+
 const styles = StyleSheet.create({
   iconButton: {
     background: 'none',
@@ -23,8 +25,8 @@ const styles = StyleSheet.create({
     color: PRIMARY_TEXT,
     padding: 0,
     backgroundColor: PRIMARY,
-    width: '32px',
-    height: '32px',
+    width: `${BUTTON_HEIGHT}px`,
+    height: `${BUTTON_HEIGHT}px`,
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -35,7 +37,10 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   button: {
-    height: '32px',
+    height: `${BUTTON_HEIGHT}px`,
+    display: 'inline-flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     border: 'none',
     outline: 'none',
     backgroundColor: SECONDARY,
@@ -44,6 +49,9 @@ const styles = StyleSheet.create({
     ':hover': {
       backgroundColor: SECONDARY_HOVER,
     },
+  },
+  load: {
+    marginRight: `${DEFAULT_PADDING / 2}px`,
   },
 });
 
@@ -94,20 +102,33 @@ export const ClickableSurface = ({
 );
 
 interface IButtonProps {
-  onClick: () => any;
+  onClick?: () => any;
   value?: string;
+  type?: 'button' | 'submit' | 'reset';
   className?: string;
+  loading?: boolean;
   style?: object;
 }
 
-export const Button = ({ onClick, className, style, value }: IButtonProps) => {
-  return (
-    <button
-      style={style}
-      onClick={onClick}
-      className={classNames(className, css(styles.button))}
-    >
-      {value}
-    </button>
-  );
-};
+export const Button = ({
+  onClick,
+  className,
+  style,
+  value,
+  type,
+  loading,
+}: IButtonProps) => (
+  <button
+    type={type}
+    style={style}
+    onClick={onClick}
+    className={classNames(className, css(styles.button))}
+  >
+    {loading && (
+      <span className={css(styles.load)}>
+        <CircleSpinner size={10} />
+      </span>
+    )}
+    {value}
+  </button>
+);

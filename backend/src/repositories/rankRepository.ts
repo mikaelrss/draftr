@@ -1,5 +1,6 @@
 import { dbClient } from '../index';
 import { fetchRankId } from '../services/userPreferenceService';
+import { changeRank } from 'frontend/src/components/rankings/__generated__/changeRank';
 
 interface RankEntity {
   id: number;
@@ -72,4 +73,11 @@ export const fetchRanks = async () => {
   const query = `SELECT * FROM draftr.rank`;
   const result = await dbClient.query(query);
   return result.rows;
+};
+
+export const addRank = async (name: string, creator: string) => {
+  const query = `INSERT INTO draftr.rank (name, creator) VALUES ($1, $2) RETURNING *`;
+  const values = [name, creator];
+  const result = await dbClient.query(query, values);
+  return result.rows[0];
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { StyleSheet, css } from 'aphrodite/no-important';
 
 const styles = StyleSheet.create({
@@ -22,14 +23,18 @@ export enum FontSize {
 interface Props {
   size: FontSize;
   children: React.ReactNode;
+  className?: string;
 }
 
-const Typography = ({ size, children }: Props) => (
+const Typography = ({ size, children, className }: Props) => (
   <span
-    className={css(
-      size === FontSize.small && styles.small,
-      size === FontSize.medium && styles.medium,
-      size === FontSize.large && styles.large,
+    className={classNames(
+      css(
+        size === FontSize.small && styles.small,
+        size === FontSize.medium && styles.medium,
+        size === FontSize.large && styles.large,
+      ),
+      className,
     )}
   >
     {children}

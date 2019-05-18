@@ -7,11 +7,15 @@ import Rank from '../rank/Rank';
 
 import { StyleSheet, css } from 'aphrodite/no-important';
 import Container from '../shared/Container';
+import AddRank from '../addrank/AddRank';
+import { DEFAULT_PADDING } from '../../styles/constants';
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, 170px)',
+    gridGap: `${DEFAULT_PADDING}px`,
+    justifyContent: 'center',
   },
 });
 
@@ -31,6 +35,7 @@ const RankList = () => (
         );
       }}
     </Query>
+    <AddRank />
   </Container>
 );
 

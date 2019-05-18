@@ -23,10 +23,17 @@ export const createNewTier = async (
 ): Promise<PersonalTier> => {
   const rank = await getRankByUuid(rankUuid);
   if (!userOwnsRank(rank.id, userId)) throw new ForbiddenError('Forbidden');
-  const tierId =
-    rank.tiers.sort((a, b) => a.tierId - b.tierId).slice(-1)[0].tierId + 1;
+  let tierId: number;
+  if (!rank.tiers.length) {
+    tierId = 1;
+  } else {
+    tierId =
+      rank.tiers.sort((a, b) => a.tierId - b.tierId).slice(-1)[0].tierId + 1;
+  }
+
   const insertedTier = await insertTier({ name: 'default', tierId }, rank.id);
   return {
+    id: insertedTier.id,
     tierId: +insertedTier.tier_order,
     uuid: insertedTier.uuid,
     players: [],
