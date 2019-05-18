@@ -21,6 +21,7 @@ import { PlayerPosition } from '../../types/graphqltypes';
 import AddTier, { ADD_TIER_DROPPABLE_ID } from '../addtier/AddTier';
 import Spinner from '../shared/Spinner';
 import { changeRank, changeRankVariables } from './__generated__/changeRank';
+import RateRank from '../raterank/RateRank';
 
 const styles = StyleSheet.create({
   box: {
@@ -131,6 +132,7 @@ const Rankings = ({ changeRankMutation, match }: Props) => {
         ))}
         <AddTier />
       </DragDropContext>
+      <RateRank rank={data.rank} />
     </div>
   );
 };

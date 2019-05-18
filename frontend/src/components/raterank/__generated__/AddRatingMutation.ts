@@ -3,20 +3,20 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: AddRankMutation
+// GraphQL mutation operation: AddRatingMutation
 // ====================================================
 
-export interface AddRankMutation_createRank {
+export interface AddRatingMutation_rateRank {
   __typename: "Rank";
   uuid: string;
   rating: number | null;
-  name: string | null;
 }
 
-export interface AddRankMutation {
-  createRank: AddRankMutation_createRank | null;
+export interface AddRatingMutation {
+  rateRank: AddRatingMutation_rateRank;
 }
 
-export interface AddRankMutationVariables {
-  name: string;
+export interface AddRatingMutationVariables {
+  rankUuid: string;
+  rating: number;
 }

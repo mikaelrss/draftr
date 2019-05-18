@@ -8,6 +8,7 @@ type Mutation {
   createDefaultRankings(userId: String!): String
   createPlayerList: String
   createRank(name: String!): Rank
+  rateRank(rating: Int!, rankUuid: String): Rank!
   changeRank(
     rankUuid: String!
     playerId: Int!
@@ -22,6 +23,7 @@ type Mutation {
 type Rank {
   uuid: String!
   name: String
+  rating: Float
   tiers: [Tier!]!
 }
 

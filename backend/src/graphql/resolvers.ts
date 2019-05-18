@@ -6,9 +6,15 @@ import {
   getRankById,
   getRankByUuid,
   getRanks,
+  PersonalRank,
 } from '../services/rankService';
 import { createPlayerList } from '../services/playerService';
-import { CreateRankArgs, DeleteTierArgs, IChangeRankArgs } from './types';
+import {
+  CreateRankArgs,
+  DeleteTierArgs,
+  IChangeRankArgs,
+  RateRankArgs,
+} from './types';
 import { IContext } from '../index';
 import {
   createNewTier,
@@ -17,6 +23,10 @@ import {
 } from '../services/tierService';
 import { getPlayersByTierId } from '../services/rankedPlayerService';
 import { TierEntity } from '../repositories/tierRepository';
+import {
+  getAverageRatingByRankId,
+  rateRanking,
+} from '../services/userRatingService';
 
 export const resolvers = {
   Query: {
@@ -35,6 +45,10 @@ export const resolvers = {
     ) => {
       await createDefaultRankings(args.userId);
       return 'Created default rankings';
+    },
+    rateRank: async (root: any, args: RateRankArgs, ctx: IContext) => {
+      await rateRanking(args.rankUuid, args.rating, ctx.user);
+      return await getRankByUuid(args.rankUuid);
     },
     createRank: async (root: any, args: CreateRankArgs, context: IContext) => {
       const rank = await createRank(args.name, context.user);
@@ -59,6 +73,14 @@ export const resolvers = {
     },
     createTier: async (root: any, args: { id: string }, context: IContext) =>
       await createNewTier(args.id, context.user),
+  },
+  Rank: {
+    rating: async (rank: PersonalRank) => {
+      console.log(rank);
+      const rating = await getAverageRatingByRankId(rank.id);
+      console.log('NUMB', rating);
+      return rating || 0;
+    },
   },
   Tier: {
     players: async (tier: TierEntity) => {
