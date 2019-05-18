@@ -1,16 +1,19 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import { ReactComponent as Draftr } from '../../svg/draftr.svg';
 import { ReactComponent as Done } from '../../svg/done.svg';
 import { ReactComponent as Clear } from '../../svg/clear.svg';
 import { ReactComponent as Add } from '../../svg/add.svg';
 import { ReactComponent as Delete } from '../../svg/delete.svg';
+import { ReactComponent as Star } from '../../svg/star.svg';
 
 export enum IconType {
   done,
   delete,
   clear,
   add,
+  star,
   draftr,
 }
 
@@ -31,6 +34,8 @@ const getIcon = (icon: IconType) => {
       return Draftr;
     case IconType.delete:
       return Delete;
+    case IconType.star:
+      return Star;
   }
 };
 

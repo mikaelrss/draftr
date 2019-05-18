@@ -1,5 +1,10 @@
-interface CreateRankArgs {
+export interface CreateRankArgs {
   name: string;
+}
+
+export interface RateRankArgs {
+  rating: number;
+  rankUuid: string;
 }
 
 interface IRank {

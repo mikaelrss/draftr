@@ -59,6 +59,7 @@ interface IIconProps {
   icon: IconType;
   onClick: () => void;
   className?: string;
+  iconClass?: string;
   loading?: boolean;
   disabled?: boolean;
 }
@@ -67,6 +68,7 @@ export const IconButton = ({
   icon,
   onClick,
   className,
+  iconClass,
   loading,
   disabled,
 }: IIconProps) => (
@@ -76,7 +78,7 @@ export const IconButton = ({
     className={classNames(css(styles.iconButton), className)}
   >
     {loading && <CircleSpinner size={10} />}
-    {!loading && <Icon icon={icon} />}
+    {!loading && <Icon icon={icon} className={iconClass} />}
   </button>
 );
 

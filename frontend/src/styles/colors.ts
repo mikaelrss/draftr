@@ -25,3 +25,5 @@ export const SECONDARY_TEXT = 'black';
 
 export const HIGHLIGHT_COLOR = ORANGE_SODA_OPACITY;
 export const ERROR_COLOR = CHERRY;
+export const RATE_COLOR = FLAX;
+export const RATE_COLOR_DAMPENED = 'rgba(236, 221, 123, 0.5)';
