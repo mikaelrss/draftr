@@ -1,10 +1,7 @@
 import groupBy from 'lodash.groupby';
-import { IPlayerModel, Player } from '../data/mongoconnector';
+import { IPlayerModel } from '../data/mongoconnector';
 import { getFantasyFootballNerdRankings } from '../api/rankings';
 import { insertPlayer } from '../repositories/playerRepository';
-
-export const getAllPlayers = async (): Promise<IPlayerModel[]> =>
-  await Player.find();
 
 export const createPlayerList = async () => {
   const allPlayers = await getFantasyFootballNerdRankings();

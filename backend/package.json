@@ -17,7 +17,6 @@
     "@types/graphql": "^14.0.7",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/lodash.groupby": "^4.6.6",
-    "@types/mongoose": "^5.3.26",
     "@types/node": "^11.11.3",
     "@types/uuid": "^3.4.4",
     "apollo-server": "^2.4.8",
@@ -30,12 +29,8 @@
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^1.4.0",
     "lodash.groupby": "^4.6.0",
-    "mongo": "^0.1.0",
-    "mongodb": "^3.2.3",
-    "mongoose": "^5.5.1",
     "pg": "^7.10.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^5.8.5",
     "uuid": "^3.3.2"
   },
   "scripts": {
