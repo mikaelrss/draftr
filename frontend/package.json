@@ -55,7 +55,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "update-schema": "apollo schema:download",
-    "generate:graphql:types": "apollo codegen:generate --localSchemaFile=schema.json --target=typescript --includes=src/**/*.ts --globalTypesFile=src/types/graphqltypes.ts"
+    "gen-types": "apollo codegen:generate --localSchemaFile=schema.json --target=typescript --includes=src/**/*.ts --globalTypesFile=src/types/graphqltypes.ts"
   },
   "eslintConfig": {
     "extends": "react-app"

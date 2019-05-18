@@ -1,6 +1,7 @@
 import { IRankingModel } from '../data/mongoconnector';
 import { IRank, IRankMap } from '../graphql/types';
 import { getAllPlayers } from './playerService';
+import { PersonalRank } from './rankService';
 
 export const getRankMap = (ranks: IRankingModel, index: number) =>
   ranks.tiers[index - 1].rankMap;
@@ -28,6 +29,42 @@ export const increaseRank = (rank: IRank) => ({
   ...rank,
   overallRank: rank.overallRank + 1,
 });
+
+export const findNextRankNew = (
+  ranks: PersonalRank,
+  tierId: number,
+  rank: number,
+): number => {
+  const tiers = ranks.tiers.sort((a, b) => a.tierId - b.tierId);
+  const tier = tiers[tierId - 1];
+
+  if (tierId >= tiers.length && tier.players.length === 0) return 403;
+  if (tier.players.length === 0) {
+    return findNextRankNew(ranks, tierId + 1, rank);
+  }
+  const sortedPlayers = tier.players.sort(
+    (a, b) => a.overallRank - b.overallRank,
+  );
+  return sortedPlayers[rank - 1].overallRank;
+};
+
+export const findPrecedingRankNew = (
+  ranks: PersonalRank,
+  tierId: number,
+  rank: number,
+): number => {
+  if (tierId === 1) return rank - 1;
+  const tiers = ranks.tiers.sort((a, b) => a.tierId - b.tierId);
+
+  const tier = tiers[tierId - 1];
+  if (tier.players.length === 0 || rank <= 1) {
+    return findPrecedingRankNew(ranks, tierId - 1, rank);
+  }
+  const sortedPlayers = tier.players.sort(
+    (a, b) => a.overallRank - b.overallRank,
+  );
+  return sortedPlayers[rank - 2].overallRank;
+};
 
 export const findPrecedingRank = (
   ranks: IRankingModel,

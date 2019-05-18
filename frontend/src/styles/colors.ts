@@ -4,7 +4,7 @@ const CHERRY_DARK = '#b80046';
 
 const FLAX = '#ECDD7B';
 const MYRTLE_GREEN = '#1D7874';
-const DEEP_KOAMARU = '#683da8';
+const DEEP_KOAMARU = '#7244c4';
 const ORANGE_SODA = '#FE5E41';
 const MINT_GREEN = '#3DDC97';
 const AZURE = '#007EA7';

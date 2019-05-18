@@ -1,12 +1,14 @@
 import React from 'react';
 
+import { ReactComponent as Draftr } from '../../svg/draftr.svg';
 import { ReactComponent as Done } from '../../svg/done.svg';
 import { ReactComponent as Clear } from '../../svg/clear.svg';
 import { ReactComponent as Add } from '../../svg/add.svg';
-import { ReactComponent as Draftr } from '../../svg/draftr.svg';
+import { ReactComponent as Delete } from '../../svg/delete.svg';
 
 export enum IconType {
   done,
+  delete,
   clear,
   add,
   draftr,
@@ -27,6 +29,8 @@ const getIcon = (icon: IconType) => {
       return Add;
     case IconType.draftr:
       return Draftr;
+    case IconType.delete:
+      return Delete;
   }
 };
 

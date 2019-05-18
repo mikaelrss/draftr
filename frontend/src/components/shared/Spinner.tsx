@@ -1,13 +1,13 @@
 import React from 'react';
-import { JellyfishSpinner } from 'react-spinners-kit';
-import { SECONDARY } from '../../styles/colors';
+import { SpiralSpinner } from 'react-spinners-kit';
+import { PRIMARY, SECONDARY } from '../../styles/colors';
 
 interface IProps {
   loading?: boolean;
 }
 
 const Spinner = ({ loading = true }: IProps) => (
-  <JellyfishSpinner loading={loading} color={SECONDARY} />
+  <SpiralSpinner loading={loading} frontColor={SECONDARY} backColor={PRIMARY} />
 );
 
 export default Spinner;

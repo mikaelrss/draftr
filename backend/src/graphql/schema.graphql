@@ -1,20 +1,26 @@
 type Query {
-  players: [Player!]!
-  fantasyFootballNerdRankings: [RankedPlayer!]!
-  tiers: [Tier!]!
+  tiers(id: String!): [Tier!]!
+  rank(id: String!): Rank
 }
 
 type Mutation {
   createDefaultRankings(userId: String!): String
   createPlayerList: String
   changeRank(
-    playerId: String!
-    originTier: Int!
+    rankUuid: String!
+    playerId: Int!
     destinationTier: Int!
     destinationRank: Int!
-  ): [Tier!]!
-  createTier: [Tier!]!
-  createTierAndMovePlayers(playerId: String!, originTier: Int!): [Tier!]!
+  ): Rank
+  createTier(id: String!): Tier!
+  deleteTier(id: String!): Tier!
+  #  createTierAndMovePlayers(playerId: String!, originTier: Int!): [Tier!]!
+}
+
+type Rank {
+  uuid: String!
+  name: String
+  tiers: [Tier!]!
 }
 
 enum PlayerPosition {
@@ -63,12 +69,13 @@ enum NFLTeam {
 
 type Tier {
   uuid: String!
+  name: String
   tierId: Int!
   players: [RankedPlayer!]!
 }
 
 type RankedPlayer {
-  playerId: String!
+  playerId: Int!
   position: PlayerPosition!
   displayName: String!
   firstName: String
@@ -77,12 +84,12 @@ type RankedPlayer {
   byeWeek: Float
   standDev: Float
   nerdRank: Float
-  positionRank: Float!
+  positionRank: Float
   overallRank: Float!
 }
 
 type Player {
-  playerId: String
+  playerId: Int
   active: Boolean
   lastName: String
   firstName: String

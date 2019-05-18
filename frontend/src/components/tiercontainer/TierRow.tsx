@@ -10,16 +10,20 @@ const styles = StyleSheet.create({
 });
 
 import Player from './Player';
-import { rankings_tiers_players } from '../rankings/__generated__/rankings';
+import { rankings_rank_tiers_players } from '../rankings/__generated__/rankings';
 
 interface IProps {
-  player: rankings_tiers_players;
+  player: rankings_rank_tiers_players;
   index: number;
   disabled: boolean;
 }
 
 const TierRow = ({ player, index, disabled }: IProps) => (
-  <Draggable draggableId={player.playerId} index={index} key={player.playerId}>
+  <Draggable
+    draggableId={`${player.playerId}`}
+    index={index}
+    key={player.playerId}
+  >
     {(draggableProvided, prop) => (
       <div
         ref={draggableProvided.innerRef}

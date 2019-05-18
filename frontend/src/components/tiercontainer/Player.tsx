@@ -16,7 +16,7 @@ import {
 import { DEFAULT_PADDING } from '../../styles/constants';
 import PlayerName from './PlayerName';
 import { getBackground } from '../rankings/Rankings';
-import { rankings_tiers_players } from '../rankings/__generated__/rankings';
+import { rankings_rank_tiers_players } from '../rankings/__generated__/rankings';
 import { IconType } from '../shared/Icon';
 
 export const PLAYER_HEIGHT = 48;
@@ -64,12 +64,12 @@ const styles = StyleSheet.create({
 });
 
 interface IDispatchProps {
-  select: (player: rankings_tiers_players) => void;
-  take: (player: rankings_tiers_players) => void;
+  select: (player: rankings_rank_tiers_players) => void;
+  take: (player: rankings_rank_tiers_players) => void;
 }
 
 type IPlayerProps = {
-  player: rankings_tiers_players;
+  player: rankings_rank_tiers_players;
   disabled?: boolean;
   className?: string;
 } & IDispatchProps;

@@ -1,3 +1,5 @@
+import { IRankedPlayer } from '../api/players';
+
 export interface ISetPlayerPositionArgs {
   playerId: string;
   positionRank: number;
@@ -15,14 +17,15 @@ export interface IRankMap {
 }
 
 export interface ITier {
+  id: number;
   uuid: string;
   tierId: number;
-  rankMap: IRankMap;
+  players: IRankedPlayer[];
 }
 
 export interface IChangeRankArgs {
-  playerId: string;
-  originTier: number;
+  rankUuid: string;
+  playerId: number;
   destinationTier: number;
   destinationRank: number;
 }
@@ -30,4 +33,8 @@ export interface IChangeRankArgs {
 export interface ICreateTierAndMovePlayersArgs {
   playerId: string;
   originTier: number;
+}
+
+export interface DeleteTierArgs {
+  id: string;
 }

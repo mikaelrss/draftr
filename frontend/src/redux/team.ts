@@ -5,11 +5,11 @@ import {
   REMOVE_PLAYER,
   SELECT_PLAYER,
 } from '../components/team/TeamActions';
-import { rankings_tiers_players } from '../components/rankings/__generated__/rankings';
+import { rankings_rank_tiers_players } from '../components/rankings/__generated__/rankings';
 
 export interface ITeamState {
-  selected: rankings_tiers_players[];
-  taken: rankings_tiers_players[];
+  selected: rankings_rank_tiers_players[];
+  taken: rankings_rank_tiers_players[];
 }
 
 const initialState: ITeamState = {

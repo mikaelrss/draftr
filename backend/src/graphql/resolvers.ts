@@ -1,30 +1,34 @@
-import { getQBs, IPlayer } from '../api/players';
-import { getFantasyFootballNerdRankings } from '../api/rankings';
+import { IPlayer } from '../api/players';
 import {
-  changePlayerRank,
+  changePlayer,
   createDefaultRankings,
-  createNewTier,
-  createTierAndMovePlayers,
-  getPersonalRankings,
-} from '../services/rankingService';
-import {
-  createPlayerList,
-  getAllPlayers,
-  mapPlayer,
-} from '../services/playerService';
-import { IChangeRankArgs, ICreateTierAndMovePlayersArgs, ITier } from './types';
+  getRankByUuid,
+} from '../services/rankService';
+import { createPlayerList } from '../services/playerService';
+import { DeleteTierArgs, IChangeRankArgs } from './types';
 import { IContext } from '../index';
+import {
+  createNewTier,
+  deleteTier,
+  getPersonalTier,
+} from '../services/tierService';
+import { getPlayersByTierId } from '../services/rankedPlayerService';
+import { TierEntity } from '../repositories/tierRepository';
 
 export const resolvers = {
   Query: {
-    players: async () => await getQBs(),
-    fantasyFootballNerdRankings: async () =>
-      await getFantasyFootballNerdRankings(),
-    tiers: async (root: any, args: any, context: IContext) =>
-      (await getPersonalRankings(context.user)).tiers,
+    tiers: async (root: any, args: { id: string }, context: IContext) =>
+      await getPersonalTier(context.user),
+    rank: async (root: any, args: { id: string }) => {
+      return await getRankByUuid(args.id);
+    },
   },
   Mutation: {
-    createDefaultRankings: async (root: any, args: { userId: string }) => {
+    createDefaultRankings: async (
+      root: any,
+      args: { userId: string },
+      context: any,
+    ) => {
       await createDefaultRankings(args.userId);
       return 'Created default rankings';
     },
@@ -32,43 +36,26 @@ export const resolvers = {
       await createPlayerList();
       return 'Players inserted from Fantasy Football Nerds';
     },
-    changeRank: async (root: any, args: IChangeRankArgs, context: IContext) =>
-      await changePlayerRank(
+    changeRank: async (root: any, args: IChangeRankArgs, context: IContext) => {
+      await changePlayer(
+        args.rankUuid,
         args.playerId,
-        args.originTier,
         args.destinationTier,
         args.destinationRank,
         context.user,
-      ),
-    createTier: async (root: any, args: any, context: IContext) =>
-      (await createNewTier(context.user)).tiers,
-    createTierAndMovePlayers: async (
-      root: any,
-      args: ICreateTierAndMovePlayersArgs,
-      context: IContext,
-    ) =>
-      await createTierAndMovePlayers(
-        context.user,
-        args.originTier,
-        args.playerId,
-      ),
+      );
+      return await getRankByUuid(args.rankUuid);
+    },
+    deleteTier: async (root: any, args: DeleteTierArgs, context: IContext) => {
+      return await deleteTier(args.id, context.user);
+    },
+    createTier: async (root: any, args: { id: string }, context: IContext) =>
+      await createNewTier(args.id, context.user),
   },
   Tier: {
-    players: async (tier: ITier) => {
-      const timer = async () => {
-        const all = await getAllPlayers();
-        if (!tier.rankMap) return [];
-        const tierPlayerIds = Object.keys(tier.rankMap);
-        return all
-          .filter(player => tierPlayerIds.includes(player.playerId))
-          .map(p => ({
-            ...mapPlayer(p),
-            ...tier.rankMap[p.playerId],
-          }))
-          .sort((a, b) => a.overallRank - b.overallRank);
-      };
-      const result = await timer();
-      return result;
+    players: async (tier: TierEntity) => {
+      const players = tier.players || (await getPlayersByTierId(tier.id));
+      return players.sort((a, b) => a.overallRank - b.overallRank);
     },
   },
   Player: {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { MutationFn } from 'react-apollo';
 import { useQuery } from 'react-apollo-hooks';
 import { StyleSheet, css } from 'aphrodite';
@@ -20,11 +21,6 @@ import { PlayerPosition } from '../../types/graphqltypes';
 import AddTier, { ADD_TIER_DROPPABLE_ID } from '../addtier/AddTier';
 import Spinner from '../shared/Spinner';
 import { changeRank, changeRankVariables } from './__generated__/changeRank';
-import { generateOptimisticRankChange } from './utils';
-import {
-  newTierChangeRank,
-  newTierChangeRankVariables,
-} from './__generated__/newTierChangeRank';
 
 const styles = StyleSheet.create({
   box: {
@@ -64,13 +60,16 @@ export const getBackground = (position: PlayerPosition) => {
   }
 };
 
-interface IProps {
+type Props = {
   changeRankMutation: MutationFn<changeRank, changeRankVariables>;
-  createTierMutation: MutationFn<newTierChangeRank, newTierChangeRankVariables>;
-}
+  // createTierMutation: MutationFn<newTierChangeRank, newTierChangeRankVariables>;
+} & RouteComponentProps<{ id: string }>;
 
-const Rankings = ({ changeRankMutation, createTierMutation }: IProps) => {
-  const { data, loading } = useQuery<rankings>(GET_FANTASY_FOOTBALL_RANKINGS);
+const Rankings = ({ changeRankMutation, match }: Props) => {
+  const rankUuid = match.params.id;
+  const { data, loading } = useQuery<rankings>(GET_FANTASY_FOOTBALL_RANKINGS, {
+    variables: { id: rankUuid },
+  });
   if (loading || !data)
     return (
       <div className={css(styles.centered)}>
@@ -84,58 +83,51 @@ const Rankings = ({ changeRankMutation, createTierMutation }: IProps) => {
     const origTier = +result.source.droppableId.replace('tier#', '');
     const playerId = result.draggableId;
 
-    if (result.destination.droppableId === ADD_TIER_DROPPABLE_ID) {
-      createTierMutation({
-        variables: {
-          originTier: origTier,
-          playerId,
-        },
-        update: (proxy, mutationResult) => {
-          if (mutationResult.data == null) return;
-          proxy.writeQuery({
-            query: GET_FANTASY_FOOTBALL_RANKINGS,
-            data: { tiers: mutationResult.data.createTierAndMovePlayers },
-          });
-        },
-      });
-      return;
-    }
+    // if (result.destination.droppableId === ADD_TIER_DROPPABLE_ID) {
+    //   createTierMutation({
+    //     variables: {
+    //       originTier: origTier,
+    //       playerId,
+    //     },
+    //     update: (proxy, mutationResult) => {
+    //       if (mutationResult.data == null) return;
+    //       proxy.writeQuery({
+    //         query: GET_FANTASY_FOOTBALL_RANKINGS,
+    //         data: { tiers: mutationResult.data.createTierAndMovePlayers },
+    //       });
+    //     },
+    //   });
+    //   return;
+    // }
 
     const destTier = +result.destination.droppableId.replace('tier#', '');
     const destRank = +result.destination.index + 1;
 
-    const optimisticResponse = generateOptimisticRankChange(
-      {
-        playerId,
-        originTier: origTier,
-        destinationTier: destTier,
-        destinationRank: destRank,
-      },
-      data,
-    );
+    // const optimisticResponse = generateOptimisticRankChange(
+    //   {
+    //     playerId,
+    //     originTier: origTier,
+    //     destinationTier: destTier,
+    //     destinationRank: destRank,
+    //   },
+    //   data,
+    // );
 
     changeRankMutation({
       variables: {
-        playerId,
-        origTier,
+        playerId: +playerId,
+        rankUuid,
         destTier,
         destRank,
       },
-      optimisticResponse: {
-        changeRank: optimisticResponse,
-      },
     });
   };
-
+  if (data.rank == null) return null;
   return (
     <div className={css(styles.box)}>
       <DragDropContext onDragEnd={onDragEnd}>
-        {data.tiers.map(tier => (
-          <TierContainer
-            tierId={tier.tierId}
-            players={tier.players}
-            key={`TIER_${tier.tierId}`}
-          />
+        {data.rank.tiers.map(tier => (
+          <TierContainer tier={tier} key={`TIER_${tier.tierId}`} />
         ))}
         <AddTier />
       </DragDropContext>
@@ -143,4 +135,4 @@ const Rankings = ({ changeRankMutation, createTierMutation }: IProps) => {
   );
 };
 
-export default Rankings;
+export default withRouter(Rankings);
