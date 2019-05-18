@@ -1,6 +1,7 @@
 type Query {
   tiers(id: String!): [Tier!]!
   rank(id: String!): Rank
+  ranks: [Rank!]!
 }
 
 type Mutation {

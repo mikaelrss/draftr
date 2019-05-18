@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { ToastContainer } from 'react-toastify';
 import { StyleSheet, css } from 'aphrodite/no-important';
@@ -13,6 +13,7 @@ import { SECONDARY } from '../../styles/colors';
 import LoginCallback from '../../auth/LoginCallback';
 import AuthContext from '../../auth/AuthContext';
 import RankingsContainer from '../rankings/RankingsContainer';
+import RankList from '../ranklist/RankList';
 
 const style = StyleSheet.create({
   root: {
@@ -31,9 +32,10 @@ const Main = () => {
   if (auth.isAuthenticated()) {
     return (
       <StickyContainer>
-        <Team />
+        <Route path="/rank/:id" component={Team} />
         <Container>
           <Route path="/rank/:id" component={RankingsContainer} />
+          <Route path="/ranks/" component={RankList} />
         </Container>
       </StickyContainer>
     );
@@ -55,10 +57,8 @@ const Root = () => (
       toastClassName={css(style.toastError)}
       autoClose={3000}
     />
-    <Router history={history}>
-      <Route path="/" component={Main} />
-      <Route path="/callback" component={LoginCallback} />
-    </Router>
+    <Route path="/" component={Main} />
+    <Route path="/callback" component={LoginCallback} />
   </div>
 );
 

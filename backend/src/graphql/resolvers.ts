@@ -3,6 +3,7 @@ import {
   changePlayer,
   createDefaultRankings,
   getRankByUuid,
+  getRanks,
 } from '../services/rankService';
 import { createPlayerList } from '../services/playerService';
 import { DeleteTierArgs, IChangeRankArgs } from './types';
@@ -21,6 +22,9 @@ export const resolvers = {
       await getPersonalTier(context.user),
     rank: async (root: any, args: { id: string }) => {
       return await getRankByUuid(args.id);
+    },
+    ranks: async (root: any, args: any) => {
+      return await getRanks();
     },
   },
   Mutation: {
