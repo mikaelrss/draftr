@@ -21,6 +21,6 @@ export const PRIMARY = BLUE;
 export const PRIMARY_TEXT = 'white';
 export const SECONDARY = CHERRY;
 export const SECONDARY_HOVER = CHERRY_DARK;
-export const SECONDARY_TEXT = 'white';
+export const SECONDARY_TEXT = 'black';
 
 export const HIGHLIGHT_COLOR = ORANGE_SODA_OPACITY;

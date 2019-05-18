@@ -67,3 +67,9 @@ export const fetchRankByUserId = async (userId: string) => {
   const rankId = await fetchRankId(userId);
   return await fetchRankById(rankId);
 };
+
+export const fetchRanks = async () => {
+  const query = `SELECT * FROM draftr.rank`;
+  const result = await dbClient.query(query);
+  return result.rows;
+};

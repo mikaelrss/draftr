@@ -5,12 +5,12 @@ import { getFantasyFootballNerdRankings } from '../api/rankings';
 import { findNextRankNew, findPrecedingRankNew } from './rankingUtils';
 import { IRankedPlayer } from '../api/players';
 import {
-  fetchRankByUuid,
+  fetchRankById,
   fetchRankByUserId,
+  fetchRankByUuid,
+  fetchRanks,
   insertRank,
   PlayerRank,
-  fetchRank,
-  fetchRankById,
 } from '../repositories/rankRepository';
 import { insertTier } from '../repositories/tierRepository';
 import { insertRankedPlayer } from '../repositories/rankedPlayerRepository';
@@ -50,7 +50,6 @@ export const createDefaultRankings = async (userId: string) => {
   });
 
   const rank = await insertRank(userId);
-  console.log(rank);
   testObject.tiers.forEach(async tier => {
     const inserted = await insertTier(
       { tierId: tier.tierId, name: 'default' },
@@ -142,3 +141,5 @@ export const getPersonalRank = async (
     tiers: await getPersonalTier(userId),
   };
 };
+
+export const getRanks = async () => await fetchRanks();
