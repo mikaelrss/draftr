@@ -14,7 +14,7 @@ export interface addTier_createTier_players {
 export interface addTier_createTier {
   __typename: "Tier";
   uuid: string;
-  name: string | null;
+  name: string;
   tierId: number;
   players: addTier_createTier_players[];
 }

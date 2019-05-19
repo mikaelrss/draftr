@@ -8,6 +8,7 @@ type Mutation {
   createPlayerList: String
   createRank(name: String!): Rank
   rateRank(rating: Int!, rankUuid: String): Rank!
+  updateTierName(tierUuid: String!, name: String!): Tier
   changeRank(
     rankUuid: String!
     playerId: Int!
@@ -72,7 +73,7 @@ enum NFLTeam {
 
 type Tier {
   uuid: String!
-  name: String
+  name: String!
   tierId: Int!
   players: [RankedPlayer!]!
 }

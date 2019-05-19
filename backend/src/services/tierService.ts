@@ -11,6 +11,7 @@ import {
   insertTier,
   removeTierByUuid,
   TierEntity,
+  updateTierName,
 } from '../repositories/tierRepository';
 import { fetchRankId, userOwnsRank } from './userPreferenceService';
 import { fetchRank, PlayerRank } from '../repositories/rankRepository';
@@ -34,6 +35,7 @@ export const createNewTier = async (
   const insertedTier = await insertTier({ name: 'default', tierId }, rank.id);
   return {
     id: insertedTier.id,
+    name: insertedTier.name,
     tierId: +insertedTier.tier_order,
     uuid: insertedTier.uuid,
     players: [],
@@ -73,7 +75,7 @@ export const getTierIdByTierOrder = async (
   return result.id;
 };
 
-const userOwnsTier = async (tierUuid: string, userId: string) => {
+export const userOwnsTier = async (tierUuid: string, userId: string) => {
   const tier = await fetchTierByUuid(tierUuid);
   const rank = await getRankById(tier.rank_id);
   return userOwnsRank(rank.id, userId);
@@ -102,4 +104,9 @@ export const deleteTier = async (tierUuid: string, userId: string) => {
   }
   await removeTierByUuid(tierUuid);
   return tier;
+};
+
+export const changeTierName = async (tierUuid: string, name: string) => {
+  await updateTierName(tierUuid, name);
+  return await getTierByUuid(tierUuid);
 };

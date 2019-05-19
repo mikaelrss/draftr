@@ -1,7 +1,7 @@
+import { ForbiddenError } from 'apollo-server';
 import { IPlayer } from '../api/players';
 import {
   changePlayer,
-  createDefaultRankings,
   createRank,
   getRankById,
   getRankByUuid,
@@ -14,12 +14,15 @@ import {
   DeleteTierArgs,
   IChangeRankArgs,
   RateRankArgs,
+  UpdateTierNameArgs,
 } from './types';
 import { IContext } from '../index';
 import {
+  changeTierName,
   createNewTier,
   deleteTier,
   getPersonalTier,
+  userOwnsTier,
 } from '../services/tierService';
 import { getPlayersByTierId } from '../services/rankedPlayerService';
 import { TierEntity } from '../repositories/tierRepository';
@@ -27,6 +30,7 @@ import {
   getAverageRatingByRankId,
   rateRanking,
 } from '../services/userRatingService';
+import { userOwnsRank } from '../services/userPreferenceService';
 
 export const resolvers = {
   Query: {
@@ -65,6 +69,16 @@ export const resolvers = {
     },
     createTier: async (root: any, args: { id: string }, context: IContext) =>
       await createNewTier(args.id, context.user),
+    updateTierName: async (
+      root: any,
+      args: UpdateTierNameArgs,
+      context: IContext,
+    ) => {
+      if (!userOwnsTier(args.tierUuid, context.user)) {
+        throw new ForbiddenError('User does not own tier');
+      }
+      return await changeTierName(args.tierUuid, args.name);
+    },
   },
   Rank: {
     rating: async (rank: PersonalRank) => {
