@@ -4,6 +4,7 @@ import {
   PLAYER_TAKEN,
   REMOVE_PLAYER,
   SELECT_PLAYER,
+  UNTAKE_PLAYER,
 } from '../components/team/TeamActions';
 import { rankings_rank_tiers_players } from '../components/rankings/__generated__/rankings';
 
@@ -40,6 +41,12 @@ const teamReducer = (
           ...state.selected.slice(0, index),
           ...state.selected.slice(index + 1),
         ],
+      };
+    case UNTAKE_PLAYER:
+      const loc = state.taken.findIndex(p => p.playerId === action.payload);
+      return {
+        ...state,
+        taken: [...state.taken.slice(0, loc), ...state.taken.slice(loc + 1)],
       };
     default:
       return state;
