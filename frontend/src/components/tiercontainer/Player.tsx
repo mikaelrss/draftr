@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import moize from 'moize';
 
-import { IconButton } from '../shared/Button';
-import { playerTaken, selectPlayer } from '../team/TeamActions';
+import { ClickableSurface, IconButton } from '../shared/Button';
+import { playerTaken, selectPlayer, untakePlayer } from '../team/TeamActions';
 import {
   QB_COLOR,
   RB_COLOR,
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
 interface IDispatchProps {
   select: (player: rankings_rank_tiers_players) => void;
   take: (player: rankings_rank_tiers_players) => void;
+  untake: (playerId: number) => void;
 }
 
 type IPlayerProps = {
@@ -80,42 +81,53 @@ const Player = ({
   take,
   disabled,
   className,
-}: IPlayerProps) => (
-  <div
-    className={classNames(
-      css(
-        styles.player,
-        disabled && styles.disabled,
-        getBackground(player.position),
-      ),
-      className,
-    )}
-  >
-    <PlayerName player={player} />
-    <div>{player.overallRank}</div>
-    <div className={css(styles.buttonContainer)}>
-      <IconButton
-        icon={IconType.add}
-        className={css(styles.icon, styles.add)}
-        onClick={() => select(player)}
-        disabled={disabled}
-      />
-      <IconButton
-        icon={IconType.clear}
-        className={css(styles.clear, styles.icon)}
-        onClick={() => take(player)}
-        disabled={disabled}
-      />
+  untake,
+}: IPlayerProps) => {
+  return (
+    <div
+      className={classNames(
+        css(
+          styles.player,
+          disabled && styles.disabled,
+          getBackground(player.position),
+        ),
+        className,
+      )}
+    >
+      <PlayerName player={player} />
+      <div>{player.overallRank}</div>
+      <div className={css(styles.buttonContainer)}>
+        <IconButton
+          icon={IconType.add}
+          className={css(styles.icon, styles.add)}
+          onClick={() => select(player)}
+          disabled={disabled}
+        />
+        <IconButton
+          icon={IconType.clear}
+          className={css(styles.clear, styles.icon)}
+          onClick={() => take(player)}
+          disabled={disabled}
+        />
+      </div>
+      {disabled && (
+        <ClickableSurface
+          onClick={() => {
+            untake(player.playerId);
+          }}
+          className={css(styles.shade)}
+        />
+      )}
     </div>
-    {disabled && <div className={css(styles.shade)} />}
-  </div>
-);
+  );
+};
 
 const withRedux = connect<{}, IDispatchProps>(
   null,
   {
     select: selectPlayer,
     take: playerTaken,
+    untake: untakePlayer,
   },
 );
 export default withRedux(moize.deep(Player));

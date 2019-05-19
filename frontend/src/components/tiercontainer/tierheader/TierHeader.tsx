@@ -84,7 +84,6 @@ const TierHeader = ({ tier, match, disabled }: Props) => {
                 disabled={disabled}
                 onBlur={() => {
                   renameTier();
-                  console.log('Save');
                 }}
                 id={`TierName${tier.uuid}`}
                 label="Name"

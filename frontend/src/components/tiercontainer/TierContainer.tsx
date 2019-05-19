@@ -66,7 +66,7 @@ const TierContainer = ({ tier, passed, className, dragDisabled }: Props) => {
                 <TierRow
                   player={player}
                   index={index}
-                  dragDisabled={dragDisabled}
+                  dragDisabled={dragDisabled || isDisabled(player.playerId)}
                   key={`row-${player.playerId}`}
                   disabled={isDisabled(player.playerId)}
                 />
