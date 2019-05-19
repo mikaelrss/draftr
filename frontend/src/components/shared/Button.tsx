@@ -50,6 +50,9 @@ const styles = StyleSheet.create({
       backgroundColor: SECONDARY_HOVER,
     },
   },
+  disabled: {
+    opacity: 0.6,
+  },
   load: {
     marginRight: `${DEFAULT_PADDING / 2}px`,
   },
@@ -86,22 +89,26 @@ interface IDivProps {
   onClick?: () => any;
   children?: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 }
 
 export const ClickableSurface = ({
   onClick,
   children,
   className,
+  disabled,
   ...props
-}: IDivProps) => (
-  <div
-    {...props}
-    onClick={onClick}
-    className={classNames(css(styles.clickSurface), className)}
-  >
-    {children}
-  </div>
-);
+}: IDivProps) => {
+  const spreadProps = {
+    ...props,
+    onClick,
+    className: classNames(css(styles.clickSurface), className),
+  };
+  if (disabled) {
+    delete spreadProps.onClick;
+  }
+  return <div {...spreadProps}>{children}</div>;
+};
 
 interface IButtonProps {
   onClick?: () => any;
@@ -110,6 +117,7 @@ interface IButtonProps {
   className?: string;
   loading?: boolean;
   style?: object;
+  disabled?: boolean;
 }
 
 export const Button = ({
@@ -119,18 +127,28 @@ export const Button = ({
   value,
   type,
   loading,
-}: IButtonProps) => (
-  <button
-    type={type}
-    style={style}
-    onClick={onClick}
-    className={classNames(className, css(styles.button))}
-  >
-    {loading && (
-      <span className={css(styles.load)}>
-        <CircleSpinner size={10} />
-      </span>
-    )}
-    {value}
-  </button>
-);
+  disabled,
+}: IButtonProps) => {
+  const spreadProps = {
+    type,
+    style,
+    className: classNames(
+      className,
+      css(styles.button, disabled && styles.disabled),
+    ),
+    onClick,
+  };
+  if (disabled) {
+    delete spreadProps.onClick;
+  }
+  return (
+    <button {...spreadProps}>
+      {loading && (
+        <span className={css(styles.load)}>
+          <CircleSpinner size={10} />
+        </span>
+      )}
+      {value}
+    </button>
+  );
+};
