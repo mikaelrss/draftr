@@ -76,9 +76,7 @@ export const resolvers = {
   },
   Rank: {
     rating: async (rank: PersonalRank) => {
-      console.log(rank);
       const rating = await getAverageRatingByRankId(rank.id);
-      console.log('NUMB', rating);
       return rating || 0;
     },
   },

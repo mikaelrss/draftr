@@ -9,7 +9,7 @@
 export interface AddRatingMutation_rateRank {
   __typename: "Rank";
   uuid: string;
-  rating: number | null;
+  rating: number;
 }
 
 export interface AddRatingMutation {

@@ -4,11 +4,13 @@ import Typography, { FontSize } from '../shared/Typography';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import Paper from '../shared/Paper';
 import Link from '../shared/Link';
-import { SECONDARY_TEXT } from '../../styles/colors';
+import { RATE_COLOR, SECONDARY_TEXT } from '../../styles/colors';
+import Icon, { IconType } from '../shared/Icon';
 
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'space-evenly',
     alignItems: 'center',
     width: '170px',
@@ -16,7 +18,40 @@ const styles = StyleSheet.create({
   link: {
     color: SECONDARY_TEXT,
   },
+  rateContainer: {
+    position: 'relative',
+  },
+  star: {
+    fill: RATE_COLOR,
+    height: '20px',
+    width: '20px',
+  },
+  mask: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    height: '20px',
+    boxSizing: 'border-box',
+    backgroundColor: 'white',
+  },
 });
+
+const Rating = ({ rating }: { rating: number }) => {
+  const percentCovered = (1 - rating / 5) * 100;
+  return (
+    <div className={css(styles.rateContainer)}>
+      <Icon icon={IconType.star} className={css(styles.star)} />
+      <Icon icon={IconType.star} className={css(styles.star)} />
+      <Icon icon={IconType.star} className={css(styles.star)} />
+      <Icon icon={IconType.star} className={css(styles.star)} />
+      <Icon icon={IconType.star} className={css(styles.star)} />
+      <div
+        className={css(styles.mask)}
+        style={{ width: `${percentCovered}%` }}
+      />
+    </div>
+  );
+};
 
 interface Props {
   rank: AllRanks_ranks;
@@ -27,6 +62,7 @@ const Rank = ({ rank }: Props) => (
     <Paper className={css(styles.container)}>
       <Typography size={FontSize.medium}>{rank.name}</Typography>
       <Typography size={FontSize.small}>{rank.rating}</Typography>
+      <Rating rating={rank.rating} />
     </Paper>
   </Link>
 );
