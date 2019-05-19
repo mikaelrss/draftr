@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 });
 const ProfileMenu = () => (
   <Paper className={css(styles.container)}>
-    <Link to="/ranks">
+    <Link to="/">
       <Typography className={css(styles.font)} size={FontSize.medium}>
         All ranks
       </Typography>

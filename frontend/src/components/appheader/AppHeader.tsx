@@ -51,7 +51,7 @@ const AppHeader = () => {
 
   return (
     <header className={css(styles.header)}>
-      <Link to="/ranks" className={css(styles.titleContainer)}>
+      <Link to="/" className={css(styles.titleContainer)}>
         <Icon icon={IconType.draftr} className={css(styles.icon)} />
         <div>Draftr</div>
       </Link>

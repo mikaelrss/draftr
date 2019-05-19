@@ -35,7 +35,7 @@ const Main = () => {
         <Route path="/rank/:id" component={Team} />
         <Container>
           <Route path="/rank/:id" component={RankingsContainer} />
-          <Route path="/ranks/" component={RankList} />
+          <Route path="/" exact component={RankList} />
           <Route path="/my-ranks/" component={RankList} />
         </Container>
       </StickyContainer>
