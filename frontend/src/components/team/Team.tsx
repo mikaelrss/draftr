@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { Sticky } from 'react-sticky';
@@ -10,12 +11,13 @@ import {
   MOBILE_BREAKPOINT,
 } from '../../styles/constants';
 import { IState } from '../../redux/store';
-import { getBackground } from '../rankings/Rankings';
 import { removePlayer } from './TeamActions';
 import { ClickableSurface } from '../shared/Button';
 import { rankings_rank_tiers_players } from '../rankings/__generated__/rankings';
 import { HIGHLIGHT_COLOR } from '../../styles/colors';
 import PlayerName from '../tiercontainer/PlayerName';
+
+import scss from './Team.module.scss';
 
 const styles = StyleSheet.create({
   team: {
@@ -61,6 +63,8 @@ const styles = StyleSheet.create({
     maxWidth: '200px',
     width: '100%',
     height: `32px`,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   container: {
     zIndex: 2,
@@ -92,10 +96,9 @@ const Team = ({ selectedPlayers, remove }: IProps) => {
                 key={player.playerId}
               >
                 <Paper
-                  className={css(
-                    getBackground(player.position),
-                    styles.paper,
-                    styles.common,
+                  className={classNames(
+                    css(styles.paper, styles.common),
+                    scss[player.position.toLowerCase()],
                   )}
                 >
                   <PlayerName player={player} />
