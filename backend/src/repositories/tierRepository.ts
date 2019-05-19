@@ -56,7 +56,9 @@ export interface TierEntity {
 }
 
 export const fetchTiersByRankId = async (id: number): Promise<TierEntity[]> => {
-  const query = `SELECT * from draftr.tier WHERE rank_id = $1`;
+  const query = `SELECT *
+                 from draftr.tier
+                 WHERE rank_id = $1`;
   const values = [id];
   const result = await dbClient.query(query, values);
   return result.rows;
@@ -67,5 +69,11 @@ export const removeTierByUuid = async (uuid: string) => {
                  FROM draftr.tier
                  where uuid = $1`;
   const values = [uuid];
+  await dbClient.query(query, values);
+};
+
+export const updateTierName = async (tierUuid: string, name: string) => {
+  const query = `update draftr.tier set name =$1 where uuid =$2`;
+  const values = [name, tierUuid];
   await dbClient.query(query, values);
 };

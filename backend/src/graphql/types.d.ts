@@ -27,3 +27,8 @@ export interface IChangeRankArgs {
 export interface DeleteTierArgs {
   id: string;
 }
+
+export interface UpdateTierNameArgs {
+  tierUuid: string;
+  name: string;
+}

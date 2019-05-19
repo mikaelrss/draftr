@@ -21,7 +21,7 @@ export interface rankings_rank_tiers_players {
 export interface rankings_rank_tiers {
   __typename: "Tier";
   tierId: number;
-  name: string | null;
+  name: string;
   uuid: string;
   players: rankings_rank_tiers_players[];
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import { IInjectProps } from 'react-valid8';
 
@@ -35,11 +35,14 @@ type Props = {
   id: string;
   label: string;
   required?: boolean;
-  onChange?: () => void;
+  onChange?: (e: React.SyntheticEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.SyntheticEvent<HTMLInputElement>) => void;
   className?: string;
   name?: string;
   error?: string;
+  labelClass?: string;
   showError?: boolean;
+  focus?: boolean;
 } & Partial<IInjectProps>;
 
 const Input = ({
@@ -50,20 +53,35 @@ const Input = ({
   label,
   required,
   showError,
+  onBlur,
   error,
-}: Props) => (
-  <label htmlFor={id} className={css(styles.label)}>
-    <Typography size={FontSize.medium}>{`${label} ${
-      required ? '*' : ''
-    }`}</Typography>
-    <input
-      id={id}
-      value={value}
-      onChange={onChange}
-      className={classNames(css(styles.input), className)}
-    />
-    {showError && error && <Error error={error} />}
-  </label>
-);
+  labelClass,
+  focus,
+}: Props) => {
+  const inputField = useRef(null);
+
+  useEffect(() => {
+    if (!inputField || !inputField.current || !focus) return;
+    // @ts-ignore
+    inputField.current.focus();
+  }, []);
+
+  return (
+    <label htmlFor={id} className={classNames(css(styles.label), labelClass)}>
+      <Typography size={FontSize.medium}>{`${label} ${
+        required ? '*' : ''
+      }`}</Typography>
+      <input
+        ref={inputField}
+        id={id}
+        value={value}
+        onBlur={onBlur}
+        onChange={onChange}
+        className={classNames(css(styles.input), className)}
+      />
+      {showError && error && <Error error={error} />}
+    </label>
+  );
+};
 
 export default Input;
