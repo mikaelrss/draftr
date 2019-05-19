@@ -5,7 +5,6 @@ type Query {
 }
 
 type Mutation {
-  createDefaultRankings(userId: String!): String
   createPlayerList: String
   createRank(name: String!): Rank
   rateRank(rating: Int!, rankUuid: String): Rank!

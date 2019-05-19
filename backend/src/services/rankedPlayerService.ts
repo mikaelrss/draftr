@@ -3,7 +3,7 @@ import {
   downgradePosition,
   fetchPlayersByTierId,
   updateOverallPosition,
-  updateTier,
+  updateTier, updateTierCascade,
   upgradePosition,
 } from '../repositories/rankedPlayerRepository';
 
@@ -31,4 +31,12 @@ export const updatePlayerRank = async (
   }
   await updateOverallPosition(rankId, playerId, newPosition);
   await updateTier(rankId, playerId, tierId);
+};
+
+export const updatePlayerTierCascade = async (
+  rankId: number,
+  playerRank: number,
+  destinationTier: number,
+) => {
+  await updateTierCascade(rankId, playerRank, destinationTier);
 };

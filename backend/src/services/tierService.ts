@@ -44,6 +44,7 @@ const mapRanks = (ranks: PlayerRank[]) => {
   const tiers = groupBy(ranks, 'tierOrder');
   return Object.keys(tiers).map(tierOrder => ({
     name: tiers[tierOrder][0].tierName,
+    id: tiers[tierOrder][0].id,
     tierId: +tierOrder,
     uuid: tiers[tierOrder][0].uuid,
     players: tiers[tierOrder].filter(p => p.playerId != null),
@@ -54,7 +55,6 @@ export const getPersonalTier = async (
   userId: string,
 ): Promise<PersonalTier[]> => {
   const rankId = await fetchRankId(userId);
-  console.log(rankId);
   if (rankId == null) await createDefaultRankings(userId);
   const ranks = await fetchRank(rankId || (await fetchRankId(userId)));
   return mapRanks(ranks);

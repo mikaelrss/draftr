@@ -38,14 +38,6 @@ export const resolvers = {
     ranks: async (root: any, args: any) => await getRanks(),
   },
   Mutation: {
-    createDefaultRankings: async (
-      root: any,
-      args: { userId: string },
-      context: any,
-    ) => {
-      await createDefaultRankings(args.userId);
-      return 'Created default rankings';
-    },
     rateRank: async (root: any, args: RateRankArgs, ctx: IContext) => {
       await rateRanking(args.rankUuid, args.rating, ctx.user);
       return await getRankByUuid(args.rankUuid);
