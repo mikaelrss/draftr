@@ -26,6 +26,7 @@ interface Props {
   size: FontSize;
   children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 }
 
 const Typography = ({ size, children, className }: Props) => (

@@ -3,6 +3,7 @@ const CHERRY = '#f50057';
 const CHERRY_DARK = '#b80046';
 
 const FLAX = '#ECDD7B';
+const GOLD = '#ece519';
 const MYRTLE_GREEN = '#1D7874';
 const DEEP_KOAMARU = '#7244c4';
 const ORANGE_SODA = '#FE5E41';
@@ -26,4 +27,4 @@ export const SECONDARY_TEXT = 'black';
 export const HIGHLIGHT_COLOR = ORANGE_SODA_OPACITY;
 export const ERROR_COLOR = CHERRY;
 export const RATE_COLOR = FLAX;
-export const RATE_COLOR_DAMPENED = 'rgba(236, 221, 123, 0.5)';
+export const RATE_COLOR_DAMPENED = 'rgba(236, 229, 25, 0.65)';

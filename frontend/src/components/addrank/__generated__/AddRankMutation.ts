@@ -11,7 +11,7 @@ export interface AddRankMutation_createRank {
   uuid: string;
   userOwnsRank: boolean | null;
   rating: number;
-  name: string | null;
+  name: string;
 }
 
 export interface AddRankMutation {

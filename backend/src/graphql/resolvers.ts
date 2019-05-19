@@ -7,7 +7,9 @@ import {
   getRankByUuid,
   getRanks,
   PersonalRank,
+  setRankPrivate,
   userOwnsRank,
+  verifyUserCanEditRank,
   verifyUserCanEditRankByUuid,
 } from '../services/rankService';
 import { createPlayerList } from '../services/playerService';
@@ -17,9 +19,10 @@ import {
   DeleteTierArgs,
   IChangeRankArgs,
   RateRankArgs,
+  SetRankPrivateArgs,
   UpdateTierNameArgs,
 } from './types';
-import { IContext } from '../index';
+import { Context } from '../index';
 import {
   changeTierName,
   createNewTier,
@@ -36,30 +39,34 @@ import {
 
 export const resolvers = {
   Query: {
-    tiers: async (root: any, args: { id: string }, context: IContext) =>
+    tiers: async (root: any, args: { id: string }, context: Context) =>
       await getPersonalTier(context.user),
-    rank: async (root: any, args: { id: string }) => {
-      return await getRankByUuid(args.id);
+    rank: async (root: any, args: { id: string }, ctx: Context) => {
+      const rank = await getRankByUuid(args.id);
+      if (!rank.private) return rank;
+      await verifyUserCanEditRank(rank.id, ctx.user);
+      return rank;
     },
-    ranks: async (root: any, args: any) => await getRanks(),
+    ranks: async (root: any, args: any, ctx: Context) =>
+      await getRanks(ctx.user),
   },
   Mutation: {
-    rateRank: async (root: any, args: RateRankArgs, ctx: IContext) => {
+    rateRank: async (root: any, args: RateRankArgs, ctx: Context) => {
       await rateRanking(args.rankUuid, args.rating, ctx.user);
       return await getRankByUuid(args.rankUuid);
     },
-    createRank: async (root: any, args: CreateRankArgs, context: IContext) => {
+    createRank: async (root: any, args: CreateRankArgs, context: Context) => {
       const rank = await createRank(args.name, context.user);
       return await getRankById(rank.id);
     },
-    copyRank: async (root: any, args: CopyRankArgs, context: IContext) => {
+    copyRank: async (root: any, args: CopyRankArgs, context: Context) => {
       return await copyRank(args.rankUuid, args.name, context.user);
     },
     createPlayerList: async () => {
       await createPlayerList();
       return 'Players inserted from Fantasy Football Nerds';
     },
-    changeRank: async (root: any, args: IChangeRankArgs, context: IContext) => {
+    changeRank: async (root: any, args: IChangeRankArgs, context: Context) => {
       await verifyUserCanEditRankByUuid(args.rankUuid, context.user);
       await changePlayer(
         args.rankUuid,
@@ -70,21 +77,29 @@ export const resolvers = {
       );
       return await getRankByUuid(args.rankUuid);
     },
-    deleteTier: async (root: any, args: DeleteTierArgs, context: IContext) => {
+    deleteTier: async (root: any, args: DeleteTierArgs, context: Context) => {
       await verifyUserCanEditTier(args.id, context.user);
       return await deleteTier(args.id, context.user);
     },
-    createTier: async (root: any, args: { id: string }, context: IContext) => {
+    createTier: async (root: any, args: { id: string }, context: Context) => {
       await verifyUserCanEditRankByUuid(args.id, context.user);
       return await createNewTier(args.id, context.user);
     },
     updateTierName: async (
       root: any,
       args: UpdateTierNameArgs,
-      context: IContext,
+      context: Context,
     ) => {
       await verifyUserCanEditTier(args.tierUuid, context.user);
       return await changeTierName(args.tierUuid, args.name);
+    },
+    setRankPrivate: async (
+      root: any,
+      args: SetRankPrivateArgs,
+      cxt: Context,
+    ) => {
+      await verifyUserCanEditRankByUuid(args.uuid, cxt.user);
+      await setRankPrivate(args.uuid, args.status);
     },
   },
   Rank: {
@@ -92,7 +107,7 @@ export const resolvers = {
       const rating = await getAverageRatingByRankId(rank.id);
       return rating || 0;
     },
-    userOwnsRank: async (rank: PersonalRank, _: any, context: IContext) => {
+    userOwnsRank: async (rank: PersonalRank, _: any, context: Context) => {
       return await userOwnsRank(rank.id, context.user);
     },
   },

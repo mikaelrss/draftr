@@ -27,7 +27,7 @@ export interface changeRank_changeRank_tiers {
 
 export interface changeRank_changeRank {
   __typename: "Rank";
-  name: string | null;
+  name: string;
   uuid: string;
   tiers: changeRank_changeRank_tiers[];
 }
