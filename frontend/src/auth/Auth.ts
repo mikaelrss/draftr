@@ -52,7 +52,7 @@ export default class Auth {
         this.setSession(authResult);
         window.location.reload(true);
       } else if (err) {
-        history.replace('/');
+        history.replace('/ranks');
         console.log(err);
       }
     });

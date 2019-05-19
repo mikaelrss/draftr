@@ -78,9 +78,25 @@ export const updateTier = async (
 };
 
 export const fetchPlayersByTierId = async (id: number) => {
-  const query = `SELECT * FROM draftr.ranked_player where tier_id = $1`;
+  const query = `SELECT *
+                 FROM draftr.ranked_player
+                 where tier_id = $1`;
   const values = [id];
 
   const result = await dbClient.query(query, values);
   return result.rows;
+};
+
+export const updateTierCascade = async (
+  rankId: number,
+  playerRank: number,
+  tierId: number,
+) => {
+  console.log(rankId, playerRank, tierId);
+  const query = `UPDATE draftr.ranked_player
+set tier_id = $3
+where draftr.ranked_player.overall_rank >= $2
+  and draftr.ranked_player.rank_id = $1`;
+  const values = [rankId, playerRank, tierId];
+  await dbClient.query(query, values);
 };

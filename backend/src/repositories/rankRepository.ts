@@ -1,6 +1,5 @@
 import { dbClient } from '../index';
 import { fetchRankId } from '../services/userPreferenceService';
-import { changeRank } from 'frontend/src/components/rankings/__generated__/changeRank';
 
 interface RankEntity {
   id: number;
@@ -10,6 +9,7 @@ interface RankEntity {
 
 export interface PlayerRank {
   playerId: number;
+  id: number;
   overallRank: number;
   tierOrder: number;
   tierName: string;
@@ -28,7 +28,7 @@ export const insertRank = async (name: string): Promise<RankEntity> => {
 };
 
 export const fetchRank = async (rankId: number): Promise<PlayerRank[]> => {
-  const query = `SELECT t.tier_order, t.name, overall_rank, player_id, p.display_name, p.position, p.team, t.uuid
+  const query = `SELECT t.tier_order, t.id, t.name, overall_rank, player_id, p.display_name, p.position, p.team, t.uuid
 from draftr.rank
          join draftr.tier as t on rank.id = t.rank_id
          LEFT JOIN draftr.ranked_player as rp on rp.tier_id = t.id
@@ -43,6 +43,7 @@ where draftr.rank.id = $1`;
     displayName: row.display_name,
     position: row.position,
     tierName: row.name,
+    id: row.id,
     team: row.team,
     uuid: row.uuid,
   }));

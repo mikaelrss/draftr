@@ -22,7 +22,11 @@ import {
   getTierIdByTierOrder,
   getTiersByRankId,
 } from './tierService';
-import { getPlayerRank, updatePlayerRank } from './rankedPlayerService';
+import {
+  getPlayerRank,
+  updatePlayerRank,
+  updatePlayerTierCascade,
+} from './rankedPlayerService';
 
 const DEFAULT_TIERS = 20;
 
@@ -82,6 +86,17 @@ export const changePlayer = async (
 
   const tierDownGrade = originalRank.tier_order < destTier;
   let newOverallRank = 0;
+  if (
+    originalRank.tier_order - destTier === -1 &&
+    rank.tiers[destTier - 1].players.length === 0
+  ) {
+    await updatePlayerTierCascade(
+      rank.id,
+      originalRank.overall_rank,
+      rank.tiers[destTier - 1].id,
+    );
+    return;
+  }
   if (tierDownGrade) {
     newOverallRank = findNextRankNew(rank, destTier, destRank) - 1;
   } else {
