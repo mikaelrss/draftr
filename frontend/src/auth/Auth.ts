@@ -51,9 +51,10 @@ export default class Auth {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
         window.location.reload(true);
+        history.replace('/');
       } else if (err) {
-        history.replace('/ranks');
-        console.log(err);
+        history.replace('/');
+        // console.log(err);
       }
     });
   }
@@ -120,7 +121,7 @@ export default class Auth {
     });
 
     // navigate to the home route
-    history.replace('/home');
+    history.replace('/');
   }
 
   isAuthenticated = () => new Date().getTime() < this.expiresAt;
