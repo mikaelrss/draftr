@@ -18,6 +18,5 @@ export const getAverageRatingByRankId = async (
 ): Promise<number> => {
   const ratings = await fetchRatingsByRankId(rankId);
   const totalRating = ratings.reduce((acc, next) => acc + next.rating, 0);
-  console.log('TOt', totalRating);
   return totalRating / ratings.length;
 };

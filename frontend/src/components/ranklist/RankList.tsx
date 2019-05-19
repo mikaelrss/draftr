@@ -17,18 +17,34 @@ const styles = StyleSheet.create({
     gridGap: `${DEFAULT_PADDING}px`,
     justifyContent: 'center',
   },
+  loading: {
+    display: 'grid',
+    justifyContent: 'center',
+  },
 });
 
 const RankList = () => (
   <Container>
     <Query<AllRanks, {}> query={ALL_RANKS_QUERY}>
       {({ loading, data }) => {
-        if (loading) return <Spinner />;
-        if (!data) return <div>Could not find any ranks</div>;
+        if (loading) {
+          return (
+            <div className={css(styles.loading)}>
+              <Spinner />
+            </div>
+          );
+        }
+        if (!data) {
+          return (
+            <div className={css(styles.loading)}>Could not find any ranks</div>
+          );
+        }
+
+        const byRating = data.ranks.sort((a, b) => b.rating - a.rating);
 
         return (
           <div className={css(styles.container)}>
-            {data.ranks.map(rank => (
+            {byRating.map(rank => (
               <Rank rank={rank} key={rank.uuid} />
             ))}
           </div>

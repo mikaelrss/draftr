@@ -9,7 +9,7 @@
 export interface AddRankMutation_createRank {
   __typename: "Rank";
   uuid: string;
-  rating: number | null;
+  rating: number;
   name: string | null;
 }
 
