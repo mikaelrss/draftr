@@ -1,6 +1,6 @@
 import { IPlayer } from '../api/players';
 import {
-  changePlayer,
+  changePlayer, changeRankName,
   copyRank,
   createRank,
   getRankById,
@@ -20,6 +20,7 @@ import {
   IChangeRankArgs,
   RateRankArgs,
   SetRankPrivateArgs,
+  UpdateRankNameArgs,
   UpdateTierNameArgs,
 } from './types';
 import { Context } from '../index';
@@ -84,6 +85,14 @@ export const resolvers = {
     createTier: async (root: any, args: { id: string }, context: Context) => {
       await verifyUserCanEditRankByUuid(args.id, context.user);
       return await createNewTier(args.id, context.user);
+    },
+    updateRankName: async (
+      _: any,
+      args: UpdateRankNameArgs,
+      context: Context,
+    ) => {
+      await verifyUserCanEditRankByUuid(args.rankUuid, context.user);
+      return await changeRankName(args.rankUuid, args.name);
     },
     updateTierName: async (
       root: any,

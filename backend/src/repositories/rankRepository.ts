@@ -90,3 +90,9 @@ export const updateRankPrivate = async (uuid: string, status: boolean) => {
   const values = [uuid, status];
   await dbClient.query(query, values);
 };
+
+export const setRankName = async (uuid: string, name: string) => {
+  const query = `update draftr.rank set name = $1 where uuid = $2`;
+  const values = [name, uuid];
+  await dbClient.query(query, values);
+};

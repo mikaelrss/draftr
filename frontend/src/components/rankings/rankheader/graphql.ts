@@ -8,3 +8,11 @@ export const SET_RANK_PRIVATE = gql`
     }
   }
 `;
+
+export const CHANGE_RANK_NAME = gql`
+  mutation ChangeRankName($uuid: String!, $name: String!) {
+    updateRankName(rankUuid: $uuid, name: $name) {
+      uuid
+    }
+  }
+`;

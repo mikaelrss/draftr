@@ -10,6 +10,7 @@ type Mutation {
   copyRank(name: String!, rankUuid: String!): Rank
   rateRank(rating: Int!, rankUuid: String): Rank!
   updateTierName(tierUuid: String!, name: String!): Tier
+  updateRankName(rankUuid: String!, name: String!): Rank
   changeRank(
     rankUuid: String!
     playerId: Int!

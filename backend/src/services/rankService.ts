@@ -12,6 +12,7 @@ import {
   fetchRanks,
   insertRank,
   PlayerRank,
+  setRankName,
   updateRankPrivate,
 } from '../repositories/rankRepository';
 import { insertTier } from '../repositories/tierRepository';
@@ -237,4 +238,9 @@ export const getRanks = async (userId: string) => {
 
 export const setRankPrivate = async (uuid: string, status: boolean) => {
   await updateRankPrivate(uuid, status);
+};
+
+export const changeRankName = async (uuid: string, name: string) => {
+  await setRankName(uuid, name);
+  return await getRankByUuid(uuid);
 };

@@ -3,18 +3,19 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: AllRanks
+// GraphQL mutation operation: ChangeRankName
 // ====================================================
 
-export interface AllRanks_ranks {
+export interface ChangeRankName_updateRankName {
   __typename: "Rank";
   uuid: string;
-  name: string;
-  private: boolean;
-  userOwnsRank: boolean | null;
-  rating: number;
 }
 
-export interface AllRanks {
-  ranks: AllRanks_ranks[];
+export interface ChangeRankName {
+  updateRankName: ChangeRankName_updateRankName | null;
+}
+
+export interface ChangeRankNameVariables {
+  uuid: string;
+  name: string;
 }
