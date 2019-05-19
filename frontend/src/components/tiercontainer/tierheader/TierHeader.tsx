@@ -33,9 +33,10 @@ const styles = StyleSheet.create({
 
 type Props = {
   tier: rankings_rank_tiers;
+  disabled?: boolean;
 } & RouteComponentProps<{ id: string }>;
 
-const TierHeader = ({ tier, match }: Props) => {
+const TierHeader = ({ tier, match, disabled }: Props) => {
   const { id: rankId } = match.params;
   const [tierName, setTierName] = useState(tier.name);
 
@@ -77,6 +78,7 @@ const TierHeader = ({ tier, match }: Props) => {
           {(renameTier, data) => (
             <div className={css(styles.container)}>
               <EditableField
+                disabled={disabled}
                 onBlur={() => {
                   renameTier();
                   console.log('Save');
@@ -92,6 +94,7 @@ const TierHeader = ({ tier, match }: Props) => {
               <IconButton
                 icon={IconType.delete}
                 onClick={deleteTier}
+                disabled={disabled}
                 loading={loading}
               />
             </div>

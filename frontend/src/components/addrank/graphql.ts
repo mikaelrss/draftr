@@ -4,6 +4,7 @@ export const ADD_RANK = gql`
   mutation AddRankMutation($name: String!) {
     createRank(name: $name) {
       uuid
+      userOwnsRank
       rating
       name
     }

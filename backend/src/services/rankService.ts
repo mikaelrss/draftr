@@ -15,12 +15,13 @@ import {
 } from '../repositories/rankRepository';
 import { insertTier } from '../repositories/tierRepository';
 import { insertRankedPlayer } from '../repositories/rankedPlayerRepository';
-import { setRankId, userOwnsRank } from './userPreferenceService';
+import { setRankId } from './userPreferenceService';
 import {
   createNewTier,
   getPersonalTier,
   getTierIdByTierOrder,
   getTiersByRankId,
+  userOwnsTier,
 } from './tierService';
 import {
   getPlayerRank,
@@ -71,6 +72,33 @@ export const createDefaultRankings = async (userId: string) => {
     });
   });
   await setRankId(userId, rank.id);
+};
+
+export const userOwnsRank = async (rankId: number, userId: string) => {
+  const rank = await getRankById(rankId);
+  return rank.creator === userId;
+};
+
+export const userOwnsRankByUuid = async (rankUuid: string, userId: string) => {
+  const rank = await getRankByUuid(rankUuid);
+  return rank.creator === userId;
+};
+
+export const verifyUserCanEditRank = async (rankId: number, user: string) => {
+  const canEdit = await userOwnsRank(rankId, user);
+  if (!canEdit) {
+    throw new ForbiddenError("You don't own this Rank");
+  }
+};
+
+export const verifyUserCanEditRankByUuid = async (
+  rankUuid: string,
+  user: string,
+) => {
+  const canEdit = await userOwnsRankByUuid(rankUuid, user);
+  if (!canEdit) {
+    throw new ForbiddenError("You don't own this Rank");
+  }
 };
 
 export const changePlayer = async (
@@ -133,6 +161,7 @@ export const getRankByUuid = async (uuid: string) => {
   return {
     id: rank.id,
     uuid: rank.uuid,
+    creator: rank.creator,
     name: rank.name,
     tiers: await getTiersByRankId(rank.id),
   };
@@ -144,6 +173,7 @@ export const getRankById = async (id: number) => {
     id: rank.id,
     uuid: rank.uuid,
     name: rank.name,
+    creator: rank.creator,
     tiers: await getTiersByRankId(rank.id),
   };
 };

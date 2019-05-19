@@ -10,6 +10,7 @@ export interface AllRanks_ranks {
   __typename: "Rank";
   uuid: string;
   name: string | null;
+  userOwnsRank: boolean | null;
   rating: number;
 }
 

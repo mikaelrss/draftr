@@ -4,6 +4,7 @@ import { fetchRankId } from '../services/userPreferenceService';
 interface RankEntity {
   id: number;
   name: string;
+  creator: string;
   uuid: string;
 }
 

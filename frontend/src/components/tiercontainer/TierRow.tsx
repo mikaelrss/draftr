@@ -16,12 +16,14 @@ interface IProps {
   player: rankings_rank_tiers_players;
   index: number;
   disabled: boolean;
+  dragDisabled: boolean;
 }
 
-const TierRow = ({ player, index, disabled }: IProps) => (
+const TierRow = ({ player, index, disabled, dragDisabled }: IProps) => (
   <Draggable
     draggableId={`${player.playerId}`}
     index={index}
+    isDragDisabled={dragDisabled}
     key={player.playerId}
   >
     {(draggableProvided, prop) => (
