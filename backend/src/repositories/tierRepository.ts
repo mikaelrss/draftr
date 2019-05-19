@@ -72,6 +72,15 @@ export const removeTierByUuid = async (uuid: string) => {
   await dbClient.query(query, values);
 };
 
+export const updateTierOrder = async (tierOrder: number, rankId: number) => {
+  const query = `update draftr.tier
+set tier_order = postgres.draftr.tier.tier_order - 1
+where postgres.draftr.tier.rank_id = $1
+  and postgres.draftr.tier.tier_order > $2`;
+  const values = [rankId, tierOrder];
+  await dbClient.query(query, values);
+};
+
 export const updateTierName = async (tierUuid: string, name: string) => {
   const query = `update draftr.tier set name =$1 where uuid =$2`;
   const values = [name, tierUuid];

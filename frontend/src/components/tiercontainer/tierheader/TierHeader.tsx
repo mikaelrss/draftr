@@ -60,7 +60,10 @@ const TierHeader = ({ tier, match, disabled }: Props) => {
               ...query.rank,
               tiers: [
                 ...tiers.slice(0, tierIndex),
-                ...tiers.slice(tierIndex + 1),
+                ...tiers.slice(tierIndex + 1).map(t => ({
+                  ...t,
+                  tierId: t.tierId - 1,
+                })),
               ],
             },
           },

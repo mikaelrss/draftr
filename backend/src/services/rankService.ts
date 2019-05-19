@@ -130,9 +130,7 @@ export const changePlayer = async (
   if (tierDownGrade) {
     newOverallRank = findNextRankNew(rank, destTier, destRank) - 1;
   } else {
-    console.log('IS tier upgrade');
     newOverallRank = findPrecedingRankNew(rank, destTier, destRank) + 1;
-    console.log(newOverallRank);
   }
 
   const newTierId = await getTierIdByTierOrder(rank.id, destTier);

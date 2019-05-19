@@ -13,6 +13,7 @@ import {
   removeTierByUuid,
   TierEntity,
   updateTierName,
+  updateTierOrder,
 } from '../repositories/tierRepository';
 import { fetchRankId } from './userPreferenceService';
 import { fetchRank, PlayerRank } from '../repositories/rankRepository';
@@ -104,6 +105,7 @@ export const deleteTier = async (tierUuid: string, userId: string) => {
     throw new ValidationError('You can not delete a tier with players');
   }
   await removeTierByUuid(tierUuid);
+  await updateTierOrder(tier.tier_order, tier.rank_id);
   return tier;
 };
 

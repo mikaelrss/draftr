@@ -4,7 +4,7 @@ import { getFantasyFootballNerdRankings } from '../api/rankings';
 import { insertPlayer } from '../repositories/playerRepository';
 
 export const createPlayerList = async () => {
-  const allPlayers = await getFantasyFootballNerdRankings();
+  const allPlayers = await getFantasyFootballNerdRankings(true);
   const byPosition = groupBy(allPlayers, 'position');
   // const mostImportant = [
   //   ...byPosition.QB.slice(0, 32),
@@ -32,7 +32,6 @@ export const createPlayerList = async () => {
     }))
     .forEach(insertPlayer);
 };
-
 
 export const mapPlayer = (playerModel: IPlayerModel) => ({
   playerId: playerModel.playerId,

@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     overflowY: 'auto',
   },
   paper: {
-    minHeight: '300px',
+    minHeight: '144px',
   },
   isDraggingOver: {
     paddingBottom: `${PLAYER_HEIGHT}px !important`,
