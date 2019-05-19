@@ -23,15 +23,19 @@ export const findPrecedingRankNew = (
   tierId: number,
   rank: number,
 ): number => {
-  if (tierId === 1) return rank - 1;
+  if (tierId < 1) return 0;
+  if (tierId === 1 && rank !== -1) return rank - 1;
   const tiers = ranks.tiers.sort((a, b) => a.tierId - b.tierId);
 
   const tier = tiers[tierId - 1];
-  if (tier.players.length === 0 || rank <= 1) {
-    return findPrecedingRankNew(ranks, tierId - 1, rank);
+  if (tier.players.length === 0 || rank === 1) {
+    return findPrecedingRankNew(ranks, tierId - 1, -1);
   }
   const sortedPlayers = tier.players.sort(
     (a, b) => a.overallRank - b.overallRank,
   );
+  if (rank === -1) {
+    return sortedPlayers.slice(-1)[0].overallRank;
+  }
   return sortedPlayers[rank - 2].overallRank;
 };

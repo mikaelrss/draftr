@@ -90,13 +90,15 @@ export const fetchPlayersByTierId = async (id: number) => {
 export const updateTierCascade = async (
   rankId: number,
   playerRank: number,
+  originalTierId: number,
   tierId: number,
 ) => {
   console.log(rankId, playerRank, tierId);
   const query = `UPDATE draftr.ranked_player
 set tier_id = $3
 where draftr.ranked_player.overall_rank >= $2
-  and draftr.ranked_player.rank_id = $1`;
-  const values = [rankId, playerRank, tierId];
+  and draftr.ranked_player.rank_id = $1
+  and draftr.ranked_player.tier_id = $4`;
+  const values = [rankId, playerRank, tierId, originalTierId];
   await dbClient.query(query, values);
 };

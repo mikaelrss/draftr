@@ -118,9 +118,11 @@ export const changePlayer = async (
     originalRank.tier_order - destTier === -1 &&
     rank.tiers[destTier - 1].players.length === 0
   ) {
+    // TODO must not overwrite players in other tiers
     await updatePlayerTierCascade(
       rank.id,
       originalRank.overall_rank,
+      rank.tiers[originalRank.tier_order - 1].id,
       rank.tiers[destTier - 1].id,
     );
     return;
@@ -128,7 +130,9 @@ export const changePlayer = async (
   if (tierDownGrade) {
     newOverallRank = findNextRankNew(rank, destTier, destRank) - 1;
   } else {
+    console.log('IS tier upgrade');
     newOverallRank = findPrecedingRankNew(rank, destTier, destRank) + 1;
+    console.log(newOverallRank);
   }
 
   const newTierId = await getTierIdByTierOrder(rank.id, destTier);
