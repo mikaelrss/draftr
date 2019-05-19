@@ -1,4 +1,3 @@
-import { ForbiddenError } from 'apollo-server';
 import { IPlayer } from '../api/players';
 import {
   changePlayer,
@@ -7,6 +6,8 @@ import {
   getRankByUuid,
   getRanks,
   PersonalRank,
+  userOwnsRank,
+  verifyUserCanEditRankByUuid,
 } from '../services/rankService';
 import { createPlayerList } from '../services/playerService';
 import {
@@ -22,7 +23,7 @@ import {
   createNewTier,
   deleteTier,
   getPersonalTier,
-  userOwnsTier,
+  verifyUserCanEditTier,
 } from '../services/tierService';
 import { getPlayersByTierId } from '../services/rankedPlayerService';
 import { TierEntity } from '../repositories/tierRepository';
@@ -30,7 +31,6 @@ import {
   getAverageRatingByRankId,
   rateRanking,
 } from '../services/userRatingService';
-import { userOwnsRank } from '../services/userPreferenceService';
 
 export const resolvers = {
   Query: {
@@ -55,6 +55,7 @@ export const resolvers = {
       return 'Players inserted from Fantasy Football Nerds';
     },
     changeRank: async (root: any, args: IChangeRankArgs, context: IContext) => {
+      await verifyUserCanEditRankByUuid(args.rankUuid, context.user);
       await changePlayer(
         args.rankUuid,
         args.playerId,
@@ -65,18 +66,19 @@ export const resolvers = {
       return await getRankByUuid(args.rankUuid);
     },
     deleteTier: async (root: any, args: DeleteTierArgs, context: IContext) => {
+      await verifyUserCanEditTier(args.id, context.user);
       return await deleteTier(args.id, context.user);
     },
-    createTier: async (root: any, args: { id: string }, context: IContext) =>
-      await createNewTier(args.id, context.user),
+    createTier: async (root: any, args: { id: string }, context: IContext) => {
+      await verifyUserCanEditRankByUuid(args.id, context.user);
+      return await createNewTier(args.id, context.user);
+    },
     updateTierName: async (
       root: any,
       args: UpdateTierNameArgs,
       context: IContext,
     ) => {
-      if (!userOwnsTier(args.tierUuid, context.user)) {
-        throw new ForbiddenError('User does not own tier');
-      }
+      await verifyUserCanEditTier(args.tierUuid, context.user);
       return await changeTierName(args.tierUuid, args.name);
     },
   },
@@ -84,6 +86,9 @@ export const resolvers = {
     rating: async (rank: PersonalRank) => {
       const rating = await getAverageRatingByRankId(rank.id);
       return rating || 0;
+    },
+    userOwnsRank: async (rank: PersonalRank, _: any, context: IContext) => {
+      return await userOwnsRank(rank.id, context.user);
     },
   },
   Tier: {

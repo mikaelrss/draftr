@@ -4,6 +4,7 @@ import {
   getRankById,
   getRankByUuid,
   PersonalTier,
+  userOwnsRank,
 } from './rankService';
 import {
   fetchTierByTierOrder,
@@ -13,7 +14,7 @@ import {
   TierEntity,
   updateTierName,
 } from '../repositories/tierRepository';
-import { fetchRankId, userOwnsRank } from './userPreferenceService';
+import { fetchRankId } from './userPreferenceService';
 import { fetchRank, PlayerRank } from '../repositories/rankRepository';
 import groupBy from 'lodash.groupby';
 import { getPlayersByTierId } from './rankedPlayerService';
@@ -109,4 +110,11 @@ export const deleteTier = async (tierUuid: string, userId: string) => {
 export const changeTierName = async (tierUuid: string, name: string) => {
   await updateTierName(tierUuid, name);
   return await getTierByUuid(tierUuid);
+};
+
+export const verifyUserCanEditTier = async (tierUuid: string, user: string) => {
+  const canEdit = await userOwnsTier(tierUuid, user);
+  if (!canEdit) {
+    throw new ForbiddenError("You don't own this Tier");
+  }
 };

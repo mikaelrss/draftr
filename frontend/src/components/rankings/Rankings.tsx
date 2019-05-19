@@ -22,6 +22,7 @@ import AddTier, { ADD_TIER_DROPPABLE_ID } from '../addtier/AddTier';
 import Spinner from '../shared/Spinner';
 import { changeRank, changeRankVariables } from './__generated__/changeRank';
 import RateRank from '../raterank/RateRank';
+import CopyRank from '../copyrank/CopyRank';
 
 const styles = StyleSheet.create({
   box: {
@@ -124,13 +125,19 @@ const Rankings = ({ changeRankMutation, match }: Props) => {
     });
   };
   if (data.rank == null) return null;
+  const { userOwnsRank } = data.rank;
   return (
     <div className={css(styles.box)}>
       <DragDropContext onDragEnd={onDragEnd}>
         {data.rank.tiers.map(tier => (
-          <TierContainer tier={tier} key={`TIER_${tier.tierId}`} />
+          <TierContainer
+            tier={tier}
+            key={`TIER_${tier.tierId}`}
+            dragDisabled={!userOwnsRank}
+          />
         ))}
-        <AddTier />
+        {userOwnsRank && <AddTier />}
+        {!userOwnsRank && <CopyRank />}
       </DragDropContext>
       <RateRank rank={data.rank} />
     </div>

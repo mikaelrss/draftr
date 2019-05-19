@@ -23,6 +23,7 @@ type Mutation {
 type Rank {
   uuid: String!
   name: String
+  userOwnsRank: Boolean
   rating: Float!
   tiers: [Tier!]!
 }

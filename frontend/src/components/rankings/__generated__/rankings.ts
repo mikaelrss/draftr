@@ -30,6 +30,7 @@ export interface rankings_rank {
   __typename: "Rank";
   name: string | null;
   uuid: string;
+  userOwnsRank: boolean | null;
   tiers: rankings_rank_tiers[];
 }
 

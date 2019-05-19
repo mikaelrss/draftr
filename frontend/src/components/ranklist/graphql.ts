@@ -5,6 +5,7 @@ export const ALL_RANKS_QUERY = gql`
     ranks {
       uuid
       name
+      userOwnsRank
       rating
     }
   }
