@@ -207,4 +207,25 @@ export const createRank = async (name: string, userId: string) => {
   return newRank;
 };
 
+export const copyRank = async (
+  rankUuid: string,
+  name: string,
+  userId: string,
+) => {
+  const rank = await getRankByUuid(rankUuid);
+  const newRank = await addRank(name, userId);
+  rank.tiers.forEach(async tier => {
+    const newTier = await insertTier(tier, newRank.id);
+    tier.players.forEach(async player => {
+      await insertRankedPlayer(
+        newRank.id,
+        newTier.id,
+        player.playerId,
+        player.overallRank,
+      );
+    });
+  });
+  return newRank;
+};
+
 export const getRanks = async () => await fetchRanks();

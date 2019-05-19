@@ -2,6 +2,11 @@ export interface CreateRankArgs {
   name: string;
 }
 
+export interface CopyRankArgs {
+  rankUuid: string;
+  name: string;
+}
+
 export interface RateRankArgs {
   rating: number;
   rankUuid: string;

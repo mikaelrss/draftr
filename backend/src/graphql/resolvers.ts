@@ -1,6 +1,7 @@
 import { IPlayer } from '../api/players';
 import {
   changePlayer,
+  copyRank,
   createRank,
   getRankById,
   getRankByUuid,
@@ -11,6 +12,7 @@ import {
 } from '../services/rankService';
 import { createPlayerList } from '../services/playerService';
 import {
+  CopyRankArgs,
   CreateRankArgs,
   DeleteTierArgs,
   IChangeRankArgs,
@@ -49,6 +51,9 @@ export const resolvers = {
     createRank: async (root: any, args: CreateRankArgs, context: IContext) => {
       const rank = await createRank(args.name, context.user);
       return await getRankById(rank.id);
+    },
+    copyRank: async (root: any, args: CopyRankArgs, context: IContext) => {
+      return await copyRank(args.rankUuid, args.name, context.user);
     },
     createPlayerList: async () => {
       await createPlayerList();
