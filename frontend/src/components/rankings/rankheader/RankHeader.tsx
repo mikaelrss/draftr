@@ -6,12 +6,16 @@ import EditableField from '../../shared/EditableField';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import { DEFAULT_PADDING } from '../../../styles/constants';
 import { rankings_rank } from '../__generated__/rankings';
-import { SET_RANK_PRIVATE } from './graphql';
+import { CHANGE_RANK_NAME, SET_RANK_PRIVATE } from './graphql';
 import {
   SetRankMutation,
   SetRankMutationVariables,
 } from './__generated__/SetRankMutation';
 import Typography, { FontSize } from '../../shared/Typography';
+import {
+  ChangeRankName,
+  ChangeRankNameVariables,
+} from './__generated__/ChangeRankName';
 
 const styles = StyleSheet.create({
   header: {
@@ -39,11 +43,11 @@ const RankHeader = ({ rank }: Props) => {
   const [title, setTitle] = useState(rank.name);
   const [rankPrivate, setPrivate] = useState(rank.private);
   return (
-    <Mutation<SetRankMutation, SetRankMutationVariables>
-      mutation={SET_RANK_PRIVATE}
-    >
-      {(setRank, { loading }) => (
-        <div className={css(styles.header)}>
+    <div className={css(styles.header)}>
+      <Mutation<ChangeRankName, ChangeRankNameVariables>
+        mutation={CHANGE_RANK_NAME}
+      >
+        {changeRank => (
           <EditableField
             id={`rank-title-${rank.uuid}`}
             value={title}
@@ -53,13 +57,19 @@ const RankHeader = ({ rank }: Props) => {
               setTitle(e.currentTarget.value);
             }}
             onBlur={() => {
-              console.log('change rank nam' + '');
+              changeRank({ variables: { name: title, uuid: rank.uuid } });
             }}
           />
-          {rank.userOwnsRank && (
-            <div className={css(styles.private)}>
-              <div className={css(styles.toggle)}>
-                <Typography size={FontSize.medium}>Private rank</Typography>
+        )}
+      </Mutation>
+      {rank.userOwnsRank && (
+        <div className={css(styles.private)}>
+          <div className={css(styles.toggle)}>
+            <Typography size={FontSize.medium}>Private rank</Typography>
+            <Mutation<SetRankMutation, SetRankMutationVariables>
+              mutation={SET_RANK_PRIVATE}
+            >
+              {(setRank, { loading }) => (
                 <Toggle
                   disabled={!rank.userOwnsRank}
                   checked={rankPrivate}
@@ -73,15 +83,15 @@ const RankHeader = ({ rank }: Props) => {
                     }).then(() => setPrivate(!rankPrivate));
                   }}
                 />
-              </div>
-              <Typography size={FontSize.small}>
-                (private ranks can not be viewed by others).
-              </Typography>
-            </div>
-          )}
+              )}
+            </Mutation>
+          </div>
+          <Typography size={FontSize.small}>
+            (private ranks can not be viewed by others).
+          </Typography>
         </div>
       )}
-    </Mutation>
+    </div>
   );
 };
 
