@@ -28,8 +28,9 @@ export interface rankings_rank_tiers {
 
 export interface rankings_rank {
   __typename: "Rank";
-  name: string | null;
+  name: string;
   uuid: string;
+  private: boolean;
   userOwnsRank: boolean | null;
   tiers: rankings_rank_tiers[];
 }

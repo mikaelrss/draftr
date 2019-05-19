@@ -3,6 +3,7 @@ import { fetchRankId } from '../services/userPreferenceService';
 
 interface RankEntity {
   id: number;
+  private: boolean;
   name: string;
   creator: string;
   uuid: string;
@@ -59,7 +60,7 @@ export const fetchRankByUuid = async (uuid: string): Promise<RankEntity> => {
   return result.rows[0];
 };
 
-export const fetchRankById = async (id: number) => {
+export const fetchRankById = async (id: number): Promise<RankEntity> => {
   const query = `SELECT * from draftr.rank where id = $1`;
   const values = [id];
   const result = await dbClient.query(query, values);
@@ -71,7 +72,7 @@ export const fetchRankByUserId = async (userId: string) => {
   return await fetchRankById(rankId);
 };
 
-export const fetchRanks = async () => {
+export const fetchRanks = async (): Promise<RankEntity[]> => {
   const query = `SELECT * FROM draftr.rank`;
   const result = await dbClient.query(query);
   return result.rows;
@@ -82,4 +83,10 @@ export const addRank = async (name: string, creator: string) => {
   const values = [name, creator];
   const result = await dbClient.query(query, values);
   return result.rows[0];
+};
+
+export const updateRankPrivate = async (uuid: string, status: boolean) => {
+  const query = `update draftr.rank set private = $2 where uuid = $1`;
+  const values = [uuid, status];
+  await dbClient.query(query, values);
 };

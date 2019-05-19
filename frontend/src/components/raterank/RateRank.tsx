@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     display: 'none',
   },
   label: {
+    cursor: 'pointer',
     height: '40px',
   },
 });

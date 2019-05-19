@@ -37,3 +37,8 @@ export interface UpdateTierNameArgs {
   tierUuid: string;
   name: string;
 }
+
+export interface SetRankPrivateArgs {
+  uuid: string;
+  status: boolean;
+}

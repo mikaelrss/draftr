@@ -15,7 +15,7 @@ const typeDefs = importSchema(
 );
 const PORT = process.env.PORT || 4000;
 
-export interface IContext {
+export interface Context {
   user: string;
 }
 export let dbClient: Client;

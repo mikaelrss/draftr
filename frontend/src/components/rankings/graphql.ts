@@ -5,6 +5,7 @@ export const GET_FANTASY_FOOTBALL_RANKINGS = gql`
     rank(id: $id) {
       name
       uuid
+      private
       userOwnsRank
       tiers {
         tierId

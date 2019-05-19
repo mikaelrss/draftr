@@ -23,8 +23,13 @@ import Spinner from '../shared/Spinner';
 import { changeRank, changeRankVariables } from './__generated__/changeRank';
 import RateRank from '../raterank/RateRank';
 import CopyRank from '../copyrank/CopyRank';
+import RankHeader from './rankheader/RankHeader';
 
 const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   box: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, 320px)',
@@ -127,19 +132,22 @@ const Rankings = ({ changeRankMutation, match }: Props) => {
   if (data.rank == null) return null;
   const { userOwnsRank } = data.rank;
   return (
-    <div className={css(styles.box)}>
-      <DragDropContext onDragEnd={onDragEnd}>
-        {data.rank.tiers.map(tier => (
-          <TierContainer
-            tier={tier}
-            key={`TIER_${tier.tierId}`}
-            dragDisabled={!userOwnsRank}
-          />
-        ))}
-        {userOwnsRank && <AddTier />}
-        <CopyRank rank={data.rank} />
-      </DragDropContext>
-      {!userOwnsRank && <RateRank rank={data.rank} />}
+    <div className={css(styles.container)}>
+      <RankHeader rank={data.rank} />
+      <div className={css(styles.box)}>
+        <DragDropContext onDragEnd={onDragEnd}>
+          {data.rank.tiers.map(tier => (
+            <TierContainer
+              tier={tier}
+              key={`TIER_${tier.tierId}`}
+              dragDisabled={!userOwnsRank}
+            />
+          ))}
+          {userOwnsRank && <AddTier />}
+          <CopyRank rank={data.rank} />
+        </DragDropContext>
+        {!userOwnsRank && <RateRank rank={data.rank} />}
+      </div>
     </div>
   );
 };

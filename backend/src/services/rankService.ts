@@ -12,6 +12,7 @@ import {
   fetchRanks,
   insertRank,
   PlayerRank,
+  updateRankPrivate,
 } from '../repositories/rankRepository';
 import { insertTier } from '../repositories/tierRepository';
 import { insertRankedPlayer } from '../repositories/rankedPlayerRepository';
@@ -21,7 +22,6 @@ import {
   getPersonalTier,
   getTierIdByTierOrder,
   getTiersByRankId,
-  userOwnsTier,
 } from './tierService';
 import {
   getPlayerRank,
@@ -163,6 +163,7 @@ export const getRankByUuid = async (uuid: string) => {
   return {
     id: rank.id,
     uuid: rank.uuid,
+    private: rank.private,
     creator: rank.creator,
     name: rank.name,
     tiers: await getTiersByRankId(rank.id),
@@ -174,6 +175,7 @@ export const getRankById = async (id: number) => {
   return {
     id: rank.id,
     uuid: rank.uuid,
+    private: rank.private,
     name: rank.name,
     creator: rank.creator,
     tiers: await getTiersByRankId(rank.id),
@@ -228,4 +230,11 @@ export const copyRank = async (
   return newRank;
 };
 
-export const getRanks = async () => await fetchRanks();
+export const getRanks = async (userId: string) => {
+  const ranks = await fetchRanks();
+  return ranks.filter(rank => !rank.private || rank.creator === userId);
+};
+
+export const setRankPrivate = async (uuid: string, status: boolean) => {
+  await updateRankPrivate(uuid, status);
+};
