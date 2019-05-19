@@ -15,7 +15,7 @@ import AuthContext from '../../auth/AuthContext';
 import RankingsContainer from '../rankings/RankingsContainer';
 import RankList from '../ranklist/RankList';
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -36,6 +36,7 @@ const Main = () => {
         <Container>
           <Route path="/rank/:id" component={RankingsContainer} />
           <Route path="/ranks/" component={RankList} />
+          <Route path="/my-ranks/" component={RankList} />
         </Container>
       </StickyContainer>
     );
@@ -49,12 +50,12 @@ const Main = () => {
 };
 
 const Root = () => (
-  <div className={css(style.root)}>
+  <div className={css(styles.root)}>
     <AppHeader />
     <ToastContainer
       position="bottom-center"
       hideProgressBar
-      toastClassName={css(style.toastError)}
+      toastClassName={css(styles.toastError)}
       autoClose={3000}
     />
     <Route path="/" component={Main} />

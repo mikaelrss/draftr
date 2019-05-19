@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import { ALL_RANKS_QUERY } from './graphql';
 import { AllRanks } from './__generated__/AllRanks';
@@ -23,36 +24,43 @@ const styles = StyleSheet.create({
   },
 });
 
-const RankList = () => (
-  <Container>
-    <Query<AllRanks, {}> query={ALL_RANKS_QUERY}>
-      {({ loading, data }) => {
-        if (loading) {
+const RankList = ({ match }: RouteComponentProps) => {
+  return (
+    <Container>
+      <Query<AllRanks, {}> query={ALL_RANKS_QUERY}>
+        {({ loading, data }) => {
+          if (loading) {
+            return (
+              <div className={css(styles.loading)}>
+                <Spinner />
+              </div>
+            );
+          }
+          if (!data) {
+            return (
+              <div className={css(styles.loading)}>
+                Could not find any ranks
+              </div>
+            );
+          }
+
+          const byRating = data.ranks.sort((a, b) => b.rating - a.rating);
+          const myRanks = match.path === '/my-ranks/';
+
           return (
-            <div className={css(styles.loading)}>
-              <Spinner />
+            <div className={css(styles.container)}>
+              {byRating
+                .filter(r => (myRanks ? r.userOwnsRank : true))
+                .map(rank => (
+                  <Rank rank={rank} key={rank.uuid} />
+                ))}
             </div>
           );
-        }
-        if (!data) {
-          return (
-            <div className={css(styles.loading)}>Could not find any ranks</div>
-          );
-        }
+        }}
+      </Query>
+      <AddRank />
+    </Container>
+  );
+};
 
-        const byRating = data.ranks.sort((a, b) => b.rating - a.rating);
-
-        return (
-          <div className={css(styles.container)}>
-            {byRating.map(rank => (
-              <Rank rank={rank} key={rank.uuid} />
-            ))}
-          </div>
-        );
-      }}
-    </Query>
-    <AddRank />
-  </Container>
-);
-
-export default RankList;
+export default withRouter(RankList);

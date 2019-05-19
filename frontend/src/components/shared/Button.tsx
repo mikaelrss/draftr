@@ -83,8 +83,8 @@ export const IconButton = ({
 );
 
 interface IDivProps {
-  onClick: () => any;
-  children: React.ReactNode;
+  onClick?: () => any;
+  children?: React.ReactNode;
   className?: string;
 }
 

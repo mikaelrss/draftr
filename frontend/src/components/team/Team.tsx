@@ -19,6 +19,7 @@ import PlayerName from '../tiercontainer/PlayerName';
 
 const styles = StyleSheet.create({
   team: {
+    borderLeftColor: 'transparent !important',
     position: 'relative',
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, 120px)',
