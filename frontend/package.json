@@ -29,6 +29,7 @@
     "lodash.groupby": "^4.6.0",
     "moize": "^5.4.4",
     "node-sass": "^4.11.0",
+    "prettier": "^1.16.4",
     "react": "16.8.6",
     "react-apollo": "2.5.4",
     "react-apollo-hooks": "0.4.4",
@@ -51,7 +52,8 @@
     "reselect": "^4.0.0",
     "semantic-ui-react": "^0.87.1",
     "serve": "^11.0.0",
-    "styled-components": "^4.2.0"
+    "styled-components": "^4.2.0",
+    "typescript": "^3.3.3333"
   },
   "scripts": {
     "start": "react-scripts start",

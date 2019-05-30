@@ -24,6 +24,7 @@ import { changeRank, changeRankVariables } from './__generated__/changeRank';
 import RateRank from '../raterank/RateRank';
 import CopyRank from '../copyrank/CopyRank';
 import RankHeader from './rankheader/RankHeader';
+import { generateOptimisticRankChange } from './utils';
 
 const styles = StyleSheet.create({
   container: {
@@ -85,7 +86,7 @@ const Rankings = ({ changeRankMutation, match }: Props) => {
     );
 
   const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
+    if (!result.destination || !data.rank) return;
 
     const origTier = +result.source.droppableId.replace('tier#', '');
     const playerId = result.draggableId;
@@ -110,15 +111,15 @@ const Rankings = ({ changeRankMutation, match }: Props) => {
     const destTier = +result.destination.droppableId.replace('tier#', '');
     const destRank = +result.destination.index + 1;
 
-    // const optimisticResponse = generateOptimisticRankChange(
-    //   {
-    //     playerId,
-    //     originTier: origTier,
-    //     destinationTier: destTier,
-    //     destinationRank: destRank,
-    //   },
-    //   data,
-    // );
+    const optimisticResponse = generateOptimisticRankChange(
+      {
+        playerId: +playerId,
+        originTier: origTier,
+        destinationTier: destTier,
+        destinationRank: destRank,
+      },
+      data.rank,
+    );
 
     changeRankMutation({
       variables: {
@@ -126,6 +127,9 @@ const Rankings = ({ changeRankMutation, match }: Props) => {
         rankUuid,
         destTier,
         destRank,
+      },
+      optimisticResponse: {
+        changeRank: optimisticResponse,
       },
     });
   };
