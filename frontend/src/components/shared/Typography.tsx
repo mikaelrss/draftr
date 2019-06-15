@@ -2,8 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { StyleSheet, css } from 'aphrodite/no-important';
 
-const TYPOGRAPHY_MARGIN = 10;
-
 const styles = StyleSheet.create({
   small: {
     fontSize: '10px',

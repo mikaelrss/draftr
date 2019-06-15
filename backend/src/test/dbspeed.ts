@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { performance } from 'perf_hooks';
 
 const RUNS = 100;
@@ -10,4 +12,3 @@ const runTest = async (text: string, operation: any) => {
   const ap1 = performance.now();
   console.log(`${text} - ${(ap1 - ap0) / RUNS}ms`);
 };
-

@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
 
 interface IStateProps {
   selectedPlayers: rankings_rank_tiers_players[];
+  draftModeStatus: boolean;
 }
 
 interface IDispatchProps {
@@ -81,7 +82,8 @@ interface IDispatchProps {
 
 type IProps = IStateProps & IDispatchProps;
 
-const Team = ({ selectedPlayers, remove }: IProps) => {
+const Team = ({ selectedPlayers, remove, draftModeStatus }: IProps) => {
+  if (!draftModeStatus) return null;
   const placeholders = Array(15 - selectedPlayers.length)
     .fill(null)
     .map((_, i) => ({ playerId: `placeholder-${i}` }));
@@ -119,9 +121,10 @@ const Team = ({ selectedPlayers, remove }: IProps) => {
   );
 };
 
-const withRedux = connect(
-  (state: IState) => ({
+const withRedux = connect<IStateProps, IDispatchProps, {}, IState>(
+  state => ({
     selectedPlayers: state.team.selected,
+    draftModeStatus: state.draftMode.activated,
   }),
   {
     remove: removePlayer,

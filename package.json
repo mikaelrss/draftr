@@ -21,7 +21,7 @@
     "start:fe:dev": "yarn workspace frontend start",
     "start:be:dev": "yarn workspace backend start:dev",
     "start": "yarn workspace frontend start:prod",
-    "lint": "tslint -p tslint.json",
+    "lint": "yarn workspaces run lint",
     "heroku-postbuild": "yarn run build"
   },
   "devDependencies": {

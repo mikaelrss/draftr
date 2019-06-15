@@ -5,13 +5,18 @@ import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 
 import team, { ITeamState } from './team';
+import draftModeReducer, {
+  IDraftState,
+} from '../components/appheader/headersettings/draftModeReducer';
 
 export interface IState {
   team: ITeamState;
+  draftMode: IDraftState;
 }
 
 const rootReducer = combineReducers<IState>({
   team,
+  draftMode: draftModeReducer,
 });
 
 const persistedReducer = persistReducer(

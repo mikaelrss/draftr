@@ -11,6 +11,7 @@ import selector from './selector';
 import TierRow from './TierRow';
 import { rankings_rank_tiers } from '../rankings/__generated__/rankings';
 import TierHeader from './tierheader/TierHeader';
+import { IState } from '../../redux/store';
 
 const styles = StyleSheet.create({
   playerDragging: {
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
 
 interface IStateProps {
   passed: number[];
+  draftModeStatus: boolean;
 }
 
 interface IOwnProps {
@@ -43,8 +45,14 @@ interface IOwnProps {
 
 type Props = IOwnProps & IStateProps;
 
-const TierContainer = ({ tier, passed, className, dragDisabled }: Props) => {
-  const isDisabled = (id: number) => passed.includes(id);
+const TierContainer = ({
+  tier,
+  passed,
+  className,
+  dragDisabled,
+  draftModeStatus,
+}: Props) => {
+  const isDisabled = (id: number) => passed.includes(id) && draftModeStatus;
   return (
     <div>
       <Droppable droppableId={`tier#${tier.tierId}`}>
@@ -82,7 +90,7 @@ const TierContainer = ({ tier, passed, className, dragDisabled }: Props) => {
   );
 };
 
-const withRedux = connect<IStateProps>(selector);
+const withRedux = connect<IStateProps, {}, {}, IState>(selector);
 
 export default compose<React.ComponentType<IOwnProps>>(withRedux)(
   TierContainer,

@@ -150,7 +150,6 @@ const TeamLogo = ({ team, className }: IProps) => {
     case WAS:
       return <WASComp {...props} />;
     default:
-      console.error('No logo found for team', team);
       return <div>No team</div>;
   }
 };

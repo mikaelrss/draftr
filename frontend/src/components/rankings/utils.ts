@@ -127,7 +127,7 @@ const movePlayerPropagateLeft = (
 
   const newPlayerRank = {
     ...rank,
-    overallRank: !!destination.players[destinationRank - 1]
+    overallRank: destination.players[destinationRank - 1]
       ? destination.players[destinationRank - 1].overallRank
       : findPrecedingRank(tiers, destinationTier) + 1,
   };

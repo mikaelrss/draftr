@@ -32,6 +32,7 @@ const teamReducer = (
     case PLAYER_TAKEN:
       return { ...state, taken: [...state.taken, action.payload] };
     case REMOVE_PLAYER:
+      // eslint-disable-next-line no-case-declarations
       const index = state.selected.findIndex(
         p => p.playerId === action.payload,
       );
@@ -43,6 +44,7 @@ const teamReducer = (
         ],
       };
     case UNTAKE_PLAYER:
+      // eslint-disable-next-line no-case-declarations
       const loc = state.taken.findIndex(p => p.playerId === action.payload);
       return {
         ...state,

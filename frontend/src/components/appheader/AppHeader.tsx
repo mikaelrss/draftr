@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { Route } from 'react-router-dom';
 import { Popup } from 'semantic-ui-react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
@@ -10,6 +11,7 @@ import ProfileInfo from '../profileinfo/ProfileInfo';
 import Icon, { IconType } from '../shared/Icon';
 import Link from '../shared/Link';
 import ProfileMenu from '../profilemenu/ProfileMenu';
+import DraftMode from './headersettings/DraftMode';
 
 const ICON_SIZE = 40;
 export const HEADER_HEIGHT = 64;
@@ -57,19 +59,22 @@ const AppHeader = () => {
       </Link>
       {!auth.isAuthenticated() && <Button onClick={auth.login} value="Login" />}
       {auth.isAuthenticated() && (
-        <Popup
-          open={open}
-          on="click"
-          content={<ProfileMenu />}
-          trigger={
-            <ClickableSurface className={css(styles.click)}>
-              <ProfileInfo />
-            </ClickableSurface>
-          }
-          onOpen={() => setOpen(true)}
-          onClose={() => setOpen(false)}
-          position="bottom center"
-        />
+        <>
+          <Route path="/rank/:id" component={DraftMode} />
+          <Popup
+            open={open}
+            on="click"
+            content={<ProfileMenu />}
+            trigger={
+              <ClickableSurface className={css(styles.click)}>
+                <ProfileInfo />
+              </ClickableSurface>
+            }
+            onOpen={() => setOpen(true)}
+            onClose={() => setOpen(false)}
+            position="bottom center"
+          />
+        </>
       )}
     </header>
   );

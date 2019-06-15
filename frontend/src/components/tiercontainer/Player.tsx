@@ -18,28 +18,27 @@ import PlayerName from './PlayerName';
 import { getBackground } from '../rankings/Rankings';
 import { rankings_rank_tiers_players } from '../rankings/__generated__/rankings';
 import { IconType } from '../shared/Icon';
+import { IState } from '../../redux/store';
 
 export const PLAYER_HEIGHT = 48;
 const styles = StyleSheet.create({
-  disabled: {
-    opacity: 0.35,
-  },
+  disabled: { opacity: 0.35 },
   player: {
     position: 'relative',
     fontSize: '0.5em',
-    display: 'grid',
-    gridTemplateColumns: 'auto 30px 70px',
     height: `${PLAYER_HEIGHT}px`,
     alignItems: 'center',
     paddingLeft: `${DEFAULT_PADDING / 2}px`,
     paddingRight: `${DEFAULT_PADDING / 2}px`,
   },
-  add: {
-    marginRight: '6px',
+  grid: { display: 'grid', gridTemplateColumns: 'auto 30px 70px' },
+  flex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    paddingRight: `${DEFAULT_PADDING}px`,
   },
-  clear: {
-    backgroundColor: `${SECONDARY} !important`,
-  },
+  add: { marginRight: '6px' },
+  clear: { backgroundColor: `${SECONDARY} !important` },
   icon: {
     height: `${PLAYER_HEIGHT * 0.64}px !important`,
     width: `${PLAYER_HEIGHT * 0.64}px !important`,
@@ -63,17 +62,23 @@ const styles = StyleSheet.create({
   qb: { backgroundColor: `${QB_COLOR}44`, paddingTop: 0, paddingBottom: 0 },
 });
 
-interface IDispatchProps {
+interface StateProps {
+  draftModeStatus: boolean;
+}
+
+interface DispatchProps {
   select: (player: rankings_rank_tiers_players) => void;
   take: (player: rankings_rank_tiers_players) => void;
   untake: (playerId: number) => void;
 }
 
-type IPlayerProps = {
+interface OwnProps {
   player: rankings_rank_tiers_players;
   disabled?: boolean;
   className?: string;
-} & IDispatchProps;
+}
+
+type PlayerProps = OwnProps & DispatchProps & StateProps;
 
 const Player = ({
   player,
@@ -82,13 +87,16 @@ const Player = ({
   disabled,
   className,
   untake,
-}: IPlayerProps) => {
+  draftModeStatus,
+}: PlayerProps) => {
   return (
     <div
       className={classNames(
         css(
           styles.player,
-          disabled && styles.disabled,
+          disabled && draftModeStatus && styles.disabled,
+          draftModeStatus && styles.grid,
+          !draftModeStatus && styles.flex,
           getBackground(player.position),
         ),
         className,
@@ -96,25 +104,25 @@ const Player = ({
     >
       <PlayerName player={player} />
       <div>{player.overallRank}</div>
-      <div className={css(styles.buttonContainer)}>
-        <IconButton
-          icon={IconType.add}
-          className={css(styles.icon, styles.add)}
-          onClick={() => select(player)}
-          disabled={disabled}
-        />
-        <IconButton
-          icon={IconType.clear}
-          className={css(styles.clear, styles.icon)}
-          onClick={() => take(player)}
-          disabled={disabled}
-        />
-      </div>
-      {disabled && (
+      {draftModeStatus && (
+        <div className={css(styles.buttonContainer)}>
+          <IconButton
+            icon={IconType.add}
+            className={css(styles.icon, styles.add)}
+            onClick={() => select(player)}
+            disabled={disabled}
+          />
+          <IconButton
+            icon={IconType.clear}
+            className={css(styles.clear, styles.icon)}
+            onClick={() => take(player)}
+            disabled={disabled}
+          />
+        </div>
+      )}
+      {disabled && draftModeStatus && (
         <ClickableSurface
-          onClick={() => {
-            untake(player.playerId);
-          }}
+          onClick={() => untake(player.playerId)}
           className={css(styles.shade)}
         />
       )}
@@ -122,12 +130,14 @@ const Player = ({
   );
 };
 
-const withRedux = connect<{}, IDispatchProps>(
-  null,
+const withRedux = connect<StateProps, DispatchProps, OwnProps, IState>(
+  state => ({
+    draftModeStatus: state.draftMode.activated,
+  }),
   {
     select: selectPlayer,
     take: playerTaken,
     untake: untakePlayer,
   },
 );
-export default withRedux(moize.deep(Player));
+export default withRedux(moize(Player, { isReact: true }));

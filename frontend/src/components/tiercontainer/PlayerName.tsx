@@ -1,5 +1,7 @@
 import React from 'react';
+import moize from 'moize';
 import { css, StyleSheet } from 'aphrodite/no-important';
+
 import TeamLogo from '../../svg/nfllogos/TeamLogo';
 import { rankings_rank_tiers_players } from '../rankings/__generated__/rankings';
 import { DEFAULT_PADDING, MOBILE_BREAKPOINT } from '../../styles/constants';
@@ -20,14 +22,15 @@ const styles = StyleSheet.create({
   },
 });
 
-interface IProps {
+interface Props {
   player: rankings_rank_tiers_players;
 }
-const PlayerName = ({ player }: IProps) => (
+
+const PlayerName = ({ player }: Props) => (
   <div className={css(styles.name)}>
     <TeamLogo team={player.team} className={css(styles.logo)} />
     {player.displayName}
   </div>
 );
 
-export default PlayerName;
+export default moize(PlayerName, { isReact: true });

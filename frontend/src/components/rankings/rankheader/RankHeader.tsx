@@ -69,7 +69,7 @@ const RankHeader = ({ rank }: Props) => {
             <Mutation<SetRankMutation, SetRankMutationVariables>
               mutation={SET_RANK_PRIVATE}
             >
-              {(setRank, { loading }) => (
+              {setRank => (
                 <Toggle
                   disabled={!rank.userOwnsRank}
                   checked={rankPrivate}
