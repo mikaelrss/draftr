@@ -22,9 +22,7 @@ import { IState } from '../../redux/store';
 
 export const PLAYER_HEIGHT = 48;
 const styles = StyleSheet.create({
-  disabled: {
-    opacity: 0.35,
-  },
+  disabled: { opacity: 0.35 },
   player: {
     position: 'relative',
     fontSize: '0.5em',
@@ -33,21 +31,14 @@ const styles = StyleSheet.create({
     paddingLeft: `${DEFAULT_PADDING / 2}px`,
     paddingRight: `${DEFAULT_PADDING / 2}px`,
   },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'auto 30px 70px',
-  },
+  grid: { display: 'grid', gridTemplateColumns: 'auto 30px 70px' },
   flex: {
     display: 'flex',
     justifyContent: 'space-between',
     paddingRight: `${DEFAULT_PADDING}px`,
   },
-  add: {
-    marginRight: '6px',
-  },
-  clear: {
-    backgroundColor: `${SECONDARY} !important`,
-  },
+  add: { marginRight: '6px' },
+  clear: { backgroundColor: `${SECONDARY} !important` },
   icon: {
     height: `${PLAYER_HEIGHT * 0.64}px !important`,
     width: `${PLAYER_HEIGHT * 0.64}px !important`,
@@ -103,7 +94,7 @@ const Player = ({
       className={classNames(
         css(
           styles.player,
-          disabled && styles.disabled,
+          disabled && draftModeStatus && styles.disabled,
           draftModeStatus && styles.grid,
           !draftModeStatus && styles.flex,
           getBackground(player.position),
@@ -131,9 +122,7 @@ const Player = ({
       )}
       {disabled && draftModeStatus && (
         <ClickableSurface
-          onClick={() => {
-            untake(player.playerId);
-          }}
+          onClick={() => untake(player.playerId)}
           className={css(styles.shade)}
         />
       )}
@@ -151,4 +140,4 @@ const withRedux = connect<StateProps, DispatchProps, OwnProps, IState>(
     untake: untakePlayer,
   },
 );
-export default withRedux(moize.deep(Player));
+export default withRedux(moize(Player, { isReact: true }));

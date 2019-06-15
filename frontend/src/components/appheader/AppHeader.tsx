@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { Route } from 'react-router-dom';
 import { Popup } from 'semantic-ui-react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
@@ -59,7 +60,7 @@ const AppHeader = () => {
       {!auth.isAuthenticated() && <Button onClick={auth.login} value="Login" />}
       {auth.isAuthenticated() && (
         <>
-          <DraftMode />
+          <Route path="/rank/:id" component={DraftMode} />
           <Popup
             open={open}
             on="click"
