@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 
 import { ReactComponent as Draftr } from '../../svg/draftr.svg';
 import { ReactComponent as Done } from '../../svg/done.svg';

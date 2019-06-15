@@ -1,4 +1,5 @@
 import { dbClient } from '../index';
+import { ValidationError } from 'apollo-server';
 
 export interface RankedPlayer {
   id: number;
@@ -20,7 +21,7 @@ export const insertRankedPlayer = async (
   try {
     result = await dbClient.query(query, values);
   } catch (e) {
-    console.log('ERROR', e);
+    throw new ValidationError('Could not update player');
   }
   return result.rows[0];
 };
@@ -93,7 +94,6 @@ export const updateTierCascade = async (
   originalTierId: number,
   tierId: number,
 ) => {
-  console.log(rankId, playerRank, tierId);
   const query = `UPDATE draftr.ranked_player
 set tier_id = $3
 where draftr.ranked_player.overall_rank >= $2

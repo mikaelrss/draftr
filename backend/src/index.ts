@@ -59,7 +59,7 @@ const init = async () => {
   server.setGraphQLPath('/graphql');
 
   server.listen({ port: PORT }).then((res: any) => {
-    // tslint:disable-next-line
+    // eslint-disable-next-line
     console.log(
       `Now listening on port ${PORT}, at ${server.graphqlPath}, ${res.url}`,
     );

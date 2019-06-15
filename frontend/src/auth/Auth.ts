@@ -20,13 +20,17 @@ export interface IIdTokenPayload {
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
+    // @ts-ignore
     audience: process.env.REACT_APP_AUDIENCE,
     // @ts-ignore
     domain: process.env.REACT_APP_DOMAIN,
     // @ts-ignore
     clientID: process.env.REACT_APP_CLIENT_ID,
+    // @ts-ignore
     redirectUri: process.env.REACT_APP_REDIRECT_URI,
+    // @ts-ignore
     responseType: process.env.REACT_APP_RESPONSE_TYPE,
+    // @ts-ignore
     scope: process.env.REACT_APP_SCOPE,
   });
 
@@ -54,7 +58,6 @@ export default class Auth {
         history.replace('/');
       } else if (err) {
         history.replace('/');
-        // console.log(err);
       }
     });
   }
@@ -91,7 +94,6 @@ export default class Auth {
         this.setSession(authResult);
       } else if (err) {
         this.logout();
-        console.log(err);
       }
     });
   }

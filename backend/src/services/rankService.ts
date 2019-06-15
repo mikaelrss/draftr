@@ -7,7 +7,6 @@ import { IRankedPlayer } from '../api/players';
 import {
   addRank,
   fetchRankById,
-  fetchRankByUserId,
   fetchRankByUuid,
   fetchRanks,
   insertRank,
@@ -20,7 +19,6 @@ import { insertRankedPlayer } from '../repositories/rankedPlayerRepository';
 import { setRankId } from './userPreferenceService';
 import {
   createNewTier,
-  getPersonalTier,
   getTierIdByTierOrder,
   getTiersByRankId,
 } from './tierService';
@@ -73,6 +71,30 @@ export const createDefaultRankings = async (userId: string) => {
     });
   });
   await setRankId(userId, rank.id);
+};
+
+export const getRankById = async (id: number) => {
+  const rank = await fetchRankById(id);
+  return {
+    id: rank.id,
+    uuid: rank.uuid,
+    private: rank.private,
+    name: rank.name,
+    creator: rank.creator,
+    tiers: await getTiersByRankId(rank.id),
+  };
+};
+
+export const getRankByUuid = async (uuid: string) => {
+  const rank = await fetchRankByUuid(uuid);
+  return {
+    id: rank.id,
+    uuid: rank.uuid,
+    private: rank.private,
+    creator: rank.creator,
+    name: rank.name,
+    tiers: await getTiersByRankId(rank.id),
+  };
 };
 
 export const userOwnsRank = async (rankId: number, userId: string) => {
@@ -158,42 +180,6 @@ export interface PersonalRank {
   name: string;
   tiers: PersonalTier[];
 }
-
-export const getRankByUuid = async (uuid: string) => {
-  const rank = await fetchRankByUuid(uuid);
-  return {
-    id: rank.id,
-    uuid: rank.uuid,
-    private: rank.private,
-    creator: rank.creator,
-    name: rank.name,
-    tiers: await getTiersByRankId(rank.id),
-  };
-};
-
-export const getRankById = async (id: number) => {
-  const rank = await fetchRankById(id);
-  return {
-    id: rank.id,
-    uuid: rank.uuid,
-    private: rank.private,
-    name: rank.name,
-    creator: rank.creator,
-    tiers: await getTiersByRankId(rank.id),
-  };
-};
-
-export const getPersonalRank = async (
-  userId: string,
-): Promise<PersonalRank> => {
-  const rank = await fetchRankByUserId(userId);
-  return {
-    id: rank.id,
-    uuid: rank.uuid,
-    name: rank.name,
-    tiers: await getPersonalTier(userId),
-  };
-};
 
 export const createRank = async (name: string, userId: string) => {
   const fantasyRankings = await getFantasyFootballNerdRankings();

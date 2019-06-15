@@ -11,7 +11,6 @@ import {
 } from '../../styles/colors';
 import { DEFAULT_PADDING } from '../../styles/constants';
 import Icon, { IconType } from './Icon';
-import Spinner from './Spinner';
 
 export const BUTTON_HEIGHT = 32;
 

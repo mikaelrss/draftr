@@ -1,11 +1,10 @@
-import groupBy from 'lodash.groupby';
 import { IPlayerModel } from '../data/mongoconnector';
 import { getFantasyFootballNerdRankings } from '../api/rankings';
 import { insertPlayer } from '../repositories/playerRepository';
 
 export const createPlayerList = async () => {
   const allPlayers = await getFantasyFootballNerdRankings(true);
-  const byPosition = groupBy(allPlayers, 'position');
+  // const byPosition = groupBy(allPlayers, 'position');
   // const mostImportant = [
   //   ...byPosition.QB.slice(0, 32),
   //   ...byPosition.RB.slice(0, 70),
