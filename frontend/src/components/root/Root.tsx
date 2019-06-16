@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { ToastContainer } from 'react-toastify';
@@ -22,18 +22,24 @@ const styles = StyleSheet.create({
 
 export const history = createBrowserHistory();
 
-const Root = () => (
-  <div className={css(styles.root)}>
-    <AppHeader />
-    <ToastContainer
-      position="bottom-center"
-      hideProgressBar
-      toastClassName={css(styles.toastError)}
-      autoClose={3000}
-    />
-    <Route path="/" component={Main} />
-    <Route path="/callback" component={LoginCallback} />
-  </div>
-);
+const Root = () => {
+  useEffect(() => {
+    // @ts-ignore
+    window.ga('create', 'UA-142151658-1', 'auto');
+  });
+  return (
+    <div className={css(styles.root)}>
+      <AppHeader />
+      <ToastContainer
+        position="bottom-center"
+        hideProgressBar
+        toastClassName={css(styles.toastError)}
+        autoClose={3000}
+      />
+      <Route path="/" component={Main} />
+      <Route path="/callback" component={LoginCallback} />
+    </div>
+  );
+};
 
 export default Root;

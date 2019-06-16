@@ -20,6 +20,11 @@ history.listen(location => {
   window.ga('send', 'pageview');
 });
 
+export const sendGaEvent = (category: string, event: string, label: string) => {
+  // @ts-ignore
+  window.ga('send', 'event', category, event, label);
+};
+
 const App = () => (
   <Provider store={store}>
     <PersistGate persistor={persistor}>

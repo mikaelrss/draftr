@@ -15,6 +15,7 @@ import {
 import Input from '../shared/Input';
 import Paper from '../shared/Paper';
 import AuthContext from '../../auth/AuthContext';
+import { sendGaEvent } from '../app/App';
 
 const styles = StyleSheet.create({
   copyRank: {
@@ -69,6 +70,7 @@ const CopyRank = ({ rank }: Props) => {
                 injectErrorAsProps
                 submit={(values: FormValues) => {
                   if (!values.name) throw Error('Validation failed');
+                  sendGaEvent('Rank', 'Copy', rank.uuid);
                   copyRank({
                     variables: {
                       name: values.name,
