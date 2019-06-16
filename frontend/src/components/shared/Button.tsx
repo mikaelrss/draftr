@@ -77,7 +77,10 @@ export const IconButton = ({
   <button
     onClick={onClick}
     disabled={disabled}
-    className={classNames(css(styles.iconButton), className)}
+    className={classNames(
+      css(styles.iconButton, disabled && styles.disabled),
+      className,
+    )}
   >
     {loading && <CircleSpinner size={10} />}
     {!loading && <Icon icon={icon} className={iconClass} />}

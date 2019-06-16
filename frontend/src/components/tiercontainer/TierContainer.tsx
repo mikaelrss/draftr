@@ -58,7 +58,7 @@ const TierContainer = ({
       <Droppable droppableId={`tier#${tier.tierId}`}>
         {(provided, snapshot) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
-            <TierHeader tier={tier} disabled={dragDisabled} />
+            <TierHeader tier={tier} disabled={tier.players.length > 0} />
             <Paper
               className={classNames(
                 css(
