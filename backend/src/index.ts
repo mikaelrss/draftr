@@ -30,11 +30,12 @@ const init = async () => {
       credentials: true,
     },
     introspection: true,
-    playground: true,
+    playground: process.env.NODE_ENV === 'development',
     context: async context => {
       const authorization = context.req.headers.authorization;
       if (!authorization) return {};
       const authHeader = authorization.replace('Bearer ', '');
+      if (authHeader === 'null') return {};
       let user: string;
       try {
         user = await new Promise((resolve, reject) => {

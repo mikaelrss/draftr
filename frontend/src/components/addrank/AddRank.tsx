@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSpring, animated, config } from 'react-spring';
 import { Mutation } from 'react-apollo';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import Form from 'react-valid8';
@@ -19,9 +20,8 @@ import { AllRanks } from '../ranklist/__generated__/AllRanks';
 
 const styles = StyleSheet.create({
   addRank: {
-    position: 'absolute',
-    right: DEFAULT_PADDING,
-    bottom: DEFAULT_PADDING,
+    position: 'fixed',
+    right: `${DEFAULT_PADDING}px`,
   },
   form: {
     transition: 'all ease-in-out 200ms',
@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: `${DEFAULT_PADDING / 4}px`,
     top: `${DEFAULT_PADDING / 4}px`,
-    background: 'transparent',
-    fill: SECONDARY_TEXT,
+    backgroundColor: 'transparent !important',
+    fill: `${SECONDARY_TEXT} !important`,
   },
 });
 
@@ -52,27 +52,37 @@ const validate = (values: FormValues) => {
 const AddRank = () => {
   const [formVisible, setFormVisible] = useState(false);
 
+  const formStyle = useSpring({
+    bottom: formVisible ? `${DEFAULT_PADDING}px` : '-400px',
+    config: config.stiff,
+  });
+
+  const buttonStyle = useSpring({
+    bottom: !formVisible ? `${DEFAULT_PADDING}px` : '-400px',
+    config: config.stiff,
+  });
+
   return (
     <>
-      {formVisible && (
-        <Mutation<AddRankMutation, AddRankMutationVariables>
-          mutation={ADD_RANK}
-          update={(cache, { data }) => {
-            const query = cache.readQuery<AllRanks>({
-              query: ALL_RANKS_QUERY,
-            });
-            if (!query || !query.ranks || !data || !data.createRank) return;
-            const { ranks } = query;
-            cache.writeQuery<AllRanks>({
-              query: ALL_RANKS_QUERY,
-              data: {
-                ranks: [...ranks, data.createRank],
-              },
-            });
-          }}
-        >
-          {(addRank, { loading }) => (
-            <Paper className={css(styles.addRank)}>
+      <Mutation<AddRankMutation, AddRankMutationVariables>
+        mutation={ADD_RANK}
+        update={(cache, { data }) => {
+          const query = cache.readQuery<AllRanks>({
+            query: ALL_RANKS_QUERY,
+          });
+          if (!query || !query.ranks || !data || !data.createRank) return;
+          const { ranks } = query;
+          cache.writeQuery<AllRanks>({
+            query: ALL_RANKS_QUERY,
+            data: {
+              ranks: [...ranks, data.createRank],
+            },
+          });
+        }}
+      >
+        {(addRank, { loading }) => (
+          <animated.div style={formStyle} className={css(styles.addRank)}>
+            <Paper>
               <Form
                 formClassName={css(styles.form)}
                 validate={validate}
@@ -85,7 +95,11 @@ const AddRank = () => {
                 }}
               >
                 <Input name="name" id="tier_name" label="Name" />
-                <PrimaryButton type="submit" value="Create Rank" loading={loading} />
+                <PrimaryButton
+                  type="submit"
+                  value="Create Rank"
+                  loading={loading}
+                />
               </Form>
               <IconButton
                 className={css(styles.close)}
@@ -93,16 +107,12 @@ const AddRank = () => {
                 onClick={() => setFormVisible(false)}
               />
             </Paper>
-          )}
-        </Mutation>
-      )}
-      {!formVisible && (
-        <IconButton
-          icon={IconType.add}
-          className={css(styles.addRank)}
-          onClick={() => setFormVisible(true)}
-        />
-      )}
+          </animated.div>
+        )}
+      </Mutation>
+      <animated.div style={buttonStyle} className={css(styles.addRank)}>
+        <IconButton icon={IconType.add} onClick={() => setFormVisible(true)} />
+      </animated.div>
     </>
   );
 };
