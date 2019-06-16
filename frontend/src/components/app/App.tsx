@@ -12,7 +12,9 @@ import Root, { history } from '../root/Root';
 import createStore from '../../redux/store';
 import { auth, AuthProvider } from '../../auth/AuthContext';
 
-ReactGA.initialize('UA-142151658-1');
+ReactGA.initialize('UA-142151658-1', {
+  gaOptions: { siteSpeedSampleRate: 100 },
+});
 
 const { store, persistor } = createStore();
 
