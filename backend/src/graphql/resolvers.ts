@@ -1,3 +1,4 @@
+import { ValidationError } from 'apollo-server';
 import { IPlayer } from '../api/players';
 import {
   changePlayer,
@@ -63,6 +64,8 @@ export const resolvers = {
       return await getRankById(rank.id);
     },
     copyRank: async (root: any, args: CopyRankArgs, context: Context) => {
+      if (!context.user)
+        throw new ValidationError('You need to log in to copy this rank');
       return await copyRank(args.rankUuid, args.name, context.user);
     },
     createPlayerList: async () => {
