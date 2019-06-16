@@ -23,10 +23,6 @@ const styles = StyleSheet.create({
 export const history = createBrowserHistory();
 
 const Root = () => {
-  useEffect(() => {
-    // @ts-ignore
-    window.ga('create', 'UA-142151658-1', 'auto');
-  });
   return (
     <div className={css(styles.root)}>
       <AppHeader />
