@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 });
 
 const Rating = ({ rating }: { rating: number }) => {
-  const percentCovered = (1 - rating / 5) * 100;
+  const percentCovered = Math.round((1 - rating / 5) * 10000) / 100;
   return (
     <div className={css(styles.rateContainer)}>
       <Icon icon={IconType.star} className={css(styles.star)} />
