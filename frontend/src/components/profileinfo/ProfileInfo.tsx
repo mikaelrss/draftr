@@ -4,7 +4,7 @@ import { StyleSheet, css } from 'aphrodite';
 import AuthContext from '../../auth/AuthContext';
 import { IIdTokenPayload } from '../../auth/Auth';
 import { DEFAULT_PADDING, MOBILE_BREAKPOINT } from '../../styles/constants';
-import { Button } from '../shared/Button';
+import { PrimaryButton } from '../shared/Button';
 
 const IMAGE_SIZE = 40;
 const MOBILE_IMAGE_SIZE = 30;
@@ -43,7 +43,7 @@ const ProfileInfo = () => {
     <div className={css(styles.info)}>
       <img src={idTokenPayload.picture} className={css(styles.picture)} />
       <div className={css(styles.name)}>{idTokenPayload.given_name}</div>
-      <Button
+      <PrimaryButton
         onClick={auth.logout}
         className={css(styles.logout)}
         value="Logout"

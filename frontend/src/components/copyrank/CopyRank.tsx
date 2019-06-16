@@ -3,7 +3,7 @@ import Form from 'react-valid8';
 import { Mutation } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 import Typography, { FontSize } from '../shared/Typography';
-import { Button } from '../shared/Button';
+import { PrimaryButton } from '../shared/Button';
 
 import { css, StyleSheet } from 'aphrodite/no-important';
 import { COPY_RANK } from './graphql';
@@ -75,7 +75,7 @@ const CopyRank = ({ rank }: Props) => {
                 }}
               >
                 <Input name="name" id="tier_name" label="Name" />
-                <Button
+                <PrimaryButton
                   type="submit"
                   value="Create Rank"
                   loading={loading}

@@ -4,7 +4,7 @@ import { css, StyleSheet } from 'aphrodite/no-important';
 import Form from 'react-valid8';
 
 import { IconType } from '../shared/Icon';
-import { Button, IconButton } from '../shared/Button';
+import { PrimaryButton, IconButton } from '../shared/Button';
 import { DEFAULT_PADDING } from '../../styles/constants';
 import Paper from '../shared/Paper';
 import Input from '../shared/Input';
@@ -85,7 +85,7 @@ const AddRank = () => {
                 }}
               >
                 <Input name="name" id="tier_name" label="Name" />
-                <Button type="submit" value="Create Rank" loading={loading} />
+                <PrimaryButton type="submit" value="Create Rank" loading={loading} />
               </Form>
               <IconButton
                 className={css(styles.close)}
