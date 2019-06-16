@@ -58,10 +58,10 @@ const AppHeader = () => {
         <Icon icon={IconType.draftr} className={css(styles.icon)} />
         <div>Draftr</div>
       </Link>
+      <Route path="/rank/:id" component={DraftMode} />
       {!auth.isAuthenticated() && (
         <PrimaryButton onClick={auth.login} value="Login" />
       )}
-      <Route path="/rank/:id" component={DraftMode} />
       {auth.isAuthenticated() && (
         <Popup
           open={open}
