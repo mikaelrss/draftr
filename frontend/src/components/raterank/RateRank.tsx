@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 
 import { css, StyleSheet } from 'aphrodite/no-important';
@@ -14,6 +14,7 @@ import {
   AddRatingMutation,
   AddRatingMutationVariables,
 } from './__generated__/AddRatingMutation';
+import AuthContext from '../../auth/AuthContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -56,24 +57,19 @@ interface RadioProps {
   onChange: any;
 }
 
-const Radio = ({ value, onChange }: RadioProps) => {
-  return (
-    <>
-      <label className={css(styles.label)}>
-        <Icon
-          icon={IconType.star}
-          className={css(styles.button, styles.star)}
-        />
-        <input
-          type="radio"
-          value={value}
-          onChange={onChange}
-          className={css(styles.input)}
-        />
-      </label>
-    </>
-  );
-};
+const Radio = ({ value, onChange }: RadioProps) => (
+  <>
+    <label className={css(styles.label)}>
+      <Icon icon={IconType.star} className={css(styles.button, styles.star)} />
+      <input
+        type="radio"
+        value={value}
+        onChange={onChange}
+        className={css(styles.input)}
+      />
+    </label>
+  </>
+);
 
 const hasRatedCurrentRank = (uuid: string) => {
   const value = localStorage.getItem(`rate_${uuid}`);
@@ -82,6 +78,8 @@ const hasRatedCurrentRank = (uuid: string) => {
 };
 
 const RateRank = ({ rank }: Props) => {
+  const auth = useContext(AuthContext);
+  if (!auth.isAuthenticated()) return null;
   const [voted, setVoted] = useState(hasRatedCurrentRank(rank.uuid));
   const addRating = useMutation<AddRatingMutation, AddRatingMutationVariables>(
     ADD_RATING_MUTATION,

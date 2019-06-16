@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Form from 'react-valid8';
 import { Mutation } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
@@ -14,6 +14,7 @@ import {
 } from './__generated__/CopyRankMutation';
 import Input from '../shared/Input';
 import Paper from '../shared/Paper';
+import AuthContext from '../../auth/AuthContext';
 
 const styles = StyleSheet.create({
   copyRank: {
@@ -44,6 +45,8 @@ interface Props {
 }
 
 const CopyRank = ({ rank }: Props) => {
+  const auth = useContext(AuthContext);
+  const authenticated = auth.isAuthenticated();
   return (
     <Mutation<CopyRankMutation, CopyRankMutationVariables> mutation={COPY_RANK}>
       {(copyRank, { loading, data }) => {
@@ -56,8 +59,9 @@ const CopyRank = ({ rank }: Props) => {
             <Typography size={FontSize.large}>Copy this rank!</Typography>
             <Paper className={css(styles.copyRank)}>
               <Typography size={FontSize.small}>
-                Enter a name to create a new copy of this rank which you can
-                freely edit as you wish!
+                {!authenticated
+                  ? 'Login to copy this rank, and create your own!'
+                  : 'Enter a name to create a new copy of this rank which you can freely edit as you wish!'}
               </Typography>
               <Form
                 formClassName={css(styles.form)}
@@ -78,7 +82,7 @@ const CopyRank = ({ rank }: Props) => {
                   type="submit"
                   value="Create Rank"
                   loading={loading}
-                  disabled={loading}
+                  disabled={loading || !authenticated}
                 />
               </Form>
             </Paper>

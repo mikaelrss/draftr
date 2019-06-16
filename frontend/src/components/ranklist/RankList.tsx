@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import { ALL_RANKS_QUERY } from './graphql';
@@ -10,6 +10,7 @@ import { StyleSheet, css } from 'aphrodite/no-important';
 import Container from '../shared/Container';
 import AddRank from '../addrank/AddRank';
 import { DEFAULT_PADDING } from '../../styles/constants';
+import AuthContext from '../../auth/AuthContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
 });
 
 const RankList = ({ match }: RouteComponentProps) => {
+  const auth = useContext(AuthContext);
   return (
     <Container>
       <Query<AllRanks, {}> query={ALL_RANKS_QUERY}>
@@ -58,7 +60,7 @@ const RankList = ({ match }: RouteComponentProps) => {
           );
         }}
       </Query>
-      <AddRank />
+      {auth.isAuthenticated() && <AddRank />}
     </Container>
   );
 };

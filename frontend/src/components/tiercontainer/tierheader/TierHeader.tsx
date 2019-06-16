@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import { IconButton } from '../../shared/Button';
@@ -22,6 +22,7 @@ import {
   RenameTierMutationVariables,
 } from './__generated__/RenameTierMutation';
 import EditableField from '../../shared/EditableField';
+import AuthContext from '../../../auth/AuthContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,6 +39,7 @@ type Props = {
 
 const TierHeader = ({ tier, match, disabled }: Props) => {
   const { id: rankId } = match.params;
+  const auth = useContext(AuthContext);
   const [tierName, setTierName] = useState(tier.name);
 
   return (
@@ -93,12 +95,14 @@ const TierHeader = ({ tier, match, disabled }: Props) => {
                 }
               />
               {data.loading && <Spinner />}
-              <IconButton
-                icon={IconType.delete}
-                onClick={deleteTier}
-                disabled={disabled}
-                loading={loading}
-              />
+              {auth.isAuthenticated() && (
+                <IconButton
+                  icon={IconType.delete}
+                  onClick={deleteTier}
+                  disabled={disabled}
+                  loading={loading}
+                />
+              )}
             </div>
           )}
         </Mutation>
