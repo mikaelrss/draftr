@@ -58,24 +58,24 @@ const AppHeader = () => {
         <Icon icon={IconType.draftr} className={css(styles.icon)} />
         <div>Draftr</div>
       </Link>
-      {!auth.isAuthenticated() && <PrimaryButton onClick={auth.login} value="Login" />}
+      {!auth.isAuthenticated() && (
+        <PrimaryButton onClick={auth.login} value="Login" />
+      )}
+      <Route path="/rank/:id" component={DraftMode} />
       {auth.isAuthenticated() && (
-        <>
-          <Route path="/rank/:id" component={DraftMode} />
-          <Popup
-            open={open}
-            on="click"
-            content={<ProfileMenu />}
-            trigger={
-              <ClickableSurface className={css(styles.click)}>
-                <ProfileInfo />
-              </ClickableSurface>
-            }
-            onOpen={() => setOpen(true)}
-            onClose={() => setOpen(false)}
-            position="bottom center"
-          />
-        </>
+        <Popup
+          open={open}
+          on="click"
+          content={<ProfileMenu />}
+          trigger={
+            <ClickableSurface className={css(styles.click)}>
+              <ProfileInfo />
+            </ClickableSurface>
+          }
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          position="bottom center"
+        />
       )}
     </header>
   );
