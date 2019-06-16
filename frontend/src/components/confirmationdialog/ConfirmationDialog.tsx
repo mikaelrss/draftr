@@ -5,6 +5,7 @@ import { PrimaryButton, SecondaryButton } from '../shared/Button';
 
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { DEFAULT_PADDING } from '../../styles/constants';
+import { loadConfigurationFromPath } from 'tslint/lib/configuration';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,9 +23,10 @@ interface Props {
   onConfirm?: () => void;
   onCancel?: () => void;
   text?: string;
+  loading?: boolean;
 }
 
-const ConfirmationDialog = ({ onCancel, onConfirm, text }: Props) => (
+const ConfirmationDialog = ({ onCancel, onConfirm, text, loading }: Props) => (
   <Paper className={css(styles.container)}>
     {!!text && (
       <Typography size={FontSize.small} style={FontStyle.secondary}>
@@ -33,7 +35,7 @@ const ConfirmationDialog = ({ onCancel, onConfirm, text }: Props) => (
     )}
     <div className={css(styles.buttonContainer)}>
       <SecondaryButton value="Cancel" onClick={onCancel} />
-      <PrimaryButton value="Delete" onClick={onConfirm} />
+      <PrimaryButton value="Delete" onClick={onConfirm} loading={loading} />
     </div>
   </Paper>
 );

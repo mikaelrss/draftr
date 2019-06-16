@@ -151,7 +151,7 @@ const Rankings = ({ changeRankMutation, match }: Props) => {
           ))}
           {userOwnsRank && <AddTier />}
           <CopyRank rank={data.rank} />
-          {userOwnsRank && <DeleteRank />}
+          {userOwnsRank && <DeleteRank uuid={data.rank.uuid} />}
         </DragDropContext>
         {!userOwnsRank && <RateRank rank={data.rank} />}
       </div>

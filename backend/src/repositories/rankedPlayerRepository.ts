@@ -102,3 +102,9 @@ where draftr.ranked_player.overall_rank >= $2
   const values = [rankId, playerRank, tierId, originalTierId];
   await dbClient.query(query, values);
 };
+
+export const removeRankedPlayersByRankId = async (rankId: number) => {
+  const query = `DELETE from draftr.ranked_player where rank_id = $1`;
+  const values = [rankId];
+  await dbClient.query(query, values);
+};

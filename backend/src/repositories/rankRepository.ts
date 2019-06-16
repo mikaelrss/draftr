@@ -96,3 +96,9 @@ export const setRankName = async (uuid: string, name: string) => {
   const values = [name, uuid];
   await dbClient.query(query, values);
 };
+
+export const removeRankById = async (id: number) => {
+  const query = `DELETE from draftr.rank where id = $1`;
+  const values = [id];
+  await dbClient.query(query, values);
+};
