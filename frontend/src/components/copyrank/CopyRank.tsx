@@ -70,7 +70,7 @@ const CopyRank = ({ rank }: Props) => {
                 injectErrorAsProps
                 submit={(values: FormValues) => {
                   if (!values.name) throw Error('Validation failed');
-                  sendGaEvent('Rank', 'Copy', rank.uuid);
+                  sendGaEvent('Rank1', 'Copy1', rank.uuid);
                   copyRank({
                     variables: {
                       name: values.name,

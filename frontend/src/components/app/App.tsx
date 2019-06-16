@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
+import ReactGA from 'react-ga';
 
 import './app.scss';
 import { client } from '../../apollo/client';
@@ -11,18 +12,24 @@ import Root, { history } from '../root/Root';
 import createStore from '../../redux/store';
 import { auth, AuthProvider } from '../../auth/AuthContext';
 
+ReactGA.initialize('UA-142151658-1');
+
 const { store, persistor } = createStore();
 
 history.listen(location => {
-  // @ts-ignore
-  window.ga('set', 'page', location.pathname + location.search);
-  // @ts-ignore
-  window.ga('send', 'pageview');
+  ReactGA.pageview(location.pathname + location.search);
 });
 
-export const sendGaEvent = (category: string, event: string, label: string) => {
-  // @ts-ignore
-  window.ga('send', 'event', category, event, label);
+export const sendGaEvent = (
+  category: string,
+  action: string,
+  label: string,
+) => {
+  ReactGA.event({
+    category,
+    action,
+    label,
+  });
 };
 
 const App = () => (

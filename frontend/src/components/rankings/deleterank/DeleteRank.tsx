@@ -16,6 +16,7 @@ import {
   DeleteRankMutationVariables,
 } from './__generated__/DeleteRankMutation';
 import { ALL_RANKS_QUERY } from '../../ranklist/graphql';
+import { sendGaEvent } from '../../app/App';
 
 const styles = StyleSheet.create({
   paper: {
@@ -70,6 +71,7 @@ const DeleteRank = ({ uuid, history }: Props) => {
                 text="Deleting this rank cannot be undone"
                 onCancel={() => setWarningOpen(false)}
                 onConfirm={() => {
+                  sendGaEvent('Rank', 'Delete', uuid);
                   deleteRank()
                     .then(() => history.push('/'))
                     .catch(() => toast.error('Could not delete rank'));

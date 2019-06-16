@@ -23,6 +23,7 @@ import {
 } from './__generated__/RenameTierMutation';
 import EditableField from '../../shared/EditableField';
 import AuthContext from '../../../auth/AuthContext';
+import { sendGaEvent } from '../../app/App';
 
 const styles = StyleSheet.create({
   container: {
@@ -86,6 +87,7 @@ const TierHeader = ({ tier, match, disabled, userOwnsRank }: Props) => {
               <EditableField
                 disabled={!userOwnsRank}
                 onBlur={() => {
+                  sendGaEvent('Tier', 'Rename', tier.uuid);
                   renameTier();
                 }}
                 id={`TierName${tier.uuid}`}
@@ -99,7 +101,10 @@ const TierHeader = ({ tier, match, disabled, userOwnsRank }: Props) => {
               {auth.isAuthenticated() && (
                 <IconButton
                   icon={IconType.delete}
-                  onClick={deleteTier}
+                  onClick={() => {
+                    sendGaEvent('Tier', 'Delete', match.params.id);
+                    deleteTier();
+                  }}
                   disabled={disabled}
                   loading={loading}
                 />

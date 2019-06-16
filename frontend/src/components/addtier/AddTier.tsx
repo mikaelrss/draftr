@@ -17,6 +17,7 @@ import {
   rankings,
   rankingsVariables,
 } from '../rankings/__generated__/rankings';
+import { sendGaEvent } from '../app/App';
 
 export const ADD_TIER_DROPPABLE_ID = 'addNewTier';
 
@@ -79,6 +80,7 @@ const AddTier = ({ match }: RouteComponentProps<{ id: string }>) => {
             className={css(styles.container)}
             onClick={() => {
               setLoading(true);
+              sendGaEvent('Tier', 'Add', match.params.id);
               createTier({
                 variables: {
                   rankUuid: match.params.id,
