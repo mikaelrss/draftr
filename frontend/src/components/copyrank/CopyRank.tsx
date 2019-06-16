@@ -17,7 +17,6 @@ import Paper from '../shared/Paper';
 
 const styles = StyleSheet.create({
   copyRank: {
-    // height: '160px',
     opacity: 0.3,
     transition: 'all ease-in-out 200ms',
     ':hover': { opacity: 1 },
