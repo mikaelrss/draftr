@@ -41,6 +41,7 @@ interface IOwnProps {
   tier: rankings_rank_tiers;
   className?: string;
   dragDisabled: boolean;
+  userOwnsRank?: boolean;
 }
 
 type Props = IOwnProps & IStateProps;
@@ -50,6 +51,7 @@ const TierContainer = ({
   passed,
   className,
   dragDisabled,
+  userOwnsRank,
   draftModeStatus,
 }: Props) => {
   const isDisabled = (id: number) => passed.includes(id) && draftModeStatus;
@@ -58,7 +60,11 @@ const TierContainer = ({
       <Droppable droppableId={`tier#${tier.tierId}`}>
         {(provided, snapshot) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
-            <TierHeader tier={tier} disabled={tier.players.length > 0} />
+            <TierHeader
+              tier={tier}
+              disabled={tier.players.length > 0}
+              userOwnsRank={userOwnsRank}
+            />
             <Paper
               className={classNames(
                 css(

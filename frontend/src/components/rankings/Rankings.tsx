@@ -147,6 +147,7 @@ const Rankings = ({ changeRankMutation, match }: Props) => {
               tier={tier}
               key={`TIER_${tier.tierId}`}
               dragDisabled={!userOwnsRank}
+              userOwnsRank={!!userOwnsRank}
             />
           ))}
           {userOwnsRank && <AddTier />}

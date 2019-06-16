@@ -35,9 +35,10 @@ const styles = StyleSheet.create({
 type Props = {
   tier: rankings_rank_tiers;
   disabled?: boolean;
+  userOwnsRank?: boolean;
 } & RouteComponentProps<{ id: string }>;
 
-const TierHeader = ({ tier, match, disabled }: Props) => {
+const TierHeader = ({ tier, match, disabled, userOwnsRank }: Props) => {
   const { id: rankId } = match.params;
   const auth = useContext(AuthContext);
   const [tierName, setTierName] = useState(tier.name);
@@ -83,7 +84,7 @@ const TierHeader = ({ tier, match, disabled }: Props) => {
           {(renameTier, data) => (
             <div className={css(styles.container)}>
               <EditableField
-                disabled={disabled}
+                disabled={!userOwnsRank}
                 onBlur={() => {
                   renameTier();
                 }}
