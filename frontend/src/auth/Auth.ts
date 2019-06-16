@@ -51,6 +51,8 @@ export default class Auth {
 
   // prettier-ignore
   handleAuthentication = () => {
+    // @ts-ignore
+    window.ga('send', 'handleAuthentication');
     this.auth0.parseHash((err: any, authResult: any) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
@@ -100,6 +102,8 @@ export default class Auth {
 
   // prettier-ignore
   login = () => {
+    // @ts-ignore
+    window.ga('send', 'login attempt');
     this.auth0.authorize();
   }
 

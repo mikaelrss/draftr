@@ -13,6 +13,13 @@ import { auth, AuthProvider } from '../../auth/AuthContext';
 
 const { store, persistor } = createStore();
 
+history.listen(location => {
+  // @ts-ignore
+  window.ga('set', 'page', location.pathname + location.search);
+  // @ts-ignore
+  window.ga('send', 'pageview');
+});
+
 const App = () => (
   <Provider store={store}>
     <PersistGate persistor={persistor}>
