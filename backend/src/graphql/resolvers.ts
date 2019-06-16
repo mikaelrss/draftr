@@ -1,8 +1,10 @@
 import { IPlayer } from '../api/players';
 import {
-  changePlayer, changeRankName,
+  changePlayer,
+  changeRankName,
   copyRank,
   createRank,
+  deleteRank,
   getRankById,
   getRankByUuid,
   getRanks,
@@ -66,6 +68,10 @@ export const resolvers = {
     createPlayerList: async () => {
       await createPlayerList();
       return 'Players inserted from Fantasy Football Nerds';
+    },
+    deleteRank: async (_: any, { id }: { id: string }, context: Context) => {
+      await verifyUserCanEditRankByUuid(id, context.user);
+      await deleteRank(id);
     },
     changeRank: async (root: any, args: IChangeRankArgs, context: Context) => {
       await verifyUserCanEditRankByUuid(args.rankUuid, context.user);

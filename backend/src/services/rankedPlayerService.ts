@@ -2,6 +2,7 @@ import { fetchPlayerRank } from '../repositories/userPreferenceRepository';
 import {
   downgradePosition,
   fetchPlayersByTierId,
+  removeRankedPlayersByRankId,
   updateOverallPosition,
   updateTier,
   updateTierCascade,
@@ -41,4 +42,8 @@ export const updatePlayerTierCascade = async (
   destinationTier: number,
 ) => {
   await updateTierCascade(rankId, playerRank, originalTier, destinationTier);
+};
+
+export const deleteRankedPlayersByRankId = async (rankId: number) => {
+  await removeRankedPlayersByRankId(rankId);
 };

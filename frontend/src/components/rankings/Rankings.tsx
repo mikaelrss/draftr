@@ -25,6 +25,8 @@ import RateRank from '../raterank/RateRank';
 import CopyRank from '../copyrank/CopyRank';
 import RankHeader from './rankheader/RankHeader';
 import { generateOptimisticRankChange } from './utils';
+import { PrimaryButton } from '../shared/Button';
+import DeleteRank from './deleterank/DeleteRank';
 
 const styles = StyleSheet.create({
   container: {
@@ -149,6 +151,7 @@ const Rankings = ({ changeRankMutation, match }: Props) => {
           ))}
           {userOwnsRank && <AddTier />}
           <CopyRank rank={data.rank} />
+          {userOwnsRank && <DeleteRank uuid={data.rank.uuid} />}
         </DragDropContext>
         {!userOwnsRank && <RateRank rank={data.rank} />}
       </div>

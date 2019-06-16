@@ -3,7 +3,7 @@ import Form from 'react-valid8';
 import { Mutation } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 import Typography, { FontSize } from '../shared/Typography';
-import { Button } from '../shared/Button';
+import { PrimaryButton } from '../shared/Button';
 
 import { css, StyleSheet } from 'aphrodite/no-important';
 import { COPY_RANK } from './graphql';
@@ -17,16 +17,15 @@ import Paper from '../shared/Paper';
 
 const styles = StyleSheet.create({
   copyRank: {
-    height: '160px',
+    opacity: 0.3,
+    transition: 'all ease-in-out 200ms',
+    ':hover': { opacity: 1 },
+    ':focus-within': { opacity: 1 },
   },
   form: {
-    transition: 'all ease-in-out 200ms',
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    opacity: 0.3,
-    ':hover': { opacity: 1 },
-    ':focus-within': { opacity: 1 },
   },
 });
 
@@ -56,6 +55,10 @@ const CopyRank = ({ rank }: Props) => {
           <div>
             <Typography size={FontSize.large}>Copy this rank!</Typography>
             <Paper className={css(styles.copyRank)}>
+              <Typography size={FontSize.small}>
+                Enter a name to create a new copy of this rank which you can
+                freely edit as you wish!
+              </Typography>
               <Form
                 formClassName={css(styles.form)}
                 validate={validate}
@@ -71,7 +74,7 @@ const CopyRank = ({ rank }: Props) => {
                 }}
               >
                 <Input name="name" id="tier_name" label="Name" />
-                <Button
+                <PrimaryButton
                   type="submit"
                   value="Create Rank"
                   loading={loading}

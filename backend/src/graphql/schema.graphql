@@ -19,6 +19,7 @@ type Mutation {
   ): Rank
   createTier(id: String!): Tier!
   deleteTier(id: String!): Tier!
+  deleteRank(id: String!): String
   setRankPrivate(uuid: String!, status: Boolean!): Rank
   #  createTierAndMovePlayers(playerId: String!, originTier: Int!): [Tier!]!
 }

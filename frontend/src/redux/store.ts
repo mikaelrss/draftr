@@ -4,7 +4,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 
-import team, { ITeamState } from './team';
+import team, { ITeamState } from '../components/team/teamReducer';
 import draftModeReducer, {
   IDraftState,
 } from '../components/appheader/headersettings/draftModeReducer';

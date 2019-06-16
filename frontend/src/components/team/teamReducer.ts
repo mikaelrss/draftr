@@ -5,8 +5,8 @@ import {
   REMOVE_PLAYER,
   SELECT_PLAYER,
   UNTAKE_PLAYER,
-} from '../components/team/TeamActions';
-import { rankings_rank_tiers_players } from '../components/rankings/__generated__/rankings';
+} from './TeamActions';
+import { rankings_rank_tiers_players } from '../rankings/__generated__/rankings';
 
 export interface ITeamState {
   selected: rankings_rank_tiers_players[];

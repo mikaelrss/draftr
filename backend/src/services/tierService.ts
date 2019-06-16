@@ -10,7 +10,7 @@ import {
   fetchTierByTierOrder,
   fetchTierByUuid,
   insertTier,
-  removeTierByUuid,
+  removeTierByUuid, removeTiersByRankId,
   TierEntity,
   updateTierName,
   updateTierOrder,
@@ -119,4 +119,8 @@ export const verifyUserCanEditTier = async (tierUuid: string, user: string) => {
   if (!canEdit) {
     throw new ForbiddenError("You don't own this Tier");
   }
+};
+
+export const deleteTiersByRankId = async (rankId: number) => {
+  await removeTiersByRankId(rankId);
 };

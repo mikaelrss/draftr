@@ -5,7 +5,7 @@ import { css, StyleSheet } from 'aphrodite/no-important';
 
 import { PRIMARY, PRIMARY_TEXT } from '../../styles/colors';
 import { DEFAULT_PADDING, MOBILE_BREAKPOINT } from '../../styles/constants';
-import { Button, ClickableSurface } from '../shared/Button';
+import { PrimaryButton, ClickableSurface } from '../shared/Button';
 import AuthContext from '../../auth/AuthContext';
 import ProfileInfo from '../profileinfo/ProfileInfo';
 import Icon, { IconType } from '../shared/Icon';
@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     color: PRIMARY_TEXT,
     justifyContent: 'space-between',
     [MOBILE_BREAKPOINT]: {
-      fontSize: '0.7em',
+      fontSize: '0.5em',
+      padding: `0 ${DEFAULT_PADDING / 4}px`,
     },
   },
   icon: {
@@ -57,7 +58,7 @@ const AppHeader = () => {
         <Icon icon={IconType.draftr} className={css(styles.icon)} />
         <div>Draftr</div>
       </Link>
-      {!auth.isAuthenticated() && <Button onClick={auth.login} value="Login" />}
+      {!auth.isAuthenticated() && <PrimaryButton onClick={auth.login} value="Login" />}
       {auth.isAuthenticated() && (
         <>
           <Route path="/rank/:id" component={DraftMode} />

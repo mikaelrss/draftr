@@ -24,6 +24,10 @@ export const SECONDARY = CHERRY;
 export const SECONDARY_HOVER = CHERRY_DARK;
 export const SECONDARY_TEXT = 'black';
 
+export const PRIMARY_BUTTON_BG_COLOR = CHERRY;
+export const PRIMARY_BUTTON_BG_HOVER = CHERRY_DARK;
+export const SECONDARY_BUTTON_HOVER = 'rgba(33,150,243,0.25)';
+
 export const HIGHLIGHT_COLOR = ORANGE_SODA_OPACITY;
 export const ERROR_COLOR = CHERRY;
 export const RATE_COLOR = FLAX;

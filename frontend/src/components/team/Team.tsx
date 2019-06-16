@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
       },
     },
     [MOBILE_BREAKPOINT]: {
-      gridTemplateColumns: 'repeat(auto-fill, 120px)',
+      gridTemplateColumns: 'repeat(auto-fill, 114px)',
       padding: `${DEFAULT_PADDING / 2}px 0 !important`,
     },
   },

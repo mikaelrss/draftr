@@ -5,16 +5,13 @@ import { IState } from '../../../redux/store';
 import { toggleActivationStatus } from './draftModeActions';
 import Typography, { FontSize } from '../../shared/Typography';
 import { StyleSheet, css } from 'aphrodite/no-important';
-import { DEFAULT_PADDING } from '../../../styles/constants';
 
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  label: {
-    marginRight: `${DEFAULT_PADDING}px`,
   },
 });
 
@@ -31,9 +28,7 @@ type Props = DispatchProps & StateProps;
 const DraftMode = ({ toggleDraftMode, draftModeStatus }: Props) => {
   return (
     <div className={css(styles.container)}>
-      <Typography size={FontSize.medium} className={css(styles.label)}>
-        Draft Mode
-      </Typography>
+      <Typography size={FontSize.medium}>Draft Mode</Typography>
       <Toggle checked={draftModeStatus} onChange={toggleDraftMode} />
     </div>
   );

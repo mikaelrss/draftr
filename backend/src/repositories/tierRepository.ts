@@ -85,3 +85,9 @@ export const updateTierName = async (tierUuid: string, name: string) => {
   const values = [name, tierUuid];
   await dbClient.query(query, values);
 };
+
+export const removeTiersByRankId = async (rankId: number) => {
+  const query = `DELETE from draftr.tier where rank_id = $1`;
+  const values = [rankId];
+  await dbClient.query(query, values);
+};

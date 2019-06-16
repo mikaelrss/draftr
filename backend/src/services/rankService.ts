@@ -10,7 +10,7 @@ import {
   fetchRankByUuid,
   fetchRanks,
   insertRank,
-  PlayerRank,
+  PlayerRank, removeRankById,
   setRankName,
   updateRankPrivate,
 } from '../repositories/rankRepository';
@@ -19,10 +19,12 @@ import { insertRankedPlayer } from '../repositories/rankedPlayerRepository';
 import { setRankId } from './userPreferenceService';
 import {
   createNewTier,
+  deleteTiersByRankId,
   getTierIdByTierOrder,
   getTiersByRankId,
 } from './tierService';
 import {
+  deleteRankedPlayersByRankId,
   getPlayerRank,
   updatePlayerRank,
   updatePlayerTierCascade,
@@ -229,4 +231,11 @@ export const setRankPrivate = async (uuid: string, status: boolean) => {
 export const changeRankName = async (uuid: string, name: string) => {
   await setRankName(uuid, name);
   return await getRankByUuid(uuid);
+};
+
+export const deleteRank = async (uuid: string) => {
+  const rank = await getRankByUuid(uuid);
+  await deleteRankedPlayersByRankId(rank.id);
+  await deleteTiersByRankId(rank.id);
+  await removeRankById(rank.id);
 };
