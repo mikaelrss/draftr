@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 });
 
 const Rating = ({ rating }: { rating: number }) => {
-  const percentCovered = Math.round((1 - rating / 5) * 10000) / 100;
+  const percentCovered = (1 - rating / 5) * 100;
   return (
     <div className={css(styles.rateContainer)}>
       <Icon icon={IconType.star} className={css(styles.star)} />
@@ -61,7 +61,9 @@ const Rank = ({ rank }: Props) => (
   <Link to={`/rank/${rank.uuid}`} className={css(styles.link)}>
     <Paper className={css(styles.container)}>
       <Typography size={FontSize.medium}>{rank.name}</Typography>
-      <Typography size={FontSize.small}>{rank.rating}</Typography>
+      <Typography size={FontSize.small}>
+        {Math.round(rank.rating * 100) / 100}
+      </Typography>
       <Rating rating={rank.rating} />
     </Paper>
   </Link>
