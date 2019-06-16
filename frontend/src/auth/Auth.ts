@@ -1,5 +1,6 @@
 import auth0 from 'auth0-js';
 import { history } from '../components/root/Root';
+import { sendGaEvent } from '../components/app/App';
 
 export interface IIdTokenPayload {
   at_hash: string;
@@ -101,7 +102,7 @@ export default class Auth {
   // prettier-ignore
   login = () => {
     // @ts-ignore
-    window.ga('send', 'event', 'Authorization', 'LoginAttempt');
+    sendGaEvent('Authorization', 'LoginAttempt')
     this.auth0.authorize();
   }
 

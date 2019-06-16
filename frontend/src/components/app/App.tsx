@@ -23,7 +23,7 @@ history.listen(location => {
 export const sendGaEvent = (
   category: string,
   action: string,
-  label: string,
+  label?: string,
 ) => {
   ReactGA.event({
     category,
