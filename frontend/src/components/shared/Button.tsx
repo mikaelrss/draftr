@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     outline: 'none',
     backgroundColor: SECONDARY,
     color: PRIMARY_TEXT,
-    padding: `0 ${DEFAULT_PADDING}px`,
+    padding: `0 ${DEFAULT_PADDING / 2}px`,
     ':hover': {
       backgroundColor: SECONDARY_HOVER,
     },

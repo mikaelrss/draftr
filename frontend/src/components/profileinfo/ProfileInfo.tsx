@@ -25,6 +25,11 @@ const styles = StyleSheet.create({
       height: `${MOBILE_IMAGE_SIZE}px`,
     },
   },
+  name: {
+    [MOBILE_BREAKPOINT]: {
+      display: 'none',
+    },
+  },
   logout: {
     marginLeft: `${DEFAULT_PADDING / 2}px`,
   },
@@ -37,7 +42,7 @@ const ProfileInfo = () => {
   return (
     <div className={css(styles.info)}>
       <img src={idTokenPayload.picture} className={css(styles.picture)} />
-      <div>{idTokenPayload.given_name}</div>
+      <div className={css(styles.name)}>{idTokenPayload.given_name}</div>
       <Button
         onClick={auth.logout}
         className={css(styles.logout)}

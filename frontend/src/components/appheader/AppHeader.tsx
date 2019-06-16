@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     color: PRIMARY_TEXT,
     justifyContent: 'space-between',
     [MOBILE_BREAKPOINT]: {
-      fontSize: '0.7em',
+      fontSize: '0.5em',
+      padding: `0 ${DEFAULT_PADDING / 4}px`,
     },
   },
   icon: {

@@ -17,16 +17,16 @@ import Paper from '../shared/Paper';
 
 const styles = StyleSheet.create({
   copyRank: {
-    height: '160px',
+    // height: '160px',
+    opacity: 0.3,
+    transition: 'all ease-in-out 200ms',
+    ':hover': { opacity: 1 },
+    ':focus-within': { opacity: 1 },
   },
   form: {
-    transition: 'all ease-in-out 200ms',
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    opacity: 0.3,
-    ':hover': { opacity: 1 },
-    ':focus-within': { opacity: 1 },
   },
 });
 
@@ -56,6 +56,10 @@ const CopyRank = ({ rank }: Props) => {
           <div>
             <Typography size={FontSize.large}>Copy this rank!</Typography>
             <Paper className={css(styles.copyRank)}>
+              <Typography size={FontSize.small}>
+                Enter a name to create a new copy of this rank which you can
+                freely edit as you wish!
+              </Typography>
               <Form
                 formClassName={css(styles.form)}
                 validate={validate}
