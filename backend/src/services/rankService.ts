@@ -189,8 +189,6 @@ export const createRank = async (name: string, userId: string) => {
   const newRank = await addRank(name, userId);
   const newTier = await createNewTier(newRank.uuid, userId);
 
-  // eslint-disable-next-line
-  console.log('TEST', fantasyRankings);
 
   fantasyRankings.forEach(async player => {
     await insertRankedPlayer(
