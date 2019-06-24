@@ -10,7 +10,8 @@ import {
   fetchRankByUuid,
   fetchRanks,
   insertRank,
-  PlayerRank, removeRankById,
+  PlayerRank,
+  removeRankById,
   setRankName,
   updateRankPrivate,
 } from '../repositories/rankRepository';
@@ -187,11 +188,15 @@ export const createRank = async (name: string, userId: string) => {
   const fantasyRankings = await getFantasyFootballNerdRankings();
   const newRank = await addRank(name, userId);
   const newTier = await createNewTier(newRank.uuid, userId);
-  fantasyRankings.forEach(async (player: any) => {
+
+  // eslint-disable-next-line
+  console.log('TEST', fantasyRankings);
+
+  fantasyRankings.forEach(async player => {
     await insertRankedPlayer(
       newRank.id,
       newTier.id,
-      player.playerId,
+      +player.playerId,
       player.overallRank,
     );
   });
