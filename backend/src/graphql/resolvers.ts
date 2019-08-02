@@ -1,4 +1,6 @@
 import { ValidationError } from 'apollo-server';
+import csv from 'csv-parser';
+
 import { IPlayer } from '../api/players';
 import {
   changePlayer,
@@ -9,6 +11,7 @@ import {
   getRankById,
   getRankByUuid,
   getRanks,
+  persistRank,
   PersonalRank,
   setRankPrivate,
   userOwnsRank,
@@ -118,6 +121,16 @@ export const resolvers = {
     ) => {
       await verifyUserCanEditRankByUuid(args.uuid, cxt.user);
       await setRankPrivate(args.uuid, args.status);
+    },
+    uploadRank: async (_: any, args: any, ctx: Context) => {
+      const { createReadStream, filename } = await args.file;
+      const result: any = [];
+      await createReadStream()
+        .pipe(csv())
+        .on('data', (data: any) => result.push(data))
+        .on('end', async () => {
+          return await persistRank(filename, result, ctx.user);
+        });
     },
   },
   Rank: {

@@ -1,5 +1,6 @@
 import { dbClient } from '../index';
 import { ValidationError } from 'apollo-server';
+import { parseLine } from 'tslint/lib/verify/lines';
 
 export interface RankedPlayer {
   id: number;

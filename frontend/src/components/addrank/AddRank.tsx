@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
-import { useSpring, animated, config } from 'react-spring';
+import { useMutation } from '@apollo/react-hooks';
+import { animated, config, useSpring } from 'react-spring';
 import { Mutation } from 'react-apollo';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import Form from 'react-valid8';
 
 import { IconType } from '../shared/Icon';
-import { PrimaryButton, IconButton } from '../shared/Button';
+import { IconButton, PrimaryButton } from '../shared/Button';
 import { DEFAULT_PADDING } from '../../styles/constants';
 import Paper from '../shared/Paper';
 import Input from '../shared/Input';
 import { SECONDARY_TEXT } from '../../styles/colors';
-import { ADD_RANK } from './graphql';
+import { ADD_RANK, UPLOAD_RANK } from './graphql';
 import {
   AddRankMutation,
   AddRankMutationVariables,
 } from './__generated__/AddRankMutation';
 import { ALL_RANKS_QUERY } from '../ranklist/graphql';
 import { AllRanks } from '../ranklist/__generated__/AllRanks';
+import {
+  UploadRankMutation,
+  UploadRankMutationVariables,
+} from './__generated__/UploadRankMutation';
 
 const styles = StyleSheet.create({
   addRank: {
@@ -51,6 +56,13 @@ const validate = (values: FormValues) => {
 
 const AddRank = () => {
   const [formVisible, setFormVisible] = useState(false);
+
+  const [uploadRank] = useMutation<
+    UploadRankMutation,
+    UploadRankMutationVariables
+  >(UPLOAD_RANK, {
+    refetchQueries: [{ query: ALL_RANKS_QUERY }],
+  });
 
   const formStyle = useSpring({
     bottom: formVisible ? `${DEFAULT_PADDING}px` : '-400px',
@@ -113,6 +125,14 @@ const AddRank = () => {
       <animated.div style={buttonStyle} className={css(styles.addRank)}>
         <IconButton icon={IconType.add} onClick={() => setFormVisible(true)} />
       </animated.div>
+      <input
+        type="file"
+        name="file"
+        onChange={(e: any) => {
+          if (!e.target.validity.valid) return;
+          uploadRank({ variables: { file: e.currentTarget.files[0] } });
+        }}
+      />
     </>
   );
 };

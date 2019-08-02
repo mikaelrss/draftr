@@ -11,3 +11,15 @@ export const ADD_RANK = gql`
     }
   }
 `;
+
+export const UPLOAD_RANK = gql`
+  mutation UploadRankMutation($file: Upload!) {
+    uploadRank(file: $file) {
+      uuid
+      private
+      userOwnsRank
+      rating
+      name
+    }
+  }
+`;

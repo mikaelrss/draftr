@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
+import { ApolloProvider as BetaApolloHooksProvider } from '@apollo/react-hooks';
 import ReactGA from 'react-ga';
 
 import './app.scss';
@@ -39,11 +40,13 @@ const App = () => (
     <PersistGate persistor={persistor}>
       <ApolloProvider client={client}>
         <ApolloHooksProvider client={client}>
-          <AuthProvider value={auth}>
-            <Router history={history}>
-              <Root />
-            </Router>
-          </AuthProvider>
+          <BetaApolloHooksProvider client={client}>
+            <AuthProvider value={auth}>
+              <Router history={history}>
+                <Root />
+              </Router>
+            </AuthProvider>
+          </BetaApolloHooksProvider>
         </ApolloHooksProvider>
       </ApolloProvider>
     </PersistGate>

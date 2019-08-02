@@ -1,4 +1,8 @@
-import { ApolloServer, ForbiddenError } from 'apollo-server';
+import {
+  ApolloServer,
+  ForbiddenError,
+  makeExecutableSchema,
+} from 'apollo-server';
 import { importSchema } from 'graphql-import';
 import { Client } from 'pg';
 import jwt from 'jsonwebtoken';
@@ -22,9 +26,10 @@ export let dbClient: Client;
 const init = async () => {
   dbClient = await initPostgresConnection();
   const server = new ApolloServer({
-    // @ts-ignore
-    typeDefs,
-    resolvers,
+    schema: makeExecutableSchema({
+      typeDefs,
+      resolvers,
+    }),
     cors: {
       origin: process.env.FRONTEND_URL,
       credentials: true,

@@ -1,8 +1,8 @@
-import { IPlayerModel } from '../data/mongoconnector';
 import { dbClient } from '../index';
+import { mapPlayerEntity } from '../services/playerService';
 
 export interface PlayerEntity {
-  player_id: string;
+  id: string;
   position: string;
   display_name: string;
   first_name: string;
@@ -11,12 +11,22 @@ export interface PlayerEntity {
   bye_week: number;
 }
 
-export const insertPlayer = async (player: IPlayerModel) => {
+export interface PlayerModel {
+  playerId: string;
+  position: string;
+  displayName: string;
+  firstName: string;
+  lastName: string;
+  team: string;
+  byeWeek: number;
+}
+
+export const insertPlayer = async (player: PlayerModel) => {
   const query = `insert into draftr.player(id,
                                            position,
                                            display_name,
                                            first_name, last_name, team, bye_week)
-                 VALUES ($1, $2, $3, $4, $5, $6, $7)`;
+                 VALUES ($1, $2, $3, $4, $5, $6, $7) returning *`;
   const values = [
     player.playerId,
     player.position,
@@ -27,5 +37,14 @@ export const insertPlayer = async (player: IPlayerModel) => {
     player.byeWeek,
   ];
 
-  dbClient.query(query, values);
+  const queryResult = await dbClient.query(query, values);
+  return mapPlayerEntity(queryResult.rows[0]);
+};
+
+export const searchForPlayerRepo = async (
+  name: string,
+): Promise<PlayerEntity> => {
+  const query = `select * from draftr.player where display_name LIKE $1`;
+  const values = [name];
+  return (await dbClient.query(query, values)).rows[0];
 };

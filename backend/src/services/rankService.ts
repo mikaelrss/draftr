@@ -30,6 +30,10 @@ import {
   updatePlayerRank,
   updatePlayerTierCascade,
 } from './rankedPlayerService';
+import { NFLTeam } from 'frontend/src/types/graphqltypes';
+import { searchForPlayer } from './playerService';
+import { insertPlayer, PlayerModel } from '../repositories/playerRepository';
+import { generateTeam, searchTeamName } from './rankUtils';
 
 const DEFAULT_TIERS = 20;
 
@@ -113,7 +117,7 @@ export const userOwnsRankByUuid = async (rankUuid: string, userId: string) => {
 export const verifyUserCanEditRank = async (rankId: number, user: string) => {
   const canEdit = await userOwnsRank(rankId, user);
   if (!canEdit) {
-    throw new ForbiddenError("You don't own this Rank");
+    throw new ForbiddenError('You don\'t own this Rank');
   }
 };
 
@@ -123,7 +127,7 @@ export const verifyUserCanEditRankByUuid = async (
 ) => {
   const canEdit = await userOwnsRankByUuid(rankUuid, user);
   if (!canEdit) {
-    throw new ForbiddenError("You don't own this Rank");
+    throw new ForbiddenError('You don\'t own this Rank');
   }
 };
 
@@ -189,7 +193,6 @@ export const createRank = async (name: string, userId: string) => {
   const newRank = await addRank(name, userId);
   const newTier = await createNewTier(newRank.uuid, userId);
 
-
   fantasyRankings.forEach(async player => {
     await insertRankedPlayer(
       newRank.id,
@@ -241,4 +244,66 @@ export const deleteRank = async (uuid: string) => {
   await deleteRankedPlayersByRankId(rank.id);
   await deleteTiersByRankId(rank.id);
   await removeRankById(rank.id);
+};
+
+interface FPCsv {
+  Rank: number;
+  Tier: number;
+  WSID: string;
+  Overall: string;
+  Team: string;
+  Pos: string;
+  Bye: number;
+  Best: number;
+  Worst: number;
+  Avg: number;
+  'Std Dev': number;
+  ADP: number;
+  'vs. ADP': string;
+}
+
+const randomIntFromInterval = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+const generatePos = (pos: string) => {
+  if (pos.charAt(0) === 'K') return 'K';
+  if (pos.slice(0, 2) === 'DS') return 'DEF';
+  return pos.slice(0, 2);
+};
+
+export const persistRank = async (
+  name: string,
+  ranks: FPCsv[],
+  userId: string,
+) => {
+  const newRank = await addRank(name, userId);
+  let lastTier = 1;
+  let tier = await createNewTier(newRank.uuid, userId);
+
+  // tslint:disable-next-line
+  for (let i = 0; i < ranks.length; i++) {
+    const row = ranks[i];
+    if (+row.Tier > lastTier) {
+      tier = await createNewTier(newRank.uuid, userId);
+      lastTier = +row.Tier;
+    }
+    if (row.Overall == null) return;
+    let player: PlayerModel;
+    try {
+      player = await searchForPlayer(searchTeamName(row.Overall));
+      await insertRankedPlayer(newRank.id, tier.id, +player.playerId, row.Rank);
+    } catch (e) {
+      player = await insertPlayer({
+        byeWeek: row.Bye,
+        displayName: searchTeamName(row.Overall),
+        firstName: row.Overall,
+        lastName: row.Overall,
+        position: generatePos(row.Pos),
+        team: row.Team === '' ? generateTeam(row.Overall) : row.Team,
+        playerId: `${randomIntFromInterval(39393, 3939813)}`,
+      });
+      await insertRankedPlayer(newRank.id, tier.id, +player.playerId, row.Rank);
+    }
+  }
+  return newRank;
 };

@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 
 interface IIconProps {
   icon: IconType;
-  onClick: () => void;
+  onClick: any;
   className?: string;
   iconClass?: string;
   loading?: boolean;

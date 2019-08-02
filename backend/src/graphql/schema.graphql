@@ -1,3 +1,11 @@
+scalar Upload
+
+type File {
+  filename: String!
+  mimetype: String!
+  encoding: String!
+}
+
 type Query {
   tiers(id: String!): [Tier!]!
   rank(id: String!): Rank
@@ -21,6 +29,7 @@ type Mutation {
   deleteTier(id: String!): Tier!
   deleteRank(id: String!): String
   setRankPrivate(uuid: String!, status: Boolean!): Rank
+  uploadRank(file: Upload!): Rank
   #  createTierAndMovePlayers(playerId: String!, originTier: Int!): [Tier!]!
 }
 

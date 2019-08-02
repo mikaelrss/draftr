@@ -1,6 +1,11 @@
 import { IPlayerModel } from '../data/mongoconnector';
 import { getFantasyFootballNerdRankings } from '../api/rankings';
-import { insertPlayer } from '../repositories/playerRepository';
+import {
+  insertPlayer,
+  PlayerEntity,
+  PlayerModel,
+  searchForPlayerRepo,
+} from '../repositories/playerRepository';
 
 export const createPlayerList = async () => {
   const allPlayers = await getFantasyFootballNerdRankings(true);
@@ -32,12 +37,15 @@ export const createPlayerList = async () => {
     .forEach(insertPlayer);
 };
 
-export const mapPlayer = (playerModel: IPlayerModel) => ({
-  playerId: playerModel.playerId,
+export const mapPlayerEntity = (playerModel: PlayerEntity) => ({
+  playerId: playerModel.id,
   position: playerModel.position,
-  displayName: playerModel.displayName,
-  firstName: playerModel.firstName,
-  lastName: playerModel.lastName,
+  displayName: playerModel.display_name,
+  firstName: playerModel.first_name,
+  lastName: playerModel.last_name,
   team: playerModel.team,
-  byeWeek: playerModel.byeWeek,
+  byeWeek: playerModel.bye_week,
 });
+
+export const searchForPlayer = async (name: string): Promise<PlayerModel> =>
+  mapPlayerEntity(await searchForPlayerRepo(name));
